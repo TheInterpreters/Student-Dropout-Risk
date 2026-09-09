@@ -1,0 +1,20 @@
+# Raw datasets should stay out of Git by default.
+data/**
+
+# Keep local proposal documents out of Git.
+*.docx
+*.pdf
+
+# Keep the data folder structure available if needed.
+!data/
+!data/**/
+
+# OS and editor artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python caches and notebooks
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
