@@ -20,3 +20,4 @@ Exploratory stage - subject to change.
 - GitHub dataset mirror: https://github.com/SinaShakoori/Student-Dropout-Prediction/blob/master/dataset.csv
 - Mendeley Data: https://data.mendeley.com/datasets/tym8rs3hgp/1
 - INEP Higher Education Census: https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-da-educacao-superior?utm_source=chatgpt.com
+- OFS: https://www.officeforstudents.org.uk/data-and-analysis/student-characteristics-data/outcomes-data-dashboard/
