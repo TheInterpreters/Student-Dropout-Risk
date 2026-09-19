@@ -1,8 +1,6 @@
-# Student Retention and Dropout Analysis
+# Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and Interpretable Models
 
 ## The Interpreters
-
-Catching Students Before They Leave: Faithful, Stable, and Actionable Early-Warning Explanations for First-Semester Academic Risk
 
 ## Group Members
 

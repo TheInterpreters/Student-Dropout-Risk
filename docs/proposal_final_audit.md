@@ -9,6 +9,14 @@ guideline. Microsoft Word renders the assessed body as four pages, followed by a
 one-page reference appendix. The final test remains locked; all numerical results in
 the proposal are validation-only and are labelled accordingly.
 
+The final title, *Trustworthy Explanations for Student Dropout Risk: Comparing
+Black-Box and Interpretable Models*, accurately reflects the five-model comparison
+without presuming that TabICL must win. The editable nine-stage workflow is legible at
+normal page view and includes the decision frame, data design, baselines, validation
+freeze, one-time final test, explanation audits, constrained recourse, human study,
+subgroup/proxy checks and reporting. Its caption also makes the freeze point and
+cross-cutting governance explicit.
+
 The guideline is internally inconsistent: its summary allocates Complexity 5 marks and
 Ethics 5 marks, while the detailed text omits a separate complexity subsection and
 labels Ethics as 10 marks. The proposal covers both interpretations through dedicated
@@ -27,6 +35,11 @@ Sections 6 and 7.
 | Complexity | Section 7 contrasts non-decomposable TabICL with exactly additive EBM and refuses to presume that a 0.006 validation ROC-AUC margin justifies complexity | Complete and unusually strong |
 | Ethics and data handling | Section 6 covers source/licence, consent, protected attributes, explicit small-group suppression, all-feature proxy screening, and non-causal/non-denial safeguards | Complete |
 | Documentation and reproducibility | Section 8 records the fixed split/seed, pinned environment, protocol 1.2, 26 in-scope tests, exported evidence, model card, and planned regeneration command | Complete for proposal |
+
+Final verification regenerated the DOCX from the checked-in script, passed all 29
+automated tests (26 methodology tests plus three archived text-pipeline tests), and
+confirmed 2,550 words across five rendered pages: four assessed body pages followed by
+the one-page reference appendix.
 
 ## Numerical and methodological consistency
 

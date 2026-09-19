@@ -71,6 +71,17 @@ def strip_comment_parts(path: Path) -> None:
 
 document = Document(SOURCE)
 
+# Keep the public project title model-agnostic so the final evidence can favour either
+# the post-hoc black-box route or an intrinsically interpretable alternative.
+replace_text(
+    document.paragraphs[0],
+    "Trustworthy Explanations for Student Dropout Risk:",
+)
+replace_text(
+    document.paragraphs[1],
+    "Comparing Black-Box and Interpretable Models",
+)
+
 # Reclaim vertical space toward the guideline's 3-4 page report length without touching
 # font size, the workflow diagram, or wording: tighten default paragraph spacing/margins.
 normal_style = next(style for style in document.styles if style.name.casefold() == "normal")
@@ -366,6 +377,9 @@ table_text = "\n".join(
     cell.text for table in check.tables for row in table.rows for cell in row.cells
 )
 assert "70/15/15 train/validation/test" in all_text
+assert "Trustworthy Explanations for Student Dropout Risk:" in all_text
+assert "Comparing Black-Box and Interpretable Models" in all_text
+assert "Catching Students Before They Leave" not in all_text
 assert "semantic group" in all_text
 assert "TabICL: A tabular foundation model" in all_text
 assert "TabICLv2" not in all_text
