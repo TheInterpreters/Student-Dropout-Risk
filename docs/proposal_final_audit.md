@@ -37,9 +37,11 @@ Sections 6 and 7.
 | Documentation and reproducibility | Section 8 records the fixed split/seed, pinned environment, protocol 1.2, 26 in-scope tests, exported evidence, model card, and planned regeneration command | Complete for proposal |
 
 Final verification regenerated the DOCX from the checked-in script, passed all 26
-tracked methodology tests, and confirmed 2,550 words across five rendered pages: four
+tracked methodology tests, and confirmed 2,640 words across five rendered pages: four
 assessed body pages followed by the one-page reference appendix. Three ignored tests
 from the local archived text pipeline also passed but are not part of the submission.
+Planned research actions use future proposal language, while established dataset facts,
+implemented safeguards and validation-only evidence remain in present or past tense.
 
 ## Numerical and methodological consistency
 
