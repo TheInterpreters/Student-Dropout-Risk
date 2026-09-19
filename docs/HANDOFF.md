@@ -6,7 +6,8 @@ Updated: 2026-09-19
 
 - Final title: **Trustworthy Explanations for Student Dropout Risk: Comparing
   Black-Box and Interpretable Models**.
-- Submission file: `XDS_Project_Proposal_Submission_Ready.docx`.
+- Submission files: `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx`
+  and the matching `.pdf`.
 - The assessed proposal body is four pages; references occupy a separate fifth page.
 - The repository contains only the UCI predictive dataset used by the project. The
   unrelated OfS background-data branch has been removed from version control.
@@ -156,7 +157,8 @@ obtain it where applicable.
 
 ## 5. Repository map
 
-- `XDS_Project_Proposal_Submission_Ready.docx` — submission candidate.
+- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx` — editable submission candidate.
+- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.pdf` — rendered submission candidate.
 - `docs/proposal_source.docx` — tracked canonical source used by the proposal builder.
 - `scripts/finalize_proposal_docx.py` — regenerate the submission candidate from that
   source.

@@ -17,7 +17,7 @@ label-free risk-stratified cases, capacity-consistent recourse, suppression/prox
 and paired final-test uncertainty. The untouched test split remains unopened until every
 validation audit and interface acceptance check is complete.
 
-## Final Project Scope
+## Project Scope
 
 The primary project predicts student dropout risk using structured UCI administrative
 data and a tabular foundation model (TFM), compared with conventional baselines
@@ -60,7 +60,8 @@ No external review corpus and no second predictive dataset are part of the curre
 - `tables/ebm_global_terms_validation.csv` and `tables/ebm_local_contributions_validation.csv` — exact EBM explanation evidence
 - `docs/MODEL_CARD.md` — living model card
 - `config/evaluation_protocol.json` — frozen validation/test evaluation protocol
-- `XDS_Project_Proposal_Submission_Ready.docx` — synchronized proposal submission candidate
+- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx` — editable proposal submission candidate
+- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.pdf` — rendered proposal submission candidate
 - `requirements.txt` — pinned core modeling environment
 - `docs/human_study_instrument.md` — the human-evidence (criterion 5) study design
 - `docs/interface_spec.md` — decision-support demo and blinded-study interface requirements
@@ -68,9 +69,6 @@ No external review corpus and no second predictive dataset are part of the curre
 - `docs/proposal_source.docx` and `scripts/finalize_proposal_docx.py` — canonical source
   and reproducible builder for the submission DOCX
 
-Any local `text_analysis/`, `requirements-text.txt`, `data/text/`, or `EDA/` materials
-are ignored exploratory work. They are outside the approved proposal scope and must not
-be included in project findings or recommitted.
 
 ## Reproduce the current checks
 

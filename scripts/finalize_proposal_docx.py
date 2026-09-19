@@ -21,7 +21,7 @@ from docx.oxml.ns import qn
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs" / "proposal_source.docx"
-OUTPUT = ROOT / "XDS_Project_Proposal_Submission_Ready.docx"
+OUTPUT = ROOT / "The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx"
 
 
 def find_one(document: Document, prefix: str):
