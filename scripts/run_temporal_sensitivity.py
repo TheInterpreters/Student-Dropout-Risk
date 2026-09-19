@@ -54,14 +54,14 @@ def main() -> None:
         model.fit(x_train, train["target"])
         fit_seconds = perf_counter() - start
         probability = model.predict_proba(x_validation)[:, 1]
-        predictions, threshold = capacity_predictions(probability, capacity=0.20)
+        predictions, capacity_boundary = capacity_predictions(probability, capacity=0.20)
         metrics = evaluate_predictions(validation["target"], predictions, probability)
         rows.append(
             {
                 "window": window,
                 "model": "tabicl",
                 **metrics,
-                "threshold": threshold,
+                "capacity_boundary": capacity_boundary,
                 "fit_seconds": fit_seconds,
             }
         )

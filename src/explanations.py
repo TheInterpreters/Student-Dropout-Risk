@@ -12,7 +12,12 @@ from typing import Callable, Mapping, Sequence
 import numpy as np
 import pandas as pd
 
-from src.modeling import CATEGORICAL_COLUMNS, SEED
+from src.modeling import (
+    CATEGORICAL_COLUMNS,
+    OUTREACH_CAPACITY,
+    SEED,
+    capacity_predictions,
+)
 
 
 ProbabilityFunction = Callable[[pd.DataFrame], np.ndarray]
@@ -70,6 +75,94 @@ def semantic_feature_groups(columns: Sequence[str]) -> dict[str, tuple[str, ...]
         if column not in assigned:
             groups[column] = (column,)
     return groups
+
+
+def aggregate_shap_by_group(
+    values: Sequence[float],
+    feature_names: Sequence[str],
+    groups: Mapping[str, Sequence[str]],
+) -> pd.DataFrame:
+    """Aggregate signed SHAP values before ranking semantic feature groups.
+
+    Summing signed member contributions preserves local additivity. Groups are then
+    ranked by the absolute value of that signed total, so the deletion audit masks the
+    same units that the explanation ranks.
+    """
+    names = list(feature_names)
+    contributions = np.asarray(values, dtype=float)
+    if contributions.ndim != 1 or len(contributions) != len(names):
+        raise ValueError("values must be one-dimensional and align with feature_names")
+    if len(names) != len(set(names)):
+        raise ValueError("feature_names must be unique")
+    index = {name: position for position, name in enumerate(names)}
+    assigned: list[str] = []
+    rows: list[dict[str, object]] = []
+    for group_name, members in groups.items():
+        members = list(members)
+        missing = set(members).difference(index)
+        if missing:
+            raise KeyError(f"group members missing from feature_names: {sorted(missing)}")
+        assigned.extend(members)
+        signed_total = float(sum(contributions[index[name]] for name in members))
+        rows.append(
+            {
+                "feature_group": group_name,
+                "members": ", ".join(members),
+                "signed_shap": signed_total,
+                "absolute_group_shap": abs(signed_total),
+            }
+        )
+    if sorted(assigned) != sorted(names) or len(assigned) != len(set(assigned)):
+        raise ValueError("groups must cover every feature exactly once")
+    return pd.DataFrame(rows).sort_values(
+        "absolute_group_shap", ascending=False, ignore_index=True
+    )
+
+
+def select_risk_stratified_positions(
+    probabilities: Sequence[float],
+    n_cases: int = 20,
+    n_strata: int = 5,
+) -> np.ndarray:
+    """Select deterministic, label-free cases evenly across predicted-risk strata."""
+    scores = np.asarray(probabilities, dtype=float)
+    if scores.ndim != 1 or len(scores) < n_cases:
+        raise ValueError("probabilities must be one-dimensional with at least n_cases")
+    if n_cases % n_strata:
+        raise ValueError("n_cases must be divisible by n_strata")
+    ordered = np.argsort(scores, kind="stable")
+    per_stratum = n_cases // n_strata
+    selected: list[int] = []
+    for stratum in np.array_split(ordered, n_strata):
+        if len(stratum) < per_stratum:
+            raise ValueError("a risk stratum contains too few cases")
+        offsets = np.floor(
+            (np.arange(per_stratum) + 0.5) * len(stratum) / per_stratum
+        ).astype(int)
+        selected.extend(int(stratum[offset]) for offset in offsets)
+    return np.asarray(selected, dtype=int)
+
+
+def select_forward_simulation_positions(
+    probabilities: Sequence[float],
+    capacity: float = OUTREACH_CAPACITY,
+    n_flagged: int = 5,
+    n_unflagged: int = 5,
+) -> np.ndarray:
+    """Select a deterministic label-free panel balanced across model outputs."""
+    scores = np.asarray(probabilities, dtype=float)
+    predictions, _ = capacity_predictions(scores, capacity=capacity)
+
+    def spaced(pool: np.ndarray, count: int) -> list[int]:
+        ordered = pool[np.argsort(scores[pool], kind="stable")]
+        if len(ordered) < count:
+            raise ValueError("not enough cases for the requested forward-simulation panel")
+        offsets = np.floor((np.arange(count) + 0.5) * len(ordered) / count).astype(int)
+        return [int(ordered[offset]) for offset in offsets]
+
+    flagged = np.flatnonzero(predictions == 1)
+    unflagged = np.flatnonzero(predictions == 0)
+    return np.asarray(spaced(flagged, n_flagged) + spaced(unflagged, n_unflagged))
 
 
 def training_reference_values(train: pd.DataFrame, columns: Sequence[str]) -> pd.Series:
@@ -288,6 +381,50 @@ def top_k_overlap(rankings: Sequence[Sequence[str]], k: int = 5) -> float:
     return float(np.mean(values))
 
 
+def prediction_preserving_perturbations(
+    predict_proba: ProbabilityFunction,
+    case: pd.Series,
+    train: pd.DataFrame,
+    continuous_features: Sequence[str],
+    fraction_of_training_sd: float = 0.01,
+    probability_tolerance: float = 0.01,
+    seed: int = SEED,
+) -> pd.DataFrame:
+    """Create clipped 1%-of-training-SD perturbations and audit prediction change."""
+    if fraction_of_training_sd <= 0 or probability_tolerance < 0:
+        raise ValueError("perturbation fraction must be positive and tolerance non-negative")
+    original_probability = float(
+        dropout_probability(predict_proba, case.to_frame().T)[0]
+    )
+    rng = np.random.default_rng(seed)
+    rows: list[dict[str, object]] = []
+    for feature in continuous_features:
+        if feature not in case or feature not in train:
+            raise KeyError(f"continuous feature {feature!r} is missing")
+        training_values = pd.to_numeric(train[feature], errors="raise").to_numpy(float)
+        scale = fraction_of_training_sd * float(np.std(training_values, ddof=0))
+        perturbed = case.copy()
+        proposed = float(case[feature]) + float(rng.normal(0.0, scale))
+        perturbed[feature] = float(
+            np.clip(proposed, np.min(training_values), np.max(training_values))
+        )
+        restored = recompute_first_semester_features(perturbed.to_frame().T).iloc[0]
+        probability = float(dropout_probability(predict_proba, restored.to_frame().T)[0])
+        change = abs(probability - original_probability)
+        rows.append(
+            {
+                "feature": feature,
+                "original_value": float(case[feature]),
+                "perturbed_value": float(restored[feature]),
+                "original_probability": original_probability,
+                "perturbed_probability": probability,
+                "absolute_probability_change": change,
+                "accepted": change <= probability_tolerance,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def permutation_shap_values(
     predict_proba: ProbabilityFunction,
     background: pd.DataFrame,
@@ -328,14 +465,24 @@ def permutation_shap_values(
 def constrained_binary_counterfactuals(
     predict_proba: ProbabilityFunction,
     case: pd.Series,
+    cohort_probabilities: Sequence[float],
+    case_position: int,
     allowed_resolutions: dict[str, int] | None = None,
-    threshold: float = 0.5,
+    capacity: float = OUTREACH_CAPACITY,
 ) -> pd.DataFrame:
     """Enumerate defensible binary administrative changes, smallest changes first.
 
     The defaults are potentially resolvable statuses, not guaranteed student-controlled
     actions. Historical grades and demographic attributes are never changed here.
     """
+    cohort_scores = np.asarray(cohort_probabilities, dtype=float)
+    if cohort_scores.ndim != 1 or not 0 <= case_position < len(cohort_scores):
+        raise ValueError("case_position must identify the case in cohort_probabilities")
+    original_predictions, _ = capacity_predictions(
+        cohort_scores, capacity=capacity
+    )
+    if original_predictions[case_position] != 1:
+        raise ValueError("counterfactual recourse is defined only for a currently flagged case")
     if allowed_resolutions is None:
         allowed_resolutions = {"debtor": 0, "tuition_fees_up_to_date": 1}
     mutable = [
@@ -352,12 +499,22 @@ def constrained_binary_counterfactuals(
             probability = float(
                 dropout_probability(predict_proba, candidate.to_frame().T)[0]
             )
-            if probability < threshold:
+            candidate_scores = cohort_scores.copy()
+            candidate_scores[case_position] = probability
+            candidate_predictions, candidate_boundary = capacity_predictions(
+                candidate_scores, capacity=capacity
+            )
+            if candidate_predictions[case_position] == 0:
+                order = np.lexsort((np.arange(len(candidate_scores)), -candidate_scores))
+                rank = int(np.flatnonzero(order == case_position)[0] + 1)
                 candidates.append(
                     {
                         "n_changes": size,
                         "changed_features": ", ".join(changed),
                         "dropout_probability": probability,
+                        "capacity_rank": rank,
+                        "capacity_boundary": candidate_boundary,
+                        "flagged_after_change": False,
                     }
                 )
         if candidates:
@@ -365,5 +522,12 @@ def constrained_binary_counterfactuals(
     return pd.DataFrame(candidates).sort_values(
         "dropout_probability", ignore_index=True
     ) if candidates else pd.DataFrame(
-        columns=["n_changes", "changed_features", "dropout_probability"]
+        columns=[
+            "n_changes",
+            "changed_features",
+            "dropout_probability",
+            "capacity_rank",
+            "capacity_boundary",
+            "flagged_after_change",
+        ]
     )

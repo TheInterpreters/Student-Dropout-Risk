@@ -11,13 +11,13 @@ results remain deliberately unavailable.
 | Intrinsic versus post-hoc interpretability | EBM provides exact additive shape functions/local terms; permutation SHAP explains non-decomposable TabICL | EBM tables and exactness artifact; SHAP integration artifact |
 | Global versus local explanation | Local permutation SHAP plus global grouped permutation importance and ALE | `src/explanations.py`; `scripts/run_validation_audits.py` |
 | Model-agnostic explanation | Permutation SHAP wraps TabICL dropout probability | `permutation_shap_values` |
-| Faithfulness versus plausibility | Sign-aware ranked-versus-random grouped deletion and local-accuracy reconstruction | `deletion_curve`; explanation integration artifact |
+| Faithfulness versus plausibility | Signed SHAP values are summed within semantic groups before absolute ranking; matched grouped deletion is compared with random orders | `aggregate_shap_by_group`; `deletion_curve` |
 | Interpretable model as XAI ground truth | Synthetic additive white-box attribution rank check | `scripts/validate_explanation_pipeline.py` |
 | Background/reference dependence | Seed variation and training-background variation are evaluated separately | Frozen protocol JSON |
 | Correlated/off-manifold inputs | Semantic grouping, derived-feature recomputation, and ALE instead of relying on PDP | `semantic_feature_groups`; `accumulated_local_effect` |
-| Stability | Top-five overlap, rank correlation and prediction-preserving 1% perturbations | Frozen protocol JSON; explanation helpers |
+| Stability | Label-free risk-stratified case selection, top-five overlap, rank correlation and clipped 1%-of-training-SD perturbations | Frozen protocol JSON; explanation helpers |
 | Mental-model alignment | Blinded explanation/no-explanation forward simulation | Human-study instrument |
-| Actionable recourse | Historical/immutable separation and constrained administrative changes | `constrained_binary_counterfactuals`; proposal Section 5.5 |
+| Actionable recourse | Historical/immutable separation and capacity-ranking-consistent administrative changes | `constrained_binary_counterfactuals`; proposal Section 5.5 |
 | Fairness and bias | Flag rate, TPR, FPR, precision, predicted-risk and calibration-gap diagnostics; proxy association checks | `src/auditing.py` |
 | Correlation is not causation | SHAP, ALE and counterfactuals are described as model behaviour, not interventions | Proposal Sections 2, 5 and 6 |
 | Explanation lifecycle | Validation freeze, one final test evaluation, model card, interface safeguards and human evidence | `config/evaluation_protocol.json`; handoff |

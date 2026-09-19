@@ -4,5 +4,5 @@
   "n_features_before_encoding": 33,
   "target": "Dropout=1, Graduate=0; Enrolled excluded",
   "selection_rule": "TabICL and all four baselines, including native main-effects EBM, use validation only; test remains untouched",
-  "threshold_rule": "validation-only capacity threshold; flag at most the top 20% highest-risk cases"
+  "operating_policy": "cohort ranking; flag the top 20% highest-risk cases with stable tie-breaking"
 }

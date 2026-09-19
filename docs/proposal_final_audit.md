@@ -20,13 +20,13 @@ Sections 6 and 7.
 |---|---|---|
 | Audience and decision | Section 2 names one student-support officer, one outreach-prioritisation decision, timing, and both error costs | Complete |
 | Model and baseline | Section 5.1 compares TabICL with logistic regression, a depth-3 tree, XGBoost, and native main-effects EBM on the same frozen validation split; it promises one same-test-set comparison | Complete for proposal; final test intentionally pending |
-| Faithfulness | Section 5.2 specifies grouped ranked-versus-random deletion, 50 random orders, area-between-curves, uncertainty, local-accuracy reconstruction, and a white-box rank check | Complete design with integration evidence |
-| Stability | Section 5.3 specifies 20 held-out cases, 10 runs, seed/background variation, top-five overlap, rank correlation, and prediction-preserving 1% perturbations | Complete design |
-| Human evidence | Section 5.4 specifies a blinded two-group forward-simulation study, 10 cases, minimum and target sample sizes, accuracy, time, confidence, and comments | Complete design; recruitment pending |
-| Actionability | Section 5.5 separates immutable/historical from feasible changes, seeks minimum threshold-crossing changes, enforces dependencies, and reports no-recourse cases | Complete design |
+| Faithfulness | Section 5.2 freezes signed semantic-group SHAP aggregation, matched grouped deletion, 50 random orders, area-between-curves, local accuracy, and a white-box rank check | Complete design with integration evidence |
+| Stability | Section 5.3 freezes label-free five-stratum case selection, 10 runs, seed/background variation, top-five overlap, 1%-of-training-SD perturbations, and a 0.80 warning rule | Complete design |
+| Human evidence | Section 5.4 specifies a blinded two-group study, one practice case, 10 scored cases, participant-level accuracy, time, confidence, comments, and no feedback until completion | Complete design; recruitment pending |
+| Actionability | Section 5.5 separates immutable/historical from feasible changes and defines success by leaving the top-20% set after exact cohort reranking | Complete design and implementation |
 | Complexity | Section 7 contrasts non-decomposable TabICL with exactly additive EBM and refuses to presume that a 0.006 validation ROC-AUC margin justifies complexity | Complete and unusually strong |
-| Ethics and data handling | Section 6 covers source/licence, identifiers, consent, withdrawal, free-text controls, protected attributes, proxies, subgroup diagnostics, and non-causal/non-denial safeguards | Complete |
-| Documentation and reproducibility | Section 8 records the fixed split/seed, pinned environment, protocol 1.1, tests, exported evidence, model card, and planned regeneration command | Complete for proposal |
+| Ethics and data handling | Section 6 covers source/licence, consent, protected attributes, explicit small-group suppression, all-feature proxy screening, and non-causal/non-denial safeguards | Complete |
+| Documentation and reproducibility | Section 8 records the fixed split/seed, pinned environment, protocol 1.2, 26 in-scope tests, exported evidence, model card, and planned regeneration command | Complete for proposal |
 
 ## Numerical and methodological consistency
 
@@ -35,6 +35,8 @@ Sections 6 and 7.
 - Split: fixed stratified 70/15/15 with seed 42 and saved source-row IDs.
 - Capacity policy: stable top-20% cohort ranking; validation flag rate is 108/544 =
   0.198529.
+- With 213 validation dropouts and 108 available flags, the maximum possible recall is
+  108/213 = 0.507042; TabICL reaches this validation ceiling with precision 1.0.
 - First-semester validation ROC-AUC: TabICL 0.952144, EBM 0.946102, XGBoost
   0.945165, logistic regression 0.945066, depth-3 tree 0.923117.
 - TabICL capacity results: recall 0.507042, precision 1.000000, Brier 0.070795,
@@ -51,11 +53,11 @@ Sections 6 and 7.
 
 These are not proposal defects; they are deliberately identified future-project tasks:
 
-1. Run the frozen 20-case, 10-run faithfulness and stability audit.
+1. Run the frozen label-free 20-case, 10-run faithfulness and stability audit.
 2. Build and pilot the blinded study interface without leaking the model answer.
 3. Confirm the required AIT ethics/administrative approval before recruitment.
-4. After all validation choices are frozen, evaluate every model once on the untouched
-   test split and report the comparison without further selection.
+4. Evaluate every model once on the untouched test split and report paired 2,000-resample
+   intervals without further selection.
 5. Conduct the human study, report actual group accuracy/time/sample sizes and comments,
    and avoid significance claims.
 6. Complete the final model card and the one-command raw-data-to-figures runner.

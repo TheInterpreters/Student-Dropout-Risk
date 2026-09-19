@@ -14,7 +14,9 @@ EDA, validation-only model selection, and the explanation integration gate are c
 The frozen development configuration uses TabICL 2.2.0 with four estimators, a top-20%
 cohort-capacity outreach policy, grouped perturbations, and model-agnostic permutation
 SHAP with 25 training-background rows and 67 evaluations. The real TabICL/SHAP check and
-synthetic white-box check pass. The untouched test split remains unopened until every
+synthetic white-box check pass. Protocol 1.2 fixes signed semantic-group aggregation,
+label-free risk-stratified cases, capacity-consistent recourse, suppression/proxy rules,
+and paired final-test uncertainty. The untouched test split remains unopened until every
 validation audit and interface acceptance check is complete.
 
 ## Final Project Scope

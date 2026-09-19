@@ -13,7 +13,7 @@ Both interface modes must load the same versioned artefacts used in the final ev
 
 1. feature schema and temporal window;
 2. preprocessing pipeline;
-3. frozen TabICL configuration and decision threshold;
+3. frozen TabICL configuration and top-20% cohort-capacity policy;
 4. explanation configuration and feature-group mapping;
 5. model-card version and limitation text.
 
@@ -27,6 +27,7 @@ This mode will use only pre-approved, pseudonymised UCI test cases. It will show
 
 - the student profile and prediction time;
 - frozen dropout class and probability;
+- label the raw probability as estimated model risk, not a causal or guaranteed individual probability, and show its frozen calibration summary;
 - local feature contributions with direction and magnitude;
 - faithfulness and stability summaries or a clear warning when evidence is weak;
 - immutable/historical factors separated from potentially changeable conditions;
@@ -42,13 +43,14 @@ The study mode must:
 
 - display the consent screen before any case;
 - assign a pseudonymous participant ID and randomized A/B group using a recorded seed;
-- present the same 10 pre-selected UCI cases in randomized order;
+- present the same label-free panel of five flagged and five unflagged UCI cases in randomized order;
 - show the profile only to Group A;
-- add feature contributions for Group B while hiding the output, probability, threshold,
+- add feature contributions for Group B while hiding the output, probability, capacity boundary,
   base value and predicted class until the response is submitted;
+- show one unscored practice case with standardised instructions and a contribution-direction comprehension check;
 - record predicted output, confidence, integer completion time and the three free-text
   responses defined in `human_study_instrument.md`;
-- prevent answer revision after the model output is revealed;
+- reveal no answer or correctness feedback until all 10 scored cases are submitted;
 - support withdrawal and record only the permitted exclusion reason.
 
 ## Data handling and deployment boundary
@@ -65,7 +67,7 @@ The study mode must:
 
 1. The interface produces the same probabilities as the evaluation pipeline for fixed
    test cases.
-2. Group B cannot see any value that directly reveals the model output before answering.
+2. Group B cannot see any value that directly reveals the model output, and neither group receives feedback, until all 10 scored cases are complete.
 3. Both groups receive identical profiles and differ only in explanation visibility.
 4. Case order, assignment seed, timer and exclusion log are reproducible.
 5. Invalid fields are rejected and no real-person data are persisted.
@@ -73,6 +75,6 @@ The study mode must:
 
 ## Implementation gate
 
-Interface implementation begins only after the model, threshold, explanation protocol
+Interface implementation begins only after the model, capacity policy, explanation protocol
 and 10 study cases are frozen. Until then, this document defines the required behaviour
 without creating a misleading deployment around a provisional model.

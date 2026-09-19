@@ -11,7 +11,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.auditing import subgroup_diagnostics  # noqa: E402
+from src.auditing import proxy_association_table, subgroup_diagnostics  # noqa: E402
 from src.explanations import (  # noqa: E402
     accumulated_local_effect,
     grouped_permutation_importance,
@@ -20,6 +20,7 @@ from src.explanations import (  # noqa: E402
 from src.modeling import (  # noqa: E402
     add_first_semester_features,
     build_tfm,
+    EBM_NOMINAL_COLUMNS,
     capacity_predictions,
     feature_columns,
     load_primary_data,
@@ -47,7 +48,7 @@ def main() -> None:
     model = build_tfm("tabicl", columns, n_estimators=4)
     model.fit(x_train, train["target"])
     probability = model.predict_proba(x_validation)[:, 1]
-    _, boundary = capacity_predictions(probability, capacity=0.20)
+    capacity_labels, boundary = capacity_predictions(probability, capacity=0.20)
 
     groups = semantic_feature_groups(columns)
     audit_index = validation.sample(n=100, random_state=42).index
@@ -94,6 +95,7 @@ def main() -> None:
     fairness_frames = []
     protected = {
         "gender": validation["gender"],
+        "nacionality": validation["nacionality"],
         "international": validation["international"],
         "displaced": validation["displaced"],
         "educational_special_needs": validation["educational_special_needs"],
@@ -105,7 +107,7 @@ def main() -> None:
     }
     for attribute, values in protected.items():
         report = subgroup_diagnostics(
-            validation["target"], probability, values, threshold=boundary, min_group_size=30
+            validation["target"], probability, values, capacity_labels, min_group_size=30
         )
         if not report.empty:
             report.insert(0, "attribute", attribute)
@@ -114,6 +116,22 @@ def main() -> None:
         pd.concat(fairness_frames, ignore_index=True).to_csv(
             table_dir / "subgroup_diagnostics_validation.csv", index=False
         )
+
+    protected_sources = {
+        "gender",
+        "nacionality",
+        "international",
+        "displaced",
+        "educational_special_needs",
+        "age_at_enrollment",
+    }
+    proxy_features = [column for column in columns if column not in protected_sources]
+    proxy_association_table(
+        validation,
+        protected,
+        proxy_features,
+        EBM_NOMINAL_COLUMNS,
+    ).to_csv(table_dir / "proxy_associations_validation.csv", index=False)
 
     print(importance.head(10).to_string(index=False))
     print(f"ALE features: {numeric_candidates}")

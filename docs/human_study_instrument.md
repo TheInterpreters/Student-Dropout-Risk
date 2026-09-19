@@ -35,14 +35,18 @@ explanation, forward simulation.*
 - **Task (forward simulation):** each participant answers, per case, *"What do you think
   the model predicts — will it flag this student as at-risk: yes/no?"*
 - **Reveal nothing** until the participant completes all 10 cases.
+- **Practice:** before the scored cases, give both groups the same standardised task
+  instructions and one unscored practice profile. Group B also receives a neutral
+  contribution-direction legend and comprehension check. The practice case is not one
+  of the 10 study cases and contains no feedback about the scored cases.
 - **Measure:** each participant's accuracy across 10 cases is the primary analysis unit;
   compare group means descriptively. Also report per-case confidence, time and written
   reasoning. Never treat the approximately 100 case responses as independent people.
 - **Assignment:** assign participants to A/B with a reproducible shuffled list using a
   recorded seed before they see any case. Do not let participants choose their group.
-- **Case selection:** choose the 10 cases from the untouched test set only after the
-  model and explanation settings are frozen. Pre-specify a balanced panel across model
-  outputs and confidence levels; never select only explanations that look persuasive.
+- **Case selection:** after the one-time test prediction run, choose five flagged and
+  five unflagged cases deterministically across each output group's risk range without
+  outcome labels. Never select cases because their explanations look persuasive.
 - **Exclusions:** exclude only participants who withdraw consent, do not complete the
   task, or were accidentally shown the hidden output. Record every exclusion and reason;
   do not exclude someone because their answers reduce the treatment effect.
@@ -121,8 +125,10 @@ pipeline needed.
 - Report both group accuracies, sample size, and that no significance is claimed.
 - Record time-on-task; note 2–3 think-aloud comments.
 - The Group B display may show contribution direction and magnitude but must suppress
-  the base value, final score, probability, threshold and predicted class. Pilot it to
+  the base value, final score, probability, capacity boundary and predicted class. Pilot it to
   confirm that the answer is not printed anywhere in the visualization.
+- Do not reveal correctness or the model output after individual cases; debrief only
+  after all 10 scored responses are locked, preventing cross-case learning.
 - Do not report subgroup comparisons with fewer than five participants in a subgroup;
   describe sparse observations qualitatively and avoid inferential claims.
 

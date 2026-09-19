@@ -1,6 +1,9 @@
 {
-  "protocol_version": "1.1.0",
-  "amendment": "Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
+  "protocol_version": "1.2.0",
+  "amendments": [
+    "1.1: Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
+    "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules."
+  ],
   "seed": 42,
   "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
   "primary_feature_window": "first_semester",
@@ -37,7 +40,9 @@
     "type": "cohort_capacity_ranking",
     "maximum_flag_fraction": 0.20,
     "tie_break": "stable source-row order",
-    "rationale": "pre-specified limited outreach capacity"
+    "rationale": "pre-specified limited outreach capacity",
+    "universal_probability_threshold": false,
+    "counterfactual_success": "case leaves the flagged top-20% set after its score is changed, all other cohort scores are held fixed, and ranking is recomputed"
   },
   "shap": {
     "algorithm": "permutation",
@@ -45,10 +50,12 @@
     "background_source": "training_only",
     "background_size": 25,
     "max_evals": 67,
-    "display_top_k": 5
+    "display_top_k": 5,
+    "semantic_group_aggregation": "sum signed member SHAP values, then rank groups by the absolute signed total"
   },
   "faithfulness": {
     "cases": 20,
+    "case_selection": "four deterministic positions from each of five predicted-risk strata; predictions only, labels unused",
     "random_deletion_repetitions": 50,
     "primary_statistic": "area between ranked and random cumulative absolute probability-change curves",
     "masking": "training median/mode with semantic grouping and derived-feature recomputation"
@@ -59,7 +66,9 @@
     "primary_metric": "mean pairwise top-5 overlap",
     "seed_and_background_variation_reported_separately": true,
     "prediction_tolerance_absolute_probability": 0.01,
-    "continuous_perturbation_fraction": 0.01
+    "continuous_perturbation_fraction": 0.01,
+    "continuous_perturbation_scale": "Gaussian SD equals 1% of the feature's training-set SD; clip to training range and recompute derived features",
+    "low_stability_warning_overlap_below": 0.80
   },
   "global_explanations": {
     "validation_sample_size": 100,
@@ -70,6 +79,16 @@
   },
   "fairness": {
     "minimum_group_size": 30,
+    "small_group_policy": "retain every group count in the table, suppress performance metrics when n < 30, and state when comparison is unavailable",
+    "protected_attributes": [
+      "gender",
+      "nacionality",
+      "age_band",
+      "international",
+      "displaced",
+      "educational_special_needs"
+    ],
+    "proxy_association_scope": "all non-protected model features against every protected attribute; Cramer's V for categorical features and correlation ratio eta for continuous features",
     "metrics": [
       "flag_rate",
       "true_positive_rate",
@@ -78,6 +97,35 @@
       "mean_predicted_risk",
       "calibration_gap"
     ]
+  },
+  "final_test_inference": {
+    "one_time_only": true,
+    "paired_bootstrap_resamples": 2000,
+    "bootstrap_seed": 42,
+    "interval_level": 0.95,
+    "comparisons": [
+      "roc_auc_difference",
+      "brier_score_difference",
+      "capacity_recall_difference",
+      "capacity_precision_difference"
+    ]
+  },
+  "calibration": {
+    "probabilities": "raw frozen-model outputs; no post-test recalibration",
+    "metrics": [
+      "brier_score",
+      "expected_calibration_error_10bin",
+      "reliability_curve"
+    ],
+    "interface_label": "estimated model risk, not a causal or guaranteed individual probability"
+  },
+  "human_study": {
+    "practice_cases": 1,
+    "practice_case_scored": false,
+    "scored_case_selection": "five flagged and five unflagged cases selected deterministically across each output group's risk range; model predictions only, outcome labels unused",
+    "standardized_instructions": true,
+    "answer_feedback": "none until all 10 scored cases are submitted",
+    "primary_unit": "participant accuracy across 10 cases"
   },
   "test_access": "locked until this protocol and all integration checks pass"
 }

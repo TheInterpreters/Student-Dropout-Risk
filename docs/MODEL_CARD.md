@@ -4,7 +4,8 @@
 
 Development model and protocol selected; final test evaluation remains locked. TabICL
 2.2.0 with four estimators passed the validation-only feasibility and SHAP integration
-gates. Protocol 1.1 also freezes a native main-effects EBM baseline. The operating policy
+gates. Protocol 1.2 freezes the EBM baseline plus explanation, uncertainty, suppression,
+recourse and human-study rules. The operating policy
 ranks each cohort and flags at most the top 20% by risk.
 
 ## Intended use
@@ -46,6 +47,10 @@ the eligibility-timing limitation. EBM achieved validation ROC-AUC 0.9461, recal
 TabICL is modest; the final same-test-set comparison must determine whether the complex
 model is justified. These are validation—not final—metrics.
 
+Raw frozen-model probabilities are evaluated with Brier score, 10-bin ECE and a
+reliability curve; no recalibration is permitted after final-test access. Any displayed
+value is labelled estimated model risk, not a causal or guaranteed individual probability.
+
 ## Explanation evidence
 
 Permutation SHAP uses 25 training-only background rows and 67 evaluations. Validation
@@ -57,7 +62,7 @@ perturbation and human forward-simulation results before final reporting.
 
 ## Fairness and limitations
 
-Report subgroup sample sizes and error rates where groups are large enough, plus proxy
-checks. The data come from one institution and may not transfer to another country or
+Retain every subgroup count, suppress rather than omit metrics below n=30, and report
+the frozen all-feature proxy screen. The data come from one institution and may not transfer to another country or
 time period. Predictive associations are not causal diagnoses. A feasible counterfactual
 may not exist for every student.

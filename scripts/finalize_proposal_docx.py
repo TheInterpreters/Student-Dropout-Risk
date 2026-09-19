@@ -138,27 +138,27 @@ replace_text(
 
 replace_text(
     find_one(document, "We will compare TabPFN and TabICL"),
-    "A fixed, stratified 70/15/15 train/validation/test split supports identical comparisons. Protocol amendment 1.1 added a native main-effects Explainable Boosting Machine (EBM) before any test access without changing the split, seed, features or operating policy. Validation-only ROC-AUC was 0.952 for frozen TabICL 2.2.0 (four estimators), 0.946 for EBM, 0.945 for logistic regression and XGBoost, and 0.923 for a depth-3 tree: a modest complex-model gain, not superiority. EBM uses raw named variables with explicit nominal types and no interactions, rather than the one-hot/scaled baseline pipeline. The policy ranks each cohort by risk and flags at most the top 20%, with stable row-order tie-breaking. TabICL then achieved 0.507 dropout recall, 1.000 precision and a 0.199 flag rate; capacity defines the policy. At admission time, EBM marginally led ROC-AUC (0.8753), followed by XGBoost (0.8752) and TabICL (0.8739), showing that the preferred model may depend on timing. Final same-test-set evaluation will report balanced accuracy, macro-F1, ROC-AUC, recall, precision, flag rate, Brier score, calibration, confusion matrices and runtime, with complexity justified only by observed evidence.",
+    "A fixed, stratified 70/15/15 train/validation/test split supports identical comparisons. Before test access, protocol amendments added a native main-effects Explainable Boosting Machine (EBM) and froze all audit rules without changing the split, seed, target or feature windows. Validation ROC-AUC was 0.952 for TabICL 2.2.0 (four estimators), 0.946 for EBM, 0.945 for logistic regression and XGBoost, and 0.923 for a depth-3 tree: a modest complex-model gain, not superiority. EBM uses raw named variables, explicit nominal types and no interactions. The policy ranks each cohort and flags the top 20% with stable tie-breaking; no universal probability threshold is claimed. Among 213 validation dropouts and 108 available flags, TabICL attained the theoretical maximum 0.507 recall with 1.000 precision. At admission time, EBM (0.8753), XGBoost (0.8752) and TabICL (0.8739) were practically tied. One final same-test-set evaluation will report discrimination, capacity metrics, calibration, runtime and paired 2,000-resample bootstrap intervals for model differences.",
 )
 
 replace_text(
     find_one(document, "Because a TFM is not a tree ensemble"),
-    "As a TFM is not a tree ensemble, TreeSHAP exactness will not be claimed. Model-agnostic permutation SHAP (Lundberg & Lee, 2017) explains dropout probability using 25 training-only background rows and 67 evaluations, frozen after validation runtime checks. Related raw and derived first-semester variables are masked as semantic groups; derived rates and indicators are recomputed to avoid internally inconsistent records. Ranked deletion is compared with 50 random orders using cumulative absolute probability change, so faithful protective and risk-increasing contributions are both credited; the primary statistic is the ranked-minus-random area with case-level uncertainty. Similar curves indicate inadequate fidelity, and masking measures reliance rather than intervention. A validation integration check reconstructed TabICL probabilities within 4.1e-8, while a synthetic additive white-box check recovered known attribution ranks with Spearman correlation 1.0. Repeated grouped permutation importance supplies global reliance, and ALE plots for three validation-selected numerical features examine global effects with less off-manifold risk than PDP under correlation.",
+    "As a TFM is not a tree ensemble, TreeSHAP exactness will not be claimed. Model-agnostic permutation SHAP (Lundberg & Lee, 2017) explains dropout probability using 25 training-only background rows and 67 evaluations. Signed member attributions are summed within each semantic group, preserving additivity, before groups are ranked by absolute total. Deletion masks those same groups with training references, recomputes derived variables, and compares the cumulative absolute probability change with 50 random group orders; the primary statistic is ranked-minus-random area with case-level uncertainty. Similar curves indicate inadequate fidelity, and masking measures reliance, not intervention. Validation checks reconstructed TabICL probabilities within 4.1e-8 and recovered known white-box attribution ranks with Spearman 1.0. Grouped permutation importance supplies global reliance, while ALE examines three validation-selected numerical effects with less off-manifold risk than PDP under correlation.",
 )
 
 replace_text(
     find_one(document, "Following the rubric, we will pre-select 20 held-out cases"),
-    "The stability evaluation uses 20 held-out cases selected in advance across predicted-risk levels. For each case, the model-agnostic explainer runs 10 times, independently varying explainer seed and training-background sample so stochastic and reference-population variation are reported separately. Mean pairwise top-five overlap—the number of shared features divided by five—is primary, with rank correlation secondary. Small valid 1% continuous-feature perturbations provide a third test only where absolute predicted-probability change remains at most 0.01; ranges and categorical validity are preserved. These settings are frozen on validation before test analysis. Persistent instability will be shown in the interface, not concealed through selective reruns (Tiukhova et al., 2024).",
+    "The stability evaluation deterministically selects four cases from each of five predicted-risk strata (20 total) without labels. For each case, the explainer runs 10 times, varying seed and training-background sample separately. Mean pairwise top-five overlap—shared features divided by five—is primary, with rank correlation secondary. Continuous perturbations draw Gaussian noise with standard deviation equal to 1% of the feature's training standard deviation, clip to training bounds, recompute dependencies, and qualify only when absolute probability change is at most 0.01. Mean overlap below the validation-frozen 0.80 warning level is displayed, not hidden through selective reruns (Tiukhova et al., 2024).",
 )
 
 replace_text(
     find_one(document, "We will recruit 8–10 participants where feasible"),
-    "Following established forward-simulation evaluation of explanations (Hase & Bansal, 2020), the human study will recruit a voluntary convenience sample from the AIT community, targeting 8–10 participants where recruitment permits and a minimum of 4–5 split evenly between two groups. A lightweight browser-based interface will present the same 10 pseudonymised, held-out UCI profiles in randomised order and record each participant's prediction, confidence, completion time and written responses. The control view shows the profile alone; the explanation view adds feature contributions without revealing the model's output, probability or threshold before submission. Each participant's accuracy across their 10 cases is the primary unit of analysis; group accuracy and completion time will be compared descriptively, and the facilitator will record two or three representative comments made while participants work, alongside the coded written responses (Section 5.7). Unless student-support professionals are recruited, participants are proxies for the intended user, testing comprehensibility rather than professional effectiveness, and no unsupported claim of statistical significance will be made.",
+    "Following forward-simulation evaluation (Hase & Bansal, 2020), the human study targets 8–10 voluntary AIT participants, with a minimum of 4–5 split evenly by seeded assignment. After standardised instructions and one unscored practice case, both groups receive the same label-free panel of five flagged and five unflagged profiles in random order; the explanation group additionally sees feature contributions. Neither group receives the output, probability, capacity boundary or correctness feedback until all 10 responses are locked. The interface records predictions, confidence, time and written responses. Participant-level accuracy is primary; group accuracy and time are compared descriptively, with two or three observed comments and coded responses (Section 5.7). Unless support professionals participate, the study tests proxy-user comprehensibility, not professional effectiveness, and makes no significance claim.",
 )
 
 replace_text(
     find_one(document, "Before modeling, we will classify features"),
-    "Before modelling, features are classified by temporal availability and feasibility. Immutable or historical fields include age at enrolment, nationality, prior qualification, first-semester grades and completed units. Potentially changeable conditions, such as resolving outstanding tuition or debt status, are permitted in a counterfactual only when realistic at the decision point, with institution-controlled support distinguished from student-controlled action. The search identifies the smallest feasible change crossing the decision threshold while enforcing valid ranges and dependencies; cases without feasible recourse are reported explicitly. Consistent with Karimi et al. (2021), these outputs describe model behaviour, not causal promises.",
+    "Before modelling, features are classified by temporal availability and feasibility. Age, nationality, prior qualifications and completed first-semester outcomes remain fixed. Potentially resolvable tuition or debt conditions may change only when realistic at the decision point, distinguishing institutional support from student-controlled action. For a flagged case, the search finds the smallest feasible change that moves it outside the cohort's top-20% set after recomputing its rank while all other scores stay fixed; no universal threshold is assumed, and no-recourse cases are explicit. These outputs describe model behaviour, not causal promises (Karimi et al., 2021).",
 )
 
 replace_text(
@@ -192,17 +192,17 @@ workflow_items = {
     (0, 1): ("→", None),
     (0, 2): ("2. Data design\nUCI audit · feature windows\nfrozen 70/15/15 IDs", "D9EAF7"),
     (0, 3): ("→", None),
-    (0, 4): ("3. Model development\ntrain-only preparation\nTabICL + four baselines", "E2F0D9"),
+    (0, 4): ("3. Model development\ntrain-only preparation\nTabICL + LR/tree/XGB/EBM", "E2F0D9"),
     (1, 4): ("↓", None),
-    (2, 4): ("4. Validation freeze\nmodel · threshold · SHAP budget\nmasking/perturbation protocol", "E2F0D9"),
+    (2, 4): ("4. Validation freeze\nmodel · capacity policy\nSHAP groups/budget", "E2F0D9"),
     (2, 3): ("←", None),
-    (2, 2): ("5. Final predictive test\nperformance · calibration\nruntime · error analysis", "E2F0D9"),
+    (2, 2): ("5. One-time final test\nperformance · calibration\npaired uncertainty · runtime", "E2F0D9"),
     (2, 1): ("←", None),
     (2, 0): ("6. Local explanations\npreselected held-out cases\nmodel-agnostic SHAP", "FCE4D6"),
     (3, 0): ("↓", None),
-    (4, 0): ("7. Explanation evidence\ndeletion · 10-run overlap\nperturbation · recourse", "FCE4D6"),
+    (4, 0): ("7. Explanation evidence\ndeletion + white-box · stability\nperturbation · recourse", "FCE4D6"),
     (4, 1): ("→", None),
-    (4, 2): ("8. Decision-support study\nsubgroups/proxies · web prototype\nAIT forward simulation + coding", "E4DFEC"),
+    (4, 2): ("8. Decision-support study\nsubgroup/proxy audit · prototype\nblinded A/B study + coding", "E4DFEC"),
     (4, 3): ("→", None),
     (4, 4): ("9. Reporting package\nmodel card · limitations\nreproducible report + prototype", "E4DFEC"),
 }
@@ -246,7 +246,7 @@ for row in workflow_table.rows:
             paragraph.paragraph_format.keep_with_next = True
 workflow_paragraph._p.addnext(workflow_table._tbl)
 caption = document.add_paragraph(
-    "Figure 1. Proposed research workflow. Model, threshold and explanation protocols will be frozen on validation data before the final test evaluation. Ethics, data governance and reproducibility apply throughout."
+    "Figure 1. Proposed research workflow. Model, capacity policy and explanation protocols are frozen on validation data before one-time final testing. Ethics, governance and reproducibility apply throughout."
 )
 caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
 caption.paragraph_format.space_after = Pt(6)
@@ -262,7 +262,7 @@ replace_text(
 
 replace_text(
     find_one(document, "We will explicitly list protected"),
-    "Protected attributes in the UCI data—gender, nationality, age, international status, displaced status and special needs—will be documented explicitly. For groups with at least 30 records, the frozen operating policy will report flag rate, true- and false-positive rates, precision, mean predicted risk and calibration gap. Cramér's V measures categorical association and the correlation ratio measures continuous-feature association with multi-category protected attributes. These descriptive diagnostics are not proof of fairness.",
+    "Protected attributes—gender, nationality, age, international status, displaced status and special needs—are explicit. Every group count is retained; performance metrics are suppressed rather than silently omitted below 30 records, and unavailable comparisons are stated. Eligible groups receive flag rate, true- and false-positive rates, precision, mean risk and calibration gap under the exact capacity labels. All non-protected model features are screened as potential proxies using Cramér's V for categorical features and correlation-ratio eta for continuous features. These diagnostics are descriptive, not proof of fairness.",
 )
 
 replace_text(
@@ -282,7 +282,7 @@ replace_text(
 
 replace_text(
     find_one(document, "The repository separates untouched source data"),
-    "The repository separates untouched source data, EDA, modelling code, explanation evaluation, study materials, tables and figures. A pinned core environment and validation commands support a fresh clone. Seed 42 and source-row identifiers define the split; protocol 1.1, 19 in-scope tests, four baselines, capacity metrics, exact EBM decomposition, the TabICL/SHAP integration check, grouped importance, ALE and subgroup audits are implemented. Before final submission, one command will regenerate all report artefacts and a separate command will launch the prototype from frozen artefacts. The model card will record intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
+    "The repository separates source data, EDA, modelling, explanation evaluation, study materials and outputs. A pinned environment supports a fresh clone. Seed 42 and source-row IDs define the split; protocol 1.2, 26 in-scope tests, four baselines, capacity-consistent recourse, exact EBM decomposition, TabICL/SHAP integration, grouped importance, ALE, explicit subgroup suppression and proxy tables are implemented. Before final submission, one command will regenerate every report artefact and another will launch the prototype from frozen artefacts. The model card records intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
 )
 
 replace_text(find_one(document, "1. Overview"), "1. Introduction, Aim and Research Questions")
@@ -366,29 +366,30 @@ table_text = "\n".join(
     cell.text for table in check.tables for row in table.rows for cell in row.cells
 )
 assert "70/15/15 train/validation/test" in all_text
-assert "semantic groups" in all_text
+assert "semantic group" in all_text
 assert "TabICL: A tabular foundation model" in all_text
 assert "TabICLv2" not in all_text
 assert "arXiv" not in all_text
 assert "selection bias" in all_text
-assert "capacity defines the policy" in all_text
+assert "theoretical maximum 0.507 recall" in all_text
 assert "At admission time" in all_text
 assert "Explainable Boosting Machine" in all_text
 assert "3.4e-16" in all_text
-assert "TabICL + four baselines" in table_text
+assert "TabICL + LR/tree/XGB/EBM" in table_text
+assert "protocol 1.2" in all_text
 assert "9. Expected Contribution, Limitations and Contingencies" in all_text
 assert "No AIT student records will be collected" in all_text
 assert "AIT study tests comprehensibility" in all_text
 assert "Three questions" in all_text
 assert "Qualitative Analysis of Human-Study Responses" in all_text
 assert "No external review corpus" in all_text
-assert "number of shared features divided by five" in all_text
+assert "shared features divided by five" in all_text
 assert "fresh clone" in all_text
 assert "https://github.com/TheInterpreters/Proposal_EDA" in all_text
-assert "Ethics, data governance and reproducibility apply throughout" in all_text
+assert "Ethics, governance and reproducibility apply throughout" in all_text
 assert "1. Decision frame" in table_text
 assert "9. Reporting package" in table_text
-assert "web prototype" in table_text
+assert "blinded A/B study" in table_text
 assert "(Criterion" not in all_text
 assert "rubric" not in all_text.lower()
 assert "Jaccard" not in all_text

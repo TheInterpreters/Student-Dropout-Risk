@@ -336,18 +336,14 @@ def fit_and_evaluate(
     train,
     evaluation,
     columns: list[str],
-    threshold: float | None = None,
 ) -> dict[str, object]:
     start = perf_counter()
     model.fit(train[columns], train["target"])
     fit_seconds = perf_counter() - start
     probabilities = model.predict_proba(evaluation[columns])[:, 1]
-    if threshold is None:
-        predictions, threshold = capacity_predictions(probabilities)
-    else:
-        predictions = (probabilities >= threshold).astype(int)
+    predictions, capacity_boundary = capacity_predictions(probabilities)
     metrics = evaluate_predictions(evaluation["target"], predictions, probabilities)
-    metrics["threshold"] = float(threshold)
+    metrics["capacity_boundary"] = float(capacity_boundary)
     metrics["fit_seconds"] = fit_seconds
     return metrics
 
@@ -366,9 +362,9 @@ def fit_ebm_and_evaluate(
     model.fit(x_train, train["target"])
     fit_seconds = perf_counter() - start
     probabilities = model.predict_proba(x_evaluation)[:, 1]
-    predictions, threshold = capacity_predictions(probabilities)
+    predictions, capacity_boundary = capacity_predictions(probabilities)
     metrics = evaluate_predictions(evaluation["target"], predictions, probabilities)
-    metrics.update({"threshold": threshold, "fit_seconds": fit_seconds})
+    metrics.update({"capacity_boundary": capacity_boundary, "fit_seconds": fit_seconds})
 
     if export_evidence:
         TABLE_DIR.mkdir(parents=True, exist_ok=True)
@@ -485,7 +481,7 @@ def run_tfm_validation(
             model.fit(x_train, train["target"])
             fit_seconds = perf_counter() - start
             probabilities = model.predict_proba(x_validation)[:, 1]
-            predictions, threshold = capacity_predictions(probabilities)
+            predictions, capacity_boundary = capacity_predictions(probabilities)
             repeat_probabilities = model.predict_proba(x_validation)[:, 1]
             metrics = evaluate_predictions(validation["target"], predictions, probabilities)
             rows.append(
@@ -495,7 +491,7 @@ def run_tfm_validation(
                     "split": "validation",
                     "n_estimators": n_estimators,
                     **metrics,
-                    "threshold": threshold,
+                    "capacity_boundary": capacity_boundary,
                     "fit_seconds": fit_seconds,
                     "repeat_prediction_max_abs_diff": float(
                         np.max(np.abs(probabilities - repeat_probabilities))
@@ -558,8 +554,8 @@ def run_baseline_validation(window: str = "first_semester") -> pd.DataFrame:
             "TabICL and all four baselines, including native main-effects EBM, use "
             "validation only; test remains untouched"
         ),
-        "threshold_rule": (
-            "validation-only capacity threshold; flag at most the top 20% highest-risk cases"
+        "operating_policy": (
+            "cohort ranking; flag the top 20% highest-risk cases with stable tie-breaking"
         ),
     }
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)

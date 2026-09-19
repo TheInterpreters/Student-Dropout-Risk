@@ -5,11 +5,15 @@ import pandas as pd
 
 from src.explanations import (
     accumulated_local_effect,
+    aggregate_shap_by_group,
     constrained_binary_counterfactuals,
     deletion_curve,
     grouped_permutation_importance,
+    prediction_preserving_perturbations,
     recompute_first_semester_features,
     semantic_feature_groups,
+    select_risk_stratified_positions,
+    select_forward_simulation_positions,
     top_k_overlap,
     training_reference_values,
 )
@@ -84,6 +88,15 @@ class ExplanationTests(unittest.TestCase):
         self.assertCountEqual(members, columns)
         self.assertEqual(len(members), len(set(members)))
 
+    def test_grouped_shap_sums_signed_members_before_ranking(self):
+        grouped = aggregate_shap_by_group(
+            [0.6, -0.4, 0.1],
+            ["raw", "derived", "other"],
+            {"semantic": ("raw", "derived"), "other": ("other",)},
+        )
+        self.assertEqual(grouped.iloc[0]["feature_group"], "semantic")
+        self.assertAlmostEqual(grouped.iloc[0]["signed_shap"], 0.2)
+
     def test_recompute_restores_pass_rate_and_indicators(self):
         frame = pd.DataFrame(
             {
@@ -125,15 +138,45 @@ class ExplanationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             top_k_overlap([["a", "b"], ["a", "b", "c"]], k=3)
 
+    def test_risk_stratified_selection_is_deterministic_and_label_free(self):
+        selected = select_risk_stratified_positions(np.arange(100), n_cases=20, n_strata=5)
+        self.assertEqual(len(selected), 20)
+        self.assertEqual(len(set(selected)), 20)
+        self.assertEqual([sum((selected >= low) & (selected < low + 20)) for low in range(0, 100, 20)], [4] * 5)
+
+    def test_forward_simulation_panel_balances_model_outputs(self):
+        probability = np.linspace(0, 1, 100)
+        selected = select_forward_simulation_positions(probability)
+        from src.modeling import capacity_predictions
+
+        labels, _ = capacity_predictions(probability)
+        self.assertEqual(int(labels[selected].sum()), 5)
+        self.assertEqual(int((labels[selected] == 0).sum()), 5)
+
+    def test_perturbations_use_training_scale_and_probability_filter(self):
+        result = prediction_preserving_perturbations(
+            toy_predict_proba,
+            self.case,
+            self.train,
+            ["grade"],
+            fraction_of_training_sd=0.01,
+            probability_tolerance=0.01,
+        )
+        self.assertEqual(result.loc[0, "feature"], "grade")
+        self.assertTrue(bool(result.loc[0, "accepted"]))
+
     def test_counterfactual_changes_only_allowed_feature(self):
         result = constrained_binary_counterfactuals(
             toy_predict_proba,
             self.case,
+            cohort_probabilities=[0.85, 0.80, 0.70, 0.20, 0.10],
+            case_position=0,
             allowed_resolutions={"debtor": 0},
-            threshold=0.5,
+            capacity=0.4,
         )
         self.assertEqual(result.loc[0, "changed_features"], "debtor")
         self.assertEqual(result.loc[0, "n_changes"], 1)
+        self.assertFalse(bool(result.loc[0, "flagged_after_change"]))
 
 
 if __name__ == "__main__":
