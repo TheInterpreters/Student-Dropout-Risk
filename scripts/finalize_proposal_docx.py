@@ -20,7 +20,7 @@ from docx.oxml.ns import qn
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "XDS_Project_Proposal_Draft.docx"
+SOURCE = ROOT / "docs" / "proposal_source.docx"
 OUTPUT = ROOT / "XDS_Project_Proposal_Submission_Ready.docx"
 
 

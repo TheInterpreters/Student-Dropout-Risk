@@ -2,6 +2,24 @@
 
 Updated: 2026-09-19
 
+## 0. What to show the professor and team
+
+- Final title: **Trustworthy Explanations for Student Dropout Risk: Comparing
+  Black-Box and Interpretable Models**.
+- Submission file: `XDS_Project_Proposal_Submission_Ready.docx`.
+- The assessed proposal body is four pages; references occupy a separate fifth page.
+- The repository contains only the UCI predictive dataset used by the project. The
+  unrelated OfS background-data branch has been removed from version control.
+- All 26 tracked, in-scope automated tests pass in the pinned `.venv-core`
+  environment. Three additional ignored tests belong to the local archived text branch
+  and are not part of the submitted repository.
+- Reported model numbers are validation-only. The final test remains untouched and no
+  human-study result is claimed before data collection.
+
+The proposal is ready to show. For an honest status update, describe the methodology,
+validation evidence and frozen protocol as complete, while describing the explanation
+audit, interface, one-time final-test run and human study as planned next work.
+
 ## 1. Final scope decision
 
 The project predicts first-year student dropout risk from the UCI **Predict Students’
@@ -139,6 +157,9 @@ obtain it where applicable.
 ## 5. Repository map
 
 - `XDS_Project_Proposal_Submission_Ready.docx` — submission candidate.
+- `docs/proposal_source.docx` — tracked canonical source used by the proposal builder.
+- `scripts/finalize_proposal_docx.py` — regenerate the submission candidate from that
+  source.
 - `README.md` — public project overview and reproduction entry point.
 - `eda_uci_data/eda_dropout.ipynb` — completed UCI EDA.
 - `notebooks/uci_tfm_baseline.ipynb` — split and modelling overview.
@@ -150,7 +171,8 @@ obtain it where applicable.
 - `docs/human_study_instrument.md` — criterion-5 protocol.
 - `docs/interface_spec.md` — decision-support demonstration and blinded-study prototype specification.
 - `docs/MODEL_CARD.md` — living model card.
-- `text_analysis/`, `data/text/`, `requirements-text.txt` — archived, out of scope.
+- Local `text_analysis/`, `data/text/`, `requirements-text.txt`, and `EDA/` materials —
+  ignored exploratory work, out of scope and not to be recommitted.
 
 ## 6. Rubric alignment
 
@@ -171,9 +193,27 @@ obtain it where applicable.
 From the repository root in `.venv-core`:
 
 ```powershell
-python -m unittest discover -s tests -v
+python -m unittest tests.test_modeling tests.test_explanations tests.test_auditing -v
 python scripts/run_validation.py
+python scripts/validate_explanation_pipeline.py
+python scripts/run_validation_audits.py
+python scripts/run_temporal_sensitivity.py
 ```
 
 Do not open or report final-test performance until the model and explanation protocol
 are frozen.
+
+## 8. Git and data hygiene
+
+- Delete a tracked file from both Git and the working folder with
+  `git rm -- <path>`, then commit and push.
+- Keep a file locally but stop tracking it with `git rm --cached -- <path>`, add the
+  path to `.gitignore`, then commit and push.
+- Before either command, use `git ls-files -- <path>` to verify that Git tracks the
+  exact target.
+- Ordinary deletion does not erase earlier commits. Use history-rewriting tools only
+  for exposed secrets or a serious repository-size problem, and only after coordinating
+  a force-push and fresh clones with every collaborator.
+
+The removed OfS ZIP remains recoverable from earlier commits. It contains no secret and
+is below GitHub's per-file limit, so rewriting shared history is unnecessary.

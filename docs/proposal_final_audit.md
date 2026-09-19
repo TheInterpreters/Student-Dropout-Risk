@@ -36,10 +36,10 @@ Sections 6 and 7.
 | Ethics and data handling | Section 6 covers source/licence, consent, protected attributes, explicit small-group suppression, all-feature proxy screening, and non-causal/non-denial safeguards | Complete |
 | Documentation and reproducibility | Section 8 records the fixed split/seed, pinned environment, protocol 1.2, 26 in-scope tests, exported evidence, model card, and planned regeneration command | Complete for proposal |
 
-Final verification regenerated the DOCX from the checked-in script, passed all 29
-automated tests (26 methodology tests plus three archived text-pipeline tests), and
-confirmed 2,550 words across five rendered pages: four assessed body pages followed by
-the one-page reference appendix.
+Final verification regenerated the DOCX from the checked-in script, passed all 26
+tracked methodology tests, and confirmed 2,550 words across five rendered pages: four
+assessed body pages followed by the one-page reference appendix. Three ignored tests
+from the local archived text pipeline also passed but are not part of the submission.
 
 ## Numerical and methodological consistency
 

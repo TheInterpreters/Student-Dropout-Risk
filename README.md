@@ -48,8 +48,6 @@ No external review corpus and no second predictive dataset are part of the curre
 - **Prospective qualitative data:** consented, anonymised responses from the human
   evaluation. These responses are not model inputs and are reported only in aggregate
   or through paraphrased examples.
-- **Background context only:** OfS outcomes statistics (`EDA/`) — group-level, not used
-  for modeling.
 
 ## Repository guide
 
@@ -67,17 +65,19 @@ No external review corpus and no second predictive dataset are part of the curre
 - `docs/human_study_instrument.md` — the human-evidence (criterion 5) study design
 - `docs/interface_spec.md` — decision-support demo and blinded-study interface requirements
 - `docs/course_concept_alignment.md` — mapping from lecture concepts to project evidence
+- `docs/proposal_source.docx` and `scripts/finalize_proposal_docx.py` — canonical source
+  and reproducible builder for the submission DOCX
 
-The `text_analysis/`, `requirements-text.txt`, and `data/text/` materials are retained
-only as an archived exploratory branch. They are outside the approved proposal scope and
-must not be included in project findings.
+Any local `text_analysis/`, `requirements-text.txt`, `data/text/`, or `EDA/` materials
+are ignored exploratory work. They are outside the approved proposal scope and must not
+be included in project findings or recommitted.
 
 ## Reproduce the current checks
 
 From the repository root after activating `.venv-core`:
 
 ```powershell
-python -m unittest discover -s tests -v
+python -m unittest tests.test_modeling tests.test_explanations tests.test_auditing -v
 python scripts/run_validation.py
 python scripts/validate_explanation_pipeline.py
 python scripts/run_validation_audits.py

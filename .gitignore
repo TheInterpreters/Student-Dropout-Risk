@@ -1,6 +1,9 @@
 # Raw datasets should stay out of Git by default.
 data/**
 
+# Out-of-scope Office for Students background-data exploration.
+EDA/
+
 # ...but NEVER ignore provenance/licence docs: a cloned repo must keep them.
 !data/text/README.md
 !**/README.md
@@ -9,6 +12,7 @@ data/**
 *.docx
 *.pdf
 !XDS_Project_Proposal_Submission_Ready.docx
+!docs/proposal_source.docx
 
 # Keep the data folder structure available if needed.
 !data/
