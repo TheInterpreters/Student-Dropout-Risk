@@ -72,15 +72,15 @@ def strip_comment_parts(path: Path) -> None:
 document = Document(SOURCE)
 
 # Keep the public project title model-agnostic so the final evidence can favour either
-# the post-hoc black-box route or an intrinsically interpretable alternative.
+# the post-hoc black-box route or an intrinsically interpretable alternative. The title
+# and compact member line mirror the team's final manual layout.
+title_paragraph = document.paragraphs[0]
 replace_text(
-    document.paragraphs[0],
-    "Trustworthy Explanations for Student Dropout Risk:",
+    title_paragraph,
+    "Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and Interpretable Models",
 )
-replace_text(
-    document.paragraphs[1],
-    "Comparing Black-Box and Interpretable Models",
-)
+for obsolete_header in (document.paragraphs[1], document.paragraphs[2]):
+    obsolete_header._element.getparent().remove(obsolete_header._element)
 
 # Reclaim vertical space toward the guideline's 3-4 page report length without touching
 # font size, the workflow diagram, or wording: tighten default paragraph spacing/margins.
@@ -95,16 +95,15 @@ for section in document.sections:
 
 team_table = document.tables[0]
 
-member_updates = {
-    "1)": "1) Aye Khin Khin Hpone (Yolanda) — 125970",
-    "2)": "2) Nguyen Liem Son (Lucas) — 126729",
-    "3)": "3) Witchayda Theppithuk (Noey) — 127419",
-    "4)": "4) Han Htoo Zaw — 127305",
-    "5 )": "5) Pyae Sone Han — 127366",
-}
-replace_text(find_one(document, "Please write your name here"), "Group Members")
-for prefix, text in member_updates.items():
-    replace_text(find_one(document, prefix), text)
+members_paragraph = find_one(document, "Please write your name here")
+replace_text(
+    members_paragraph,
+    "Aye Khin Khin Hpone (Yolanda) 125970; Nguyen Liem Son (Lucas) 126729; "
+    "Witchayda Theppithuk (Noey) 127419; Han Htoo Zaw 127305; Pyae Sone Han 127366",
+)
+for prefix in ("1)", "2)", "3)", "4)", "5 )"):
+    paragraph = find_one(document, prefix)
+    paragraph._element.getparent().remove(paragraph._element)
 
 replace_text(
     find_one(document, "We propose to predict first-year undergraduate dropout risk"),
@@ -164,7 +163,7 @@ replace_text(
 
 replace_text(
     find_one(document, "We will recruit 8–10 participants where feasible"),
-    "Following forward-simulation evaluation (Hase & Bansal, 2020), the human study will target 8–10 voluntary AIT participants, with a minimum of 4–5 split evenly by seeded assignment. After standardised instructions and one unscored practice case, both groups will receive the same label-free panel of five flagged and five unflagged profiles in random order; the explanation group will additionally see feature contributions. Neither group will receive the output, probability, capacity boundary or correctness feedback until all 10 responses are locked. The interface will record predictions, confidence, time and written responses. Participant-level accuracy will be primary; group accuracy and time will be compared descriptively, with two or three observed comments and coded responses (Section 5.7). Unless support professionals participate, the study will test proxy-user comprehensibility, not professional effectiveness, and will make no significance claim.",
+    "Following forward-simulation evaluation (Hase & Bansal, 2020), the human study will aim to recruit 8–10 voluntary AIT participants. At least four participants will be required, and the achieved sample will be allocated as evenly as practicable between groups using seeded assignment. After standardised instructions and one unscored practice case, both groups will receive the same label-free panel of five flagged and five unflagged profiles in random order; the explanation group will additionally see feature contributions. Neither group will receive the output, probability, capacity boundary or correctness feedback until all 10 responses are locked. The interface will record predictions, confidence, time and written responses. Participant-level accuracy will be primary; group accuracy and time will be compared descriptively alongside illustrative paraphrased comments and coded responses (Section 5.7). Recruitment shortfalls and unequal group sizes will be reported transparently. Unless support professionals participate, the study will test proxy-user comprehensibility, not professional effectiveness, and will make no significance claim.",
 )
 
 replace_text(
@@ -174,7 +173,7 @@ replace_text(
 
 replace_text(
     find_one(document, "For one representative held-out student"),
-    "The end-to-end workflow will produce a frozen comparison of TabICL and its baselines, quantitative explanation evidence, constrained counterfactuals, subgroup diagnostics, human-evaluation findings, a completed model card and reproducible report artefacts. A lightweight browser-based prototype will provide two controlled modes: a decision-support demonstration showing the frozen prediction, local explanation, reliability warnings and feasible support options, and a blinded study view that will suppress the answer until the participant responds. Both modes will load the same versioned preprocessing and model artefacts used in evaluation as a research demonstration, not a production AIT service.",
+    "The end-to-end workflow will produce a frozen comparison of TabICL and its baselines, quantitative explanation evidence, constrained counterfactuals, subgroup diagnostics, human-evaluation findings, a completed model card and reproducible report artefacts. A lightweight browser-based research interface will provide two controlled modes: a decision-support demonstration showing the frozen prediction, local explanation, reliability warnings and feasible support options, and a blinded study view that will suppress the answer until the participant responds. Both modes will load the same versioned preprocessing and model artefacts used in evaluation as a research demonstration, not a production AIT service.",
 )
 
 replace_text(
@@ -213,9 +212,9 @@ workflow_items = {
     (3, 0): ("↓", None),
     (4, 0): ("7. Explanation evidence\ndeletion + white-box · stability\nperturbation · recourse", "FCE4D6"),
     (4, 1): ("→", None),
-    (4, 2): ("8. Decision-support study\nsubgroup/proxy audit · prototype\nblinded A/B study + coding", "E4DFEC"),
+    (4, 2): ("8. Decision-support study\nsubgroup/proxy audit · interface\nblinded A/B study + coding", "E4DFEC"),
     (4, 3): ("→", None),
-    (4, 4): ("9. Final deliverables\nreport · model card · limitations\ncode + tables + prototype", "E4DFEC"),
+    (4, 4): ("9. Final deliverables\nreport · model card · limitations\ncode + tables + interface", "E4DFEC"),
 }
 for row_index, row in enumerate(workflow_table.rows):
     for column_index, cell in enumerate(row.cells):
@@ -293,7 +292,7 @@ replace_text(
 
 replace_text(
     find_one(document, "The repository separates untouched source data"),
-    "The repository separates source data, EDA, modelling, explanation evaluation, study materials and outputs. A pinned environment supports a fresh clone. Seed 42 and source-row IDs define the split; protocol 1.2, 26 in-scope tests, four baselines, capacity-consistent recourse, exact EBM decomposition, TabICL/SHAP integration, grouped importance, ALE, explicit subgroup suppression and proxy tables are implemented. Before final submission, one command will regenerate every report artefact and another will launch the prototype from frozen artefacts. The completed model card will record intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
+    "The repository separates source data, EDA, modelling, explanation evaluation, study materials and outputs. A pinned environment supports a fresh clone. Seed 42 and source-row IDs define the split; protocol 1.2, 26 in-scope tests, four baselines, capacity-consistent recourse, exact EBM decomposition, TabICL/SHAP integration, grouped importance, ALE, explicit subgroup suppression and proxy tables are implemented. Before final submission, one command will regenerate every report artefact and another will launch the interface from frozen artefacts. The completed model card will record intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
 )
 
 replace_text(find_one(document, "1. Overview"), "1. Introduction, Aim and Research Questions")
@@ -368,6 +367,58 @@ for paragraph in document.paragraphs:
         for marker in list(paragraph._p.xpath(f".//{tag}")):
             marker.getparent().remove(marker)
 
+# Preserve the team's final compact Times New Roman layout. Direct formatting is used
+# because the source template's named styles retain Calibri defaults.
+for paragraph in document.paragraphs:
+    style_name = paragraph.style.name.casefold()
+    size = Pt(11)
+    bold = False
+    italic = False
+    if paragraph is title_paragraph:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        paragraph.paragraph_format.space_after = Pt(2)
+        bold = True
+        italic = True
+    elif paragraph is members_paragraph:
+        paragraph.style = document.styles["Heading 1"]
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        paragraph.paragraph_format.space_after = Pt(4)
+        size = Pt(10)
+    elif paragraph is caption:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        size = Pt(8)
+        italic = True
+    elif paragraph is references:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        size = Pt(10)
+    elif paragraph is availability_paragraph:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        size = Pt(10)
+    elif style_name == "heading 1":
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        paragraph.paragraph_format.space_after = Pt(4)
+        bold = True
+    elif style_name == "heading 2":
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        paragraph.paragraph_format.space_after = Pt(2)
+        bold = True
+    else:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    for run in paragraph.runs:
+        run.font.name = "Times New Roman"
+        run._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"), "Times New Roman")
+        run.font.size = size
+        run.bold = bold
+        run.italic = italic
+
+for table in document.tables:
+    for row in table.rows:
+        for cell in row.cells:
+            for paragraph in cell.paragraphs:
+                for run in paragraph.runs:
+                    run.font.name = "Times New Roman"
+                    run._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"), "Times New Roman")
+
 document.save(OUTPUT)
 strip_comment_parts(OUTPUT)
 
@@ -379,6 +430,7 @@ table_text = "\n".join(
 assert "70/15/15 train/validation/test" in all_text
 assert "Trustworthy Explanations for Student Dropout Risk:" in all_text
 assert "Comparing Black-Box and Interpretable Models" in all_text
+assert "Aye Khin Khin Hpone (Yolanda) 125970; Nguyen Liem Son (Lucas) 126729" in all_text
 assert "Catching Students Before They Leave" not in all_text
 assert "semantic group" in all_text
 assert "TabICL: A tabular foundation model" in all_text
@@ -403,6 +455,7 @@ assert "https://github.com/TheInterpreters/Proposal_EDA" in all_text
 assert "Ethics, governance and reproducibility will apply throughout" in all_text
 assert "1. Decision frame" in table_text
 assert "9. Final deliverables" in table_text
+assert "code + tables + interface" in table_text
 assert "blinded A/B study" in table_text
 assert "(Criterion" not in all_text
 assert "rubric" not in all_text.lower()

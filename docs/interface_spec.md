@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-The project will deliver a lightweight browser-based research prototype, preferably in
+The project will deliver a lightweight browser-based research interface, preferably in
 Streamlit. It will demonstrate the frozen dropout model and administer the forward-
 simulation study. It is not a production AIT service and will not accept real AIT
 student records.
@@ -57,7 +57,7 @@ The study mode must:
 
 - No names, AIT student IDs or AIT administrative records will be collected.
 - Raw free text will remain outside version control.
-- The prototype will run locally or in a controlled course environment; no public
+- The interface will run locally or in a controlled course environment; no public
   deployment will occur without a separate privacy and security review.
 - Only aggregate study results and paraphrased comments will enter the report.
 - Instructor guidance and any applicable institutional approval must be confirmed before

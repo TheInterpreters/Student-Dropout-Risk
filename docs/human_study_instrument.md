@@ -18,11 +18,12 @@ explanation, forward simulation.*
 
 ## 1. Design (matches the rubric)
 
-- **Participants:** a voluntary AIT convenience sample, targeting 8–10 if feasible (the
-  rubric minimum is 4–5; two reasonably sized groups are clearer). Classmates are
-  acceptable; participants with education or advising experience are preferable but not
-  required. Record sample size and participant role category; do NOT collect names or
-  student IDs and do NOT claim statistical significance.
+- **Participants:** a voluntary AIT convenience sample aiming for 8–10 participants,
+  with at least four required. Allocate the achieved sample as evenly as practicable
+  between groups using the recorded seed. Classmates are acceptable; participants with
+  education or advising experience are preferable but not required. Report recruitment
+  shortfalls, unequal group sizes, sample size and participant role category; do NOT
+  collect names or student IDs and do NOT claim statistical significance.
 - **Two groups, same 10 cases, randomized order:**
   - **Group A (control):** sees the **student profile only**. No prediction, no
     explanation.
@@ -151,5 +152,5 @@ pipeline needed.
 - [ ] Consent screen, random assignment, exclusion log and timer implemented
 - [ ] Codebook drafted; two-coder subset assigned
 - [ ] Piloted on 1 person, revised (check: nobody can see the answer before answering)
-- [ ] Run on 8–10 people (aim 4–5 per group)
+- [ ] Aim for 8–10 people; proceed with at least four and allocate groups as evenly as practicable
 - [ ] Free-text responses coded into themes

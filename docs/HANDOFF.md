@@ -114,8 +114,8 @@ perturbations with absolute probability change at most 0.01. Warn below 0.80 ove
 
 ### Human evidence and qualitative responses
 
-Target 8–10 participants, while preserving the rubric-compliant minimum of 4–5 split as
-evenly as possible across two groups. Recruitment will use a voluntary convenience
+Aim to recruit 8–10 participants, require at least four, and allocate the achieved sample
+as evenly as practicable across two groups using the recorded seed. Recruitment will use a voluntary convenience
 sample from the AIT community. Both groups predict the concealed model output on the
 same 10 pseudonymised UCI test profiles. Group A sees the profile; Group B sees the profile plus an
 explanation that suppresses the output, probability, capacity boundary, and predicted class.
@@ -169,7 +169,7 @@ obtain it where applicable.
 - `tables/baseline_validation_metrics.csv` and `tables/tfm_validation_metrics.csv` —
   current feasibility evidence.
 - `docs/human_study_instrument.md` — criterion-5 protocol.
-- `docs/interface_spec.md` — decision-support demonstration and blinded-study prototype specification.
+- `docs/interface_spec.md` — decision-support demonstration and blinded-study interface specification.
 - `docs/MODEL_CARD.md` — living model card.
 - Local `text_analysis/`, `data/text/`, `requirements-text.txt`, and `EDA/` materials —
   ignored exploratory work, out of scope and not to be recommitted.
