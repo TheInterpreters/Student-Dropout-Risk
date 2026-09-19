@@ -73,14 +73,14 @@ document = Document(SOURCE)
 
 # Reclaim vertical space toward the guideline's 3-4 page report length without touching
 # font size, the workflow diagram, or wording: tighten default paragraph spacing/margins.
-normal_style = document.styles["Normal"]
-normal_style.paragraph_format.space_after = Pt(4)
+normal_style = next(style for style in document.styles if style.name.casefold() == "normal")
+normal_style.paragraph_format.space_after = Pt(0)
 normal_style.paragraph_format.line_spacing = 1.0
 for section in document.sections:
-    section.top_margin = Inches(0.7)
-    section.bottom_margin = Inches(0.7)
-    section.left_margin = Inches(0.8)
-    section.right_margin = Inches(0.8)
+    section.top_margin = Inches(0.5)
+    section.bottom_margin = Inches(0.5)
+    section.left_margin = Inches(0.75)
+    section.right_margin = Inches(0.75)
 
 team_table = document.tables[0]
 
@@ -138,7 +138,7 @@ replace_text(
 
 replace_text(
     find_one(document, "We will compare TabPFN and TabICL"),
-    "A fixed, stratified 70/15/15 train/validation/test split supports identical comparisons. Validation-only assessment froze TabICL 2.2.0 with four estimators: ROC-AUC was 0.952, versus 0.945 for logistic regression and XGBoost and 0.923 for a depth-3 tree, establishing comparability rather than superiority while test data remain untouched. The operating policy ranks each evaluation cohort by predicted risk and flags at most the top 20%, with stable row-order tie-breaking, directly representing limited outreach capacity. On validation this yielded 0.507 dropout recall, 1.000 precision and a 0.199 flag rate; capacity, not an unattainable recall target, defines the policy. An admission-time sensitivity run reduced TabICL ROC-AUC to 0.874 and recall to 0.469, showing predictive value from first-semester information while retaining the eligibility-timing caveat. Final same-test-set evaluation will report balanced accuracy, macro-F1, ROC-AUC, recall, precision, flag rate, Brier score, calibration, confusion matrices and runtime. Marginal complex-model gains will be reported plainly.",
+    "A fixed, stratified 70/15/15 train/validation/test split supports identical comparisons. Protocol amendment 1.1 added a native main-effects Explainable Boosting Machine (EBM) before any test access without changing the split, seed, features or operating policy. Validation-only ROC-AUC was 0.952 for frozen TabICL 2.2.0 (four estimators), 0.946 for EBM, 0.945 for logistic regression and XGBoost, and 0.923 for a depth-3 tree: a modest complex-model gain, not superiority. EBM uses raw named variables with explicit nominal types and no interactions, rather than the one-hot/scaled baseline pipeline. The policy ranks each cohort by risk and flags at most the top 20%, with stable row-order tie-breaking. TabICL then achieved 0.507 dropout recall, 1.000 precision and a 0.199 flag rate; capacity defines the policy. At admission time, EBM marginally led ROC-AUC (0.8753), followed by XGBoost (0.8752) and TabICL (0.8739), showing that the preferred model may depend on timing. Final same-test-set evaluation will report balanced accuracy, macro-F1, ROC-AUC, recall, precision, flag rate, Brier score, calibration, confusion matrices and runtime, with complexity justified only by observed evidence.",
 )
 
 replace_text(
@@ -192,7 +192,7 @@ workflow_items = {
     (0, 1): ("→", None),
     (0, 2): ("2. Data design\nUCI audit · feature windows\nfrozen 70/15/15 IDs", "D9EAF7"),
     (0, 3): ("→", None),
-    (0, 4): ("3. Model development\ntrain-only preparation\nTabICL + three baselines", "E2F0D9"),
+    (0, 4): ("3. Model development\ntrain-only preparation\nTabICL + four baselines", "E2F0D9"),
     (1, 4): ("↓", None),
     (2, 4): ("4. Validation freeze\nmodel · threshold · SHAP budget\nmasking/perturbation protocol", "E2F0D9"),
     (2, 3): ("←", None),
@@ -272,17 +272,17 @@ replace_text(
 
 replace_text(
     find_one(document, "The main model is a tabular foundation model"),
-    "The main model is a tabular foundation model combining learned representations with in-context information from a reference set. It fails simulatability and decomposability: its reasoning cannot be recovered from a coefficient list or a small tree, which motivates the post-hoc protocol in Section 5.2. Library and version, reference-set size, feature count, inference configuration, runtime and hardware will be reported. Logistic regression and the depth-3 tree remain simulatable comparisons, and complexity counts as valuable only if supported by same-test-set performance or explanation-study insights.",
+    "TabICL combines learned representations with in-context information from a reference set and fails simulatability and decomposability: its reasoning cannot be recovered from a coefficient list or small tree, motivating Section 5.2's post-hoc protocol. By contrast, the main-effects EBM is intrinsically interpretable: each prediction is exactly the logistic transform of an intercept plus one learned shape-function contribution per feature. Its validation probabilities reconstruct from those terms within 3.4e-16, and global term strengths plus fixed low-, median- and high-risk local decompositions are exported. Logistic regression and the depth-3 tree provide further simulatable comparisons. TabICL's validation ROC-AUC exceeds EBM by only 0.006, so the project does not presume that complexity is operationally justified; final same-test-set performance, calibration, runtime and explanation evidence will determine whether TabICL remains a research comparison or EBM is the more defensible deployment candidate.",
 )
 
 replace_text(
     find_one(document, "The contribution is not another accuracy-only application"),
-    "The proposed contribution extends beyond an accuracy-focused application of the UCI dataset, assessing whether a tabular foundation model's local explanations merit trust in an early-warning setting. Same-test-set baselines, deletion faithfulness, repeated-run and perturbation stability, human forward simulation, qualitative response evidence and feasibility-constrained counterfactuals form a coherent evaluation framework. Limitations include the single-institution UCI context, exclusion of unresolved Enrolled outcomes, approximate model-agnostic attribution, non-causal observational data, a small convenience sample, and likely non-professional participants as target-audience proxies; therefore, the AIT study will test explanation comprehensibility rather than validate predictive performance or deployment suitability at AIT. If explanation runtime requires a smaller background or evaluation budget, that will be fixed on validation data; if recruitment reaches only the minimum planned sample, the study stays descriptive. Findings remain valuable even if TabICL underperforms a simple baseline, explanations prove unstable or unfaithful, participants gain no benefit, or feasible recourse is unavailable.",
+    "The proposed contribution extends beyond accuracy, asking whether TabICL's post-hoc local explanations merit trust and whether an intrinsically interpretable EBM offers a more defensible alternative. Same-test-set baselines, deletion faithfulness, white-box recovery, repeated-run and perturbation stability, human forward simulation, qualitative evidence and feasibility-constrained counterfactuals form a coherent evaluation. Limitations include the single-institution UCI context, exclusion of unresolved Enrolled outcomes, approximate model-agnostic attribution, non-causal observational data, a small convenience sample, and likely non-professional audience proxies; therefore, the AIT study tests comprehensibility, not predictive validity or deployment suitability at AIT. If recruitment reaches only the minimum sample, the study stays descriptive. Findings remain valuable if EBM matches or exceeds TabICL, explanations are unstable or unfaithful, participants gain no benefit, or feasible recourse is unavailable.",
 )
 
 replace_text(
     find_one(document, "The repository separates untouched source data"),
-    "The repository separates untouched source data, EDA, modelling code, explanation evaluation, study materials, tables and figures. A pinned core environment and validation commands support a fresh repository clone. Seed 42 and source-row identifiers define the split; the frozen protocol, 18 in-scope tests, capacity metrics, TabICL/SHAP integration check, grouped importance, ALE and subgroup audits are implemented. Before final submission, one command will regenerate all report artefacts and a separate command will launch the prototype from frozen artefacts. The model card will record intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
+    "The repository separates untouched source data, EDA, modelling code, explanation evaluation, study materials, tables and figures. A pinned core environment and validation commands support a fresh clone. Seed 42 and source-row identifiers define the split; protocol 1.1, 19 in-scope tests, four baselines, capacity metrics, exact EBM decomposition, the TabICL/SHAP integration check, grouped importance, ALE and subgroup audits are implemented. Before final submission, one command will regenerate all report artefacts and a separate command will launch the prototype from frozen artefacts. The model card will record intended use, data, final metrics, explanation evidence, subgroup results and limitations.",
 )
 
 replace_text(find_one(document, "1. Overview"), "1. Introduction, Aim and Research Questions")
@@ -310,6 +310,8 @@ replace_text(
 )
 
 references_heading = find_one(document, "References")
+replace_text(references_heading, "Appendix A. References")
+references_heading.paragraph_format.page_break_before = True
 availability_paragraph = document.add_paragraph(
     "Code and data availability. The versioned project repository will be released at https://github.com/TheInterpreters/Proposal_EDA with code, tests, non-sensitive tables and reproduction commands; raw human free text will remain excluded."
 )
@@ -324,6 +326,7 @@ reference_text = "\n".join(
         "Realinho, V., Machado, J., Baptista, L., & Martins, M. V. (2022). Predicting student dropout and academic success. Data, 7(11), 146. https://doi.org/10.3390/data7110146",
         "Hollmann, N., Müller, S., Purucker, L., Krishnakumar, A., Körfer, M., Hoo, S. B., Schirrmeister, R. T., & Hutter, F. (2025). Accurate predictions on small data with a tabular foundation model. Nature, 637, 319–326. https://doi.org/10.1038/s41586-024-08328-6",
         "Qu, J., Holzmüller, D., Varoquaux, G., & Le Morvan, M. (2025). TabICL: A tabular foundation model for in-context learning on large data. Proceedings of the 42nd International Conference on Machine Learning, PMLR 267, 50817–50847. https://proceedings.mlr.press/v267/qu25d.html",
+        "Lou, Y., Caruana, R., Gehrke, J., & Hooker, G. (2013). Accurate intelligible models with pairwise interactions. Proceedings of the 19th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 623–631. https://doi.org/10.1145/2487575.2487579",
         "Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. Advances in Neural Information Processing Systems, 30, 4765–4774. https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html",
         "Nauta, M., Trienes, J., Pathak, S., Nguyen, E., Peters, M., Schmitt, Y., Schlötterer, J., van Keulen, M., & Seifert, C. (2023). From anecdotal evidence to quantitative evaluation methods: A systematic review on evaluating explainable AI. ACM Computing Surveys, 55(13s), Article 295. https://doi.org/10.1145/3583558",
         "Hase, P., & Bansal, M. (2020). Evaluating explainable AI: Which algorithmic explanations help users predict model behavior? Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, 5540–5552. https://doi.org/10.18653/v1/2020.acl-main.491",
@@ -368,16 +371,19 @@ assert "TabICL: A tabular foundation model" in all_text
 assert "TabICLv2" not in all_text
 assert "arXiv" not in all_text
 assert "selection bias" in all_text
-assert "capacity, not an unattainable recall target" in all_text
-assert "admission-time sensitivity" in all_text
+assert "capacity defines the policy" in all_text
+assert "At admission time" in all_text
+assert "Explainable Boosting Machine" in all_text
+assert "3.4e-16" in all_text
+assert "TabICL + four baselines" in table_text
 assert "9. Expected Contribution, Limitations and Contingencies" in all_text
 assert "No AIT student records will be collected" in all_text
-assert "AIT study will test explanation comprehensibility" in all_text
+assert "AIT study tests comprehensibility" in all_text
 assert "Three questions" in all_text
 assert "Qualitative Analysis of Human-Study Responses" in all_text
 assert "No external review corpus" in all_text
 assert "number of shared features divided by five" in all_text
-assert "fresh repository clone" in all_text
+assert "fresh clone" in all_text
 assert "https://github.com/TheInterpreters/Proposal_EDA" in all_text
 assert "Ethics, data governance and reproducibility apply throughout" in all_text
 assert "1. Decision frame" in table_text

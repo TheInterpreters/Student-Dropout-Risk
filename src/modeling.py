@@ -10,6 +10,7 @@ from time import perf_counter
 
 import numpy as np
 import pandas as pd
+from scipy.special import expit
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
@@ -53,6 +54,10 @@ CATEGORICAL_COLUMNS = [
     "gender",
     "scholarship_holder",
     "international",
+]
+EBM_NOMINAL_COLUMNS = CATEGORICAL_COLUMNS + [
+    "first_semester_no_enrollment",
+    "first_semester_no_evaluations",
 ]
 
 
@@ -229,6 +234,31 @@ def build_baselines(columns: list[str]) -> dict[str, Pipeline]:
     }
 
 
+def prepare_ebm_frame(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    """Preserve names and mark administrative codes as nominal for native EBM fitting."""
+    result = frame[columns].copy()
+    for column in set(columns).intersection(EBM_NOMINAL_COLUMNS):
+        result[column] = result[column].astype(str)
+    return result
+
+
+def build_ebm(columns: list[str]):
+    """Build the pre-specified, intrinsically interpretable main-effects baseline."""
+    from interpret.glassbox import ExplainableBoostingClassifier
+
+    feature_types = [
+        "nominal" if column in EBM_NOMINAL_COLUMNS else "continuous"
+        for column in columns
+    ]
+    return ExplainableBoostingClassifier(
+        feature_names=columns,
+        feature_types=feature_types,
+        interactions=0,
+        random_state=SEED,
+        n_jobs=1,
+    )
+
+
 def capacity_threshold(probabilities, capacity: float = OUTREACH_CAPACITY) -> float:
     """Return a deterministic threshold that flags at most the requested share.
 
@@ -320,6 +350,83 @@ def fit_and_evaluate(
     metrics["threshold"] = float(threshold)
     metrics["fit_seconds"] = fit_seconds
     return metrics
+
+
+def fit_ebm_and_evaluate(
+    train: pd.DataFrame,
+    evaluation: pd.DataFrame,
+    columns: list[str],
+    export_evidence: bool = False,
+) -> tuple[object, dict[str, object]]:
+    """Fit EBM natively and optionally export its exact additive explanation evidence."""
+    model = build_ebm(columns)
+    x_train = prepare_ebm_frame(train, columns)
+    x_evaluation = prepare_ebm_frame(evaluation, columns)
+    start = perf_counter()
+    model.fit(x_train, train["target"])
+    fit_seconds = perf_counter() - start
+    probabilities = model.predict_proba(x_evaluation)[:, 1]
+    predictions, threshold = capacity_predictions(probabilities)
+    metrics = evaluate_predictions(evaluation["target"], predictions, probabilities)
+    metrics.update({"threshold": threshold, "fit_seconds": fit_seconds})
+
+    if export_evidence:
+        TABLE_DIR.mkdir(parents=True, exist_ok=True)
+        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+        term_scores = np.asarray(model.eval_terms(x_evaluation), dtype=float)
+        intercept = float(np.asarray(model.intercept_, dtype=float).reshape(-1)[0])
+        reconstructed = expit(intercept + term_scores.sum(axis=1))
+        max_error = float(np.max(np.abs(probabilities - reconstructed)))
+        pd.DataFrame(
+            {
+                "term": model.term_names_,
+                "mean_absolute_contribution": model.term_importances(),
+            }
+        ).sort_values("mean_absolute_contribution", ascending=False).to_csv(
+            TABLE_DIR / "ebm_global_terms_validation.csv", index=False
+        )
+
+        # Deterministically show low-, median-, and high-risk validation profiles.
+        ordered = np.argsort(probabilities, kind="stable")
+        selected_positions = ordered[[0, len(ordered) // 2, -1]]
+        local_rows: list[dict[str, object]] = []
+        for position in selected_positions:
+            for term, contribution in zip(
+                model.term_names_, term_scores[position], strict=True
+            ):
+                local_rows.append(
+                    {
+                        "source_row_id": int(evaluation.iloc[position]["source_row_id"]),
+                        "risk_position": (
+                            "lowest"
+                            if position == selected_positions[0]
+                            else "median"
+                            if position == selected_positions[1]
+                            else "highest"
+                        ),
+                        "predicted_probability": float(probabilities[position]),
+                        "intercept_logit": intercept,
+                        "term": term,
+                        "term_contribution_logit": float(contribution),
+                    }
+                )
+        pd.DataFrame(local_rows).to_csv(
+            TABLE_DIR / "ebm_local_contributions_validation.csv", index=False
+        )
+        (ARTIFACT_DIR / "ebm_exactness.json").write_text(
+            json.dumps(
+                {
+                    "link": "logit",
+                    "formula": "sigmoid(intercept + sum(main-effect term contributions))",
+                    "validation_cases": int(len(evaluation)),
+                    "max_probability_reconstruction_error": max_error,
+                    "interactions": 0,
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+    return model, metrics
 
 
 def prepare_tfm_frame(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
@@ -429,6 +536,16 @@ def run_baseline_validation(window: str = "first_semester") -> pd.DataFrame:
     for name, model in build_baselines(columns).items():
         metrics = fit_and_evaluate(model, train, validation, columns)
         rows.append({"model": name, "split": "validation", **metrics})
+    _, ebm_metrics = fit_ebm_and_evaluate(
+        train, validation, columns, export_evidence=True
+    )
+    rows.append(
+        {
+            "model": "explainable_boosting_main_effects",
+            "split": "validation",
+            **ebm_metrics,
+        }
+    )
     output = pd.DataFrame(rows)
     TABLE_DIR.mkdir(parents=True, exist_ok=True)
     output.to_csv(TABLE_DIR / "baseline_validation_metrics.csv", index=False)
@@ -437,7 +554,10 @@ def run_baseline_validation(window: str = "first_semester") -> pd.DataFrame:
         "feature_window": window,
         "n_features_before_encoding": len(columns),
         "target": "Dropout=1, Graduate=0; Enrolled excluded",
-        "selection_rule": "TFM selection uses validation only; test remains untouched",
+        "selection_rule": (
+            "TabICL and all four baselines, including native main-effects EBM, use "
+            "validation only; test remains untouched"
+        ),
         "threshold_rule": (
             "validation-only capacity threshold; flag at most the top 20% highest-risk cases"
         ),

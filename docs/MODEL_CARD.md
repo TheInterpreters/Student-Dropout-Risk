@@ -4,7 +4,8 @@
 
 Development model and protocol selected; final test evaluation remains locked. TabICL
 2.2.0 with four estimators passed the validation-only feasibility and SHAP integration
-gates. The operating policy ranks each cohort and flags at most the top 20% by risk.
+gates. Protocol 1.1 also freezes a native main-effects EBM baseline. The operating policy
+ranks each cohort and flags at most the top 20% by risk.
 
 ## Intended use
 
@@ -40,13 +41,18 @@ ROC-AUC is 0.9521. Under the frozen top-20% capacity policy, validation dropout 
 0.5070, precision is 1.0000, flag rate is 0.1985, Brier score is 0.0708 and 10-bin ECE is
 0.0186. The admission-time sensitivity model achieved ROC-AUC 0.8739 and capacity-policy
 recall 0.4695, showing added predictive information after semester one but not resolving
-the eligibility-timing limitation. These are validation—not final—metrics.
+the eligibility-timing limitation. EBM achieved validation ROC-AUC 0.9461, recall
+0.5023, precision 0.9907, Brier score 0.0757 and ECE 0.0325. Its 0.0060 ROC-AUC gap to
+TabICL is modest; the final same-test-set comparison must determine whether the complex
+model is justified. These are validation—not final—metrics.
 
 ## Explanation evidence
 
 Permutation SHAP uses 25 training-only background rows and 67 evaluations. Validation
 integration reconstructed probabilities within 4.1e-8; a synthetic white-box check
-achieved absolute-rank Spearman 1.0. Complete the pre-specified deletion, top-five,
+achieved absolute-rank Spearman 1.0. EBM's intercept plus main-effect terms reconstructed
+its validation probabilities within 3.4e-16, providing an intrinsic-interpretability
+reference. Complete the pre-specified deletion, top-five,
 perturbation and human forward-simulation results before final reporting.
 
 ## Fairness and limitations

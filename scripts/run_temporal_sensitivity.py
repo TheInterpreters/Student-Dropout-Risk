@@ -19,6 +19,7 @@ from src.modeling import (  # noqa: E402
     evaluate_predictions,
     feature_columns,
     fit_and_evaluate,
+    fit_ebm_and_evaluate,
     load_primary_data,
     make_splits,
     prepare_tfm_frame,
@@ -37,6 +38,14 @@ def main() -> None:
         for model_name, model in build_baselines(columns).items():
             metrics = fit_and_evaluate(model, train, validation, columns)
             rows.append({"window": window, "model": model_name, **metrics})
+        _, ebm_metrics = fit_ebm_and_evaluate(train, validation, columns)
+        rows.append(
+            {
+                "window": window,
+                "model": "explainable_boosting_main_effects",
+                **ebm_metrics,
+            }
+        )
 
         x_train = prepare_tfm_frame(train, columns)
         x_validation = prepare_tfm_frame(validation, columns)

@@ -1,12 +1,17 @@
 import unittest
 
+from pandas.api.types import is_string_dtype
+
 from src.modeling import (
     CATEGORICAL_COLUMNS,
+    EBM_NOMINAL_COLUMNS,
     add_first_semester_features,
+    build_ebm,
     feature_columns,
     load_primary_data,
     make_splits,
     prepare_tfm_frame,
+    prepare_ebm_frame,
 )
 
 
@@ -43,6 +48,16 @@ class ModelingTests(unittest.TestCase):
         eligible = set(columns).intersection(CATEGORICAL_COLUMNS)
         self.assertTrue(eligible)
         self.assertTrue(all(str(prepared[column].dtype) == "category" for column in eligible))
+
+    def test_ebm_uses_raw_named_features_and_main_effects_only(self):
+        frame = add_first_semester_features(self.frame)
+        columns = feature_columns(frame)
+        prepared = prepare_ebm_frame(frame.head(5), columns)
+        eligible = set(columns).intersection(EBM_NOMINAL_COLUMNS)
+        self.assertTrue(all(is_string_dtype(prepared[column]) for column in eligible))
+        model = build_ebm(columns)
+        self.assertEqual(model.interactions, 0)
+        self.assertEqual(model.feature_names, columns)
 
 
 if __name__ == "__main__":

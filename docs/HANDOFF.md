@@ -10,7 +10,8 @@ tabular foundation model are faithful, stable, actionable, fair, and useful to a
 university student-support officer.
 
 - Primary model: TabICL 2.2.0 with four estimators.
-- Baselines: logistic regression, depth-3 decision tree, and XGBoost.
+- Baselines: logistic regression, depth-3 decision tree, XGBoost, and a native
+  main-effects Explainable Boosting Machine (EBM).
 - Primary task: Dropout (1) versus Graduate (0).
 - Decision point: after first-semester results and before second-semester support.
 - Explanation method: model-agnostic SHAP on dropout probability.
@@ -30,6 +31,10 @@ claims, figures, or findings for the submitted project.
 - Temporal feature policy implemented: second-semester variables are excluded.
 - Fixed stratified 70/15/15 split implemented with seed 42 and source-row identifiers.
 - Validation-only baselines and TabICL feasibility run completed.
+- Protocol amended to 1.1 before test access to add EBM without changing the split,
+  seed, target, feature window, or operating policy.
+- EBM exact additive reconstruction passed on all 544 validation cases with maximum
+  probability error 3.4e-16; global and fixed local term tables are exported.
 - TabICL runs locally and reproducibly.
 - Explanation-evaluation primitives and unit tests implemented.
 - Capacity-based top-20% operating policy implemented; the earlier recall-plus-capacity
@@ -45,15 +50,17 @@ claims, figures, or findings for the submitted project.
 
 ### Validation-only feasibility results
 
-| Model | Balanced accuracy | Macro-F1 | ROC-AUC | Dropout recall |
-|---|---:|---:|---:|---:|
-| Logistic regression | 0.882 | 0.879 | 0.945 | 0.873 |
-| Depth-3 decision tree | 0.885 | 0.881 | 0.923 | 0.878 |
-| XGBoost | 0.894 | 0.897 | 0.945 | 0.854 |
-| TabICL (four estimators; 0.5 threshold legacy comparison) | 0.892 | 0.897 | 0.952 | 0.845 |
+| Model | Balanced accuracy | Macro-F1 | ROC-AUC | Recall | Precision |
+|---|---:|---:|---:|---:|---:|
+| Logistic regression | 0.754 | 0.768 | 0.945 | 0.507 | 1.000 |
+| Depth-3 decision tree | 0.746 | 0.759 | 0.923 | 0.498 | 0.981 |
+| XGBoost | 0.750 | 0.764 | 0.945 | 0.502 | 0.991 |
+| Main-effects EBM | 0.750 | 0.764 | 0.946 | 0.502 | 0.991 |
+| TabICL (four estimators) | 0.754 | 0.768 | 0.952 | 0.507 | 1.000 |
 
-Interpretation: TabICL is feasible and competitive, but validation does not establish
-clear superiority over XGBoost or the simpler baselines. That honest comparison is part
+All rows use the same validation cohort and top-20% capacity policy. Interpretation:
+TabICL is feasible and competitive, but its ROC-AUC margin over EBM is only 0.006 and
+validation does not establish operational superiority. That honest comparison is part
 of the model-complexity analysis. The untouched test set will be evaluated once after
 all choices are frozen.
 
@@ -111,17 +118,16 @@ obtain it where applicable.
 
 ## 4. Next actions, in order
 
-1. Complete and review the validation-only grouped-PFI, ALE and subgroup audit tables.
-2. Run the pre-specified 20-case explanation faithfulness/stability audit on validation.
-3. Build and pilot the two-mode browser interface defined in `docs/interface_spec.md`:
+1. Run the pre-specified 20-case explanation faithfulness/stability audit on validation.
+2. Build and pilot the two-mode browser interface defined in `docs/interface_spec.md`:
    a decision-support demonstration view and a blinded A/B study view. Verify that study mode
    does not reveal the answer before submission.
-4. After all acceptance checks pass, evaluate all frozen models once on the untouched test split.
-5. Generate explanations, faithfulness/stability results, constrained counterfactuals,
+3. After all acceptance checks pass, evaluate all frozen models once on the untouched test split.
+4. Generate explanations, faithfulness/stability results, constrained counterfactuals,
    subgroup diagnostics, and the 10 pre-specified study cases.
-6. Obtain consent and conduct the human study; code responses using two reviewers for
+5. Obtain consent and conduct the human study; code responses using two reviewers for
    the agreed subset.
-7. Complete the model card and provide one clean-clone command that regenerates all
+6. Complete the model card and provide one clean-clone command that regenerates all
    reported tables and figures.
 
 ## 5. Repository map
@@ -145,7 +151,7 @@ obtain it where applicable.
 | Criterion | Planned evidence |
 |---|---|
 | 1. Audience and decision | Student-support officer, post-semester-one outreach decision, asymmetric error costs |
-| 2. Interesting model | TabICL with same-split logistic, tree, and XGBoost baselines |
+| 2. Model and baseline | TabICL with same-split logistic, tree, XGBoost, and main-effects EBM baselines |
 | 3. Faithfulness | Ranked-versus-random deletion curves and area between curves |
 | 4. Stability | 20 cases × 10 runs, top-five overlap, rank correlation, perturbation test |
 | 5. Human evidence | Two-group forward simulation plus time and qualitative responses |

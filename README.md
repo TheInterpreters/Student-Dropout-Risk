@@ -21,7 +21,8 @@ validation audit and interface acceptance check is complete.
 
 The primary project predicts student dropout risk using structured UCI administrative
 data and a tabular foundation model (TFM), compared with conventional baselines
-(logistic regression, depth-3 decision tree, XGBoost). The project evaluates whether the
+(logistic regression, depth-3 decision tree, XGBoost) and a native main-effects
+Explainable Boosting Machine (EBM). The project evaluates whether the
 model's explanations are faithful, stable, actionable, fair, and useful to a university
 student-support officer.
 
@@ -58,6 +59,7 @@ No external review corpus and no second predictive dataset are part of the curre
 - `scripts/run_core.py` — regenerate validation-only baseline metrics
 - `scripts/run_tfm_feasibility.py` — rerun the TFM feasibility gate
 - `tables/baseline_validation_metrics.csv` and `tables/tfm_validation_metrics.csv` — current evidence
+- `tables/ebm_global_terms_validation.csv` and `tables/ebm_local_contributions_validation.csv` — exact EBM explanation evidence
 - `docs/MODEL_CARD.md` — living model card
 - `config/evaluation_protocol.json` — frozen validation/test evaluation protocol
 - `XDS_Project_Proposal_Submission_Ready.docx` — synchronized proposal submission candidate
