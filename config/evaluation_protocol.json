@@ -1,0 +1,66 @@
+{
+  "protocol_version": "1.0.0",
+  "seed": 42,
+  "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
+  "primary_feature_window": "first_semester",
+  "sensitivity_feature_window": "enrollment",
+  "split": {
+    "train": 0.70,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "model": {
+    "name": "tabicl",
+    "version": "2.2.0",
+    "n_estimators": 4,
+    "device": "cpu",
+    "selection_split": "validation"
+  },
+  "operating_policy": {
+    "type": "cohort_capacity_ranking",
+    "maximum_flag_fraction": 0.20,
+    "tie_break": "stable source-row order",
+    "rationale": "pre-specified limited outreach capacity"
+  },
+  "shap": {
+    "algorithm": "permutation",
+    "output": "dropout_probability",
+    "background_source": "training_only",
+    "background_size": 25,
+    "max_evals": 67,
+    "display_top_k": 5
+  },
+  "faithfulness": {
+    "cases": 20,
+    "random_deletion_repetitions": 50,
+    "primary_statistic": "area between ranked and random cumulative absolute probability-change curves",
+    "masking": "training median/mode with semantic grouping and derived-feature recomputation"
+  },
+  "stability": {
+    "cases": 20,
+    "runs_per_case": 10,
+    "primary_metric": "mean pairwise top-5 overlap",
+    "seed_and_background_variation_reported_separately": true,
+    "prediction_tolerance_absolute_probability": 0.01,
+    "continuous_perturbation_fraction": 0.01
+  },
+  "global_explanations": {
+    "validation_sample_size": 100,
+    "grouped_permutation_repetitions": 5,
+    "ale_features": 3,
+    "ale_bins": 10,
+    "feature_selection_split": "validation"
+  },
+  "fairness": {
+    "minimum_group_size": 30,
+    "metrics": [
+      "flag_rate",
+      "true_positive_rate",
+      "false_positive_rate",
+      "precision",
+      "mean_predicted_risk",
+      "calibration_gap"
+    ]
+  },
+  "test_access": "locked until this protocol and all integration checks pass"
+}

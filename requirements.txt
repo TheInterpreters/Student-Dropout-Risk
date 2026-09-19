@@ -1,0 +1,35 @@
+# Core modeling environment — XDS student-dropout project (criterion 9).
+# Pinned to exact versions verified working on Python 3.12 in .venv-core.
+#
+# Reproduce (Windows, from repo root):
+#   C:/Users/ASUS/AppData/Local/Programs/Python/Python312/python.exe -m venv .venv-core
+#   .venv-core\Scripts\Activate.ps1
+#   pip install -r requirements.txt
+#   python -m ipykernel install --user --name venv-core --display-name "Python (.venv-core)"
+#
+# Verified: eda_uci_data/eda_dropout.ipynb executes 22/22 cells, 0 errors, in this env.
+
+# --- data / core ---
+pandas==3.0.5
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+
+# --- plotting / EDA ---
+matplotlib==3.11.2
+seaborn==0.13.2
+
+# --- modeling: selected tabular foundation model + baselines ---
+tabicl==2.2.0        # selected TFM after the validation-only feasibility gate
+xgboost==3.4.1       # selected conventional benchmark (baseline)
+torch==2.14.0        # TabICL dependency
+
+# --- explanations ---
+shap==0.52.0
+
+# --- notebooks / reproducibility ---
+jupyter==1.1.1
+ipykernel==7.3.0
+python-docx==1.2.0
+

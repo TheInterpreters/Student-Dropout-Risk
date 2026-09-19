@@ -1,18 +1,48 @@
 # Raw datasets should stay out of Git by default.
 data/**
 
+# ...but NEVER ignore provenance/licence docs: a cloned repo must keep them.
+!data/text/README.md
+!**/README.md
+
 # Keep local proposal documents out of Git.
 *.docx
 *.pdf
+!XDS_Project_Proposal_Submission_Ready.docx
 
 # Keep the data folder structure available if needed.
 !data/
 !data/**/
 
+# Superseded exploratory text branch (retained locally, outside approved scope)
+data/text/
+text_analysis/
+requirements-text.txt
+docs/archive/
+docs/text_analysis_plan.md
+scripts/compute_embeddings.py
+scripts/regen_tables_verbatim_free.py
+scripts/run_text_prototype.py
+scripts/update_proposal_docx.py
+tables/alignment_prototype.csv
+tables/themes_prototype.csv
+tests/test_text_pipeline.py
+
+# Local source-document extracts and sample artwork
+artifacts/*_extract.txt
+artifacts/ml_arch-05.png
+
 # OS and editor artifacts
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Virtual environments (never commit these)
+.venv/
+.venv-*/
+.venv-core/
+.venv-text/
+venv/
 
 # Python caches and notebooks
 __pycache__/
