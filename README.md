@@ -19,6 +19,8 @@ validation audit and interface acceptance check is complete.
 
 ## Project Scope
 
+In real-world educational settings, universities face challenges in identifying students who may be at risk of dropping out before it is too late to provide appropriate support. Students may discontinue their studies due to various factors, including academic difficulties, financial constraints, personal circumstances, and insufficient academic engagement. Although universities collect substantial amounts of student information, such as academic performance, enrolment records, and demographic characteristics, identifying potential dropout risks often requires considerable time and effort from academic advisors and student-support officers. As a result, students who need assistance may not always be identified early enough to receive effective intervention.
+
 The primary project predicts student dropout risk using structured UCI administrative
 data and a tabular foundation model (TFM), compared with conventional baselines
 (logistic regression, depth-3 decision tree, XGBoost) and a native main-effects
