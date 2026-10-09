@@ -36,9 +36,10 @@ university student-support officer.
 - Explanation method: model-agnostic SHAP on dropout probability.
 - Evidence: deletion faithfulness, repeated-run and perturbation stability, constrained
   counterfactuals, subgroup/proxy diagnostics, and a two-group forward-simulation study.
-- Unstructured data: only the consented, anonymised written responses collected during
-  the human study. Participants will be voluntarily recruited from the AIT community;
-  they will assess pseudonymised UCI cases, and no AIT student records will be collected.
+- Unstructured data: only the consented, pseudonymised written responses collected during
+  the human study, linked by pseudonymous participant and case IDs. Participants will be
+  voluntarily recruited from the AIT community to assess UCI cases; no AIT student records
+  will be collected.
 
 There is **no external university-review corpus and no second predictive dataset** in
 the current scope. The old `final.csv`/BERTopic branch is archived and must not supply

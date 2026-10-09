@@ -107,12 +107,12 @@ for prefix in ("1)", "2)", "3)", "4)", "5 )"):
 
 replace_text(
     find_one(document, "We propose to predict first-year undergraduate dropout risk"),
-    "Early identification of dropout risk can enable timely academic or financial support, but an unreliable explanation can misdirect scarce advising resources or produce unjustified conclusions about a student. This project will examine first-year undergraduate dropout risk using structured institutional data and TabICL, a peer-reviewed tabular foundation model (TFM) for in-context learning (Qu et al., 2025). TFMs achieve competitive results on small tabular datasets (Hollmann et al., 2025), but explanation quality is multidimensional and must be evaluated quantitatively and with users, not through anecdotal plots alone (Nauta et al., 2023). The principal contribution will therefore be evidence about the reliability and practical value of local explanations. Three questions will guide the study: RQ1: does TabICL add predictive value over simpler baselines; RQ2: are its local explanations faithful and stable; RQ3: do they help users anticipate model outputs and identify feasible support actions?",
+    "Early identification of dropout risk can enable timely academic or financial support, but an unreliable explanation can misdirect scarce advising resources or produce unjustified conclusions about a student. This project will examine first-year undergraduate dropout risk using structured data from the UCI Predict Students' Dropout and Academic Success dataset and TabICL, a peer-reviewed tabular foundation model (TFM) for in-context learning (Qu et al., 2025). TFMs achieve competitive results on small tabular datasets (Hollmann et al., 2025), but explanation quality is multidimensional and must be evaluated quantitatively and with users, not through anecdotal plots alone (Nauta et al., 2023). The principal contribution will therefore be evidence about the reliability and practical value of local explanations. Three questions will guide the study: RQ1: does TabICL add predictive value over simpler baselines; RQ2: are its local explanations faithful and stable; RQ3: do they help users anticipate model outputs and identify feasible support actions?",
 )
 
 replace_text(
     find_one(document, "The explanation is designed for a university academic advisor"),
-    "The explanation will be designed for a university student-support officer reviewing currently enrolled first-year students immediately after first-semester results are finalised and before second-semester support decisions. For a student flagged as high risk, the officer will decide whether to prioritise that student for an outreach meeting and referral to appropriate academic or financial support. Missing a genuinely at-risk student may prevent timely contact, whereas excessive flagging consumes limited support capacity and can erode trust. The explanation must therefore clarify the model's output without presenting associations as causal diagnoses or recommendations.",
+    "The intended decision context is a university student-support officer considering currently enrolled first-year students immediately after first-semester results are finalised and before second-semester support decisions; this project will simulate that context using historical, pseudonymised UCI cases. For a student flagged as high risk, the officer would decide whether to prioritise that student for an outreach meeting and referral to appropriate academic or financial support. Missing a genuinely at-risk student may prevent timely contact, whereas excessive flagging consumes limited support capacity and can erode trust. The explanation must therefore clarify the model's output without presenting associations as causal diagnoses or recommendations.",
 )
 
 scope_paragraph = find_one(document, "The core project uses the UCI tabular dataset")
@@ -128,7 +128,7 @@ if paragraph_shading is not None:
 
 replace_text(
     find_one(document, "Supplementary text data."),
-    "Prospective qualitative data. A voluntary convenience sample from the Asian Institute of Technology (AIT) community will provide brief written rationales, suggested support actions and comments on missing information while evaluating pseudonymised UCI cases. These consented, anonymised responses will form the project's only unstructured dataset, will remain linked only to study case IDs, and will be analysed qualitatively for comprehension, actionability and information gaps. No AIT student records will be collected, and responses will not enter the dropout model or be presented as explanations of real outcomes.",
+    "Prospective qualitative data. A voluntary convenience sample from the Asian Institute of Technology (AIT) community will provide brief written rationales, suggested support actions and comments on missing information while evaluating pseudonymised UCI cases. These consented, pseudonymised responses will form the project's only unstructured dataset, will be linked to pseudonymous participant and case IDs, and will be analysed qualitatively for comprehension, actionability and information gaps. No AIT student records will be collected, and responses will not enter the dropout model or be presented as explanations of real outcomes.",
 )
 
 replace_text(
@@ -173,7 +173,7 @@ replace_text(
 
 replace_text(
     find_one(document, "For one representative held-out student"),
-    "The end-to-end workflow will produce a frozen comparison of TabICL and its baselines, quantitative explanation evidence, constrained counterfactuals, subgroup diagnostics, human-evaluation findings, a completed model card and reproducible report artefacts. A lightweight browser-based research interface will provide two controlled modes: a decision-support demonstration showing the frozen prediction, local explanation, reliability warnings and feasible support options, and a blinded study view that will suppress the answer until the participant responds. Both modes will load the same versioned preprocessing and model artefacts used in evaluation as a research demonstration, not a production AIT service.",
+    "The end-to-end workflow will deliver a frozen comparison of TabICL and baselines, explanation and recourse evidence, subgroup diagnostics, human-study findings, a model card and reproducible reports. A lightweight browser-based research interface will provide decision support with frozen predictions, local explanations, reliability warnings and feasible support options, plus a blinded-study mode. The blinded study will withhold model outputs and feedback until all 10 scored responses are submitted. The interface will load the evaluation's versioned preprocessing and model artefacts, run locally or in a controlled course environment, accept only pre-approved, pseudonymised UCI test cases, reject missing, extra, invalid or out-of-range fields rather than silently changing them, and display model, data-split and interface versions in an audit panel for traceability. It is a research demonstration, not a production AIT service.",
 )
 
 replace_text(
@@ -193,7 +193,7 @@ replace_text(
 
 # Replace the prose-only walkthrough with a numbered, editable Word workflow. The snake
 # layout preserves chronological order while fitting nine substantive stages on one page.
-workflow_paragraph = find_one(document, "The end-to-end workflow will produce")
+workflow_paragraph = find_one(document, "The end-to-end workflow will deliver")
 workflow_table = document.add_table(rows=5, cols=5)
 workflow_table.alignment = WD_TABLE_ALIGNMENT.CENTER
 workflow_table.autofit = False
@@ -267,7 +267,7 @@ workflow_table._tbl.addnext(caption._p)
 
 replace_text(
     find_one(document, "The UCI dataset is public"),
-    "The UCI dataset is publicly available under CC BY 4.0 with no direct identifiers; its citation and licence will be preserved, the raw file will remain unchanged, and all transformations will be documented. AIT human-study participation will be voluntary, informed-consent based, and penalty-free to decline or withdraw. No names, AIT identifiers or administrative records will be collected; raw free text will stay outside version control, accidental identifiers will be removed, and only aggregate or paraphrased findings will be reported. Before recruitment, the team will confirm with the course instructor whether institutional approval is required, obtaining it where applicable.",
+    "The UCI dataset is publicly available under CC BY 4.0 with no direct identifiers; its citation and licence will be preserved, the raw file will remain unchanged, and all transformations will be documented. AIT human-study participation will be voluntary, informed-consent based, and penalty-free to decline or withdraw. No names, AIT identifiers or administrative records will be collected; raw free text will stay outside version control, accidental identifiers will be removed, and only aggregate or paraphrased findings will be reported. Before recruitment, the team will confirm with the course instructor whether institutional approval is required, obtaining it where applicable. The interface will not be publicly deployed.",
 )
 
 replace_text(
@@ -323,7 +323,7 @@ references_heading = find_one(document, "References")
 replace_text(references_heading, "Appendix A. References")
 references_heading.paragraph_format.page_break_before = True
 availability_paragraph = document.add_paragraph(
-    "Code and data availability. The versioned project repository will be released at https://github.com/TheInterpreters/Proposal_EDA with code, tests, non-sensitive tables and reproduction commands; raw human free text will remain excluded."
+    "Code and data availability. The versioned project repository is available at https://github.com/TheInterpreters/Proposal_EDA with code, tests, non-sensitive tables and reproduction commands; raw human free text will remain excluded."
 )
 for run in availability_paragraph.runs:
     run.font.size = Pt(10)
@@ -448,6 +448,14 @@ assert "No AIT student records will be collected" in all_text
 assert "AIT study will test comprehensibility" in all_text
 assert "Three questions" in all_text
 assert "Qualitative Analysis of Human-Study Responses" in all_text
+assert "pre-approved, pseudonymised UCI test cases" in all_text
+assert "missing, extra, invalid or out-of-range fields" in all_text
+assert "The interface will not be publicly deployed" in all_text
+assert "structured data from the UCI Predict Students' Dropout and Academic Success dataset" in all_text
+assert "simulate that context using historical, pseudonymised UCI cases" in all_text
+assert "pseudonymous participant and case IDs" in all_text
+assert "until all 10 scored responses are submitted" in all_text
+assert "The versioned project repository is available at" in all_text
 assert "No external review corpus" in all_text
 assert "shared features divided by five" in all_text
 assert "fresh clone" in all_text

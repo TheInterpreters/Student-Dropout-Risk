@@ -1,8 +1,9 @@
 # Human-Study Instrument — XDS Student Dropout
 
 **This is the project's primary unstructured-data component.** The free-text written
-responses collected here are linked to UCI case IDs and to the model's explanation —
-which is what makes them usable as evidence about comprehension and actionability.
+responses collected here are recorded under pseudonymous participant IDs and linked to
+UCI case IDs and the model explanations participants see — supporting analysis of
+comprehension and actionability.
 
 Participants will be recruited voluntarily from the Asian Institute of Technology (AIT)
 community. They will assess pseudonymised cases from the UCI dataset; no AIT student
@@ -80,7 +81,7 @@ researcher, not shown to them.
 | Field | Type | Purpose |
 |---|---|---|
 | `case_id` | string | stable pseudonymous ID (e.g. C01); a private lookup links it to the UCI test row |
-| `participant_id` | string | anonymized (P1…P10) |
+| `participant_id` | string | pseudonymous participant code (P1…P10) |
 | `group` | A / B | A = control (profile only); B = explanation (profile + explanation) |
 | `case_order` | integer | position in that participant's randomized sequence |
 | `predicted_output` | at-risk / not-at-risk | the participant's guess at the MODEL's output |
@@ -120,7 +121,7 @@ pipeline needed.
 
 ## 4. Rules
 
-- No participant names or identifiers — `participant_id` only.
+- No direct identifiers (names or institutional IDs); use only pseudonymous `participant_id` values.
 - Store responses in `data/human_study/responses.csv` (git-ignored if it contains any
   free text that could identify someone; commit only the coded/theme summary).
 - Report both group accuracies, sample size, and that no significance is claimed.

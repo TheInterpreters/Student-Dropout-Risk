@@ -2,10 +2,10 @@
 
 ## Purpose and scope
 
-The project will deliver a lightweight browser-based research interface, preferably in
-Streamlit. It will demonstrate the frozen dropout model and administer the forward-
-simulation study. It is not a production AIT service and will not accept real AIT
-student records.
+The project will deliver a lightweight browser-based research interface. It will run
+locally or in a controlled course environment, demonstrate the frozen dropout model,
+and administer the forward-simulation study. It is not a production AIT service and
+will not accept real AIT student records.
 
 ## Shared technical pipeline
 
@@ -45,8 +45,8 @@ The study mode must:
 - assign a pseudonymous participant ID and randomized A/B group using a recorded seed;
 - present the same label-free panel of five flagged and five unflagged UCI cases in randomized order;
 - show the profile only to Group A;
-- add feature contributions for Group B while hiding the output, probability, capacity boundary,
-  base value and predicted class until the response is submitted;
+- add feature contributions for Group B while keeping the output, probability, capacity boundary,
+  base value and predicted class hidden throughout the scored task;
 - show one unscored practice case with standardised instructions and a contribution-direction comprehension check;
 - record predicted output, confidence, integer completion time and the three free-text
   responses defined in `human_study_instrument.md`;
@@ -57,8 +57,7 @@ The study mode must:
 
 - No names, AIT student IDs or AIT administrative records will be collected.
 - Raw free text will remain outside version control.
-- The interface will run locally or in a controlled course environment; no public
-  deployment will occur without a separate privacy and security review.
+- The interface will not be publicly deployed.
 - Only aggregate study results and paraphrased comments will enter the report.
 - Instructor guidance and any applicable institutional approval must be confirmed before
   participant recruitment.

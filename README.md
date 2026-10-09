@@ -36,10 +36,11 @@ prediction point is immediately after first-semester results, so second-semester
 curricular variables are excluded as temporal leakage.
 
 Short, consented written responses collected during the human study are the project's
-only unstructured data. They are linked to study case IDs and support a small qualitative
-analysis of comprehension, actionability, and missing information. Participants will be
-voluntarily recruited from the AIT community to assess pseudonymised UCI cases; no AIT
-student records will be collected, and the study will not validate deployment at AIT.
+only unstructured data. They are linked to pseudonymous participant and study case IDs
+and support a small qualitative analysis of comprehension, actionability, and missing
+information. Participants will be voluntarily recruited from the AIT community to assess
+pseudonymised UCI cases; no AIT student records will be collected, and the study will not
+validate deployment at AIT.
 No external review corpus and no second predictive dataset are part of the current project.
 
 ## Datasets
@@ -47,7 +48,7 @@ No external review corpus and no second predictive dataset are part of the curre
 - **Primary (modeling):** UCI "Predict Students' Dropout and Academic Success"
   https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success
   — 4,424 students × 36 features, individual-level, CC-BY 4.0.
-- **Prospective qualitative data:** consented, anonymised responses from the human
+- **Prospective qualitative data:** consented, pseudonymised responses from the human
   evaluation. These responses are not model inputs and are reported only in aggregate
   or through paraphrased examples.
 
