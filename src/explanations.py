@@ -364,7 +364,7 @@ def accumulated_local_effect(
 
 
 def top_k_overlap(rankings: Sequence[Sequence[str]], k: int = 5) -> float:
-    """Return the rubric's mean pairwise top-k agreement: |intersection| / k."""
+    """Return the protocol's mean pairwise top-k agreement: |intersection| / k."""
     if k < 1:
         raise ValueError("k must be positive")
     if len(rankings) < 2:

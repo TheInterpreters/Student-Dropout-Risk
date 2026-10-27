@@ -1,8 +1,9 @@
 {
-  "protocol_version": "1.2.0",
+  "protocol_version": "1.3.0",
   "amendments": [
     "1.1: Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
-    "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules."
+    "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules.",
+    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), added an optional exploratory plain-language narrative condition for the explanation group (at least 12 participants), and specified precomputed-output interface rules; no model, split, seed, target, feature window, operating policy, or test data changed."
   ],
   "seed": 42,
   "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
@@ -55,6 +56,7 @@
   },
   "faithfulness": {
     "cases": 20,
+    "case_selection_split": "validation",
     "case_selection": "four deterministic positions from each of five predicted-risk strata; predictions only, labels unused",
     "random_deletion_repetitions": 50,
     "primary_statistic": "area between ranked and random cumulative absolute probability-change curves",
@@ -62,6 +64,7 @@
   },
   "stability": {
     "cases": 20,
+    "case_selection_split": "validation",
     "runs_per_case": 10,
     "primary_metric": "mean pairwise top-5 overlap",
     "seed_and_background_variation_reported_separately": true,
@@ -125,7 +128,24 @@
     "scored_case_selection": "five flagged and five unflagged cases selected deterministically across each output group's risk range; model predictions only, outcome labels unused",
     "standardized_instructions": true,
     "answer_feedback": "none until all 10 scored cases are submitted",
-    "primary_unit": "participant accuracy across 10 cases"
+    "primary_unit": "participant accuracy across 10 cases",
+    "optional_narrative_condition": {
+      "enabled_if_participants_at_least": 12,
+      "design": "explanation group split into contribution chart only and chart plus plain-language narrative rendered by a verified local template from the same contributions; no free-form generated text",
+      "status": "exploratory, reported separately from model results"
+    },
+    "think_aloud_notes": false
+  },
+  "interface": {
+    "outputs": "versioned precomputed Python outputs; no live inference",
+    "pre_test_parity": "training/validation fixtures",
+    "study_cases_loaded": "after the single final evaluation, followed by an export-parity check without retuning",
+    "forbidden_in_frontend_or_version_control": [
+      "model weights",
+      "raw participant responses",
+      "credentials"
+    ],
+    "invalid_fields": "reject missing, extra, invalid or out-of-range fields; never silently change them"
   },
   "test_access": "locked until this protocol and all integration checks pass"
 }

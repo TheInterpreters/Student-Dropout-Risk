@@ -12,8 +12,8 @@ EDA, validation-only model selection, and the explanation integration gate are c
 The frozen development configuration uses TabICL 2.2.0 with four estimators, a top-20%
 cohort-capacity outreach policy, grouped perturbations, and model-agnostic permutation
 SHAP with 25 training-background rows and 67 evaluations. The real TabICL/SHAP check and
-synthetic white-box check pass. Protocol 1.2 fixes signed semantic-group aggregation,
-label-free risk-stratified cases, capacity-consistent recourse, suppression/proxy rules,
+synthetic white-box check pass. Protocol 1.3 fixes signed semantic-group aggregation,
+label-free risk-stratified validation audit cases, capacity-consistent recourse, suppression/proxy rules,
 and paired final-test uncertainty. The untouched test split remains unopened until every
 validation audit and interface acceptance check is complete.
 
@@ -54,23 +54,22 @@ No external review corpus and no second predictive dataset are part of the curre
 
 ## Repository guide
 
-- `docs/HANDOFF.md` — current status, decisions, and next actions (start here)
+- `docs/HANDOFF.md` — the single internal document (start here): status, methodology,
+  task list, human-study protocol, interface spec, model card, criteria alignment, audit
 - `eda_uci_data/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env)
 - `notebooks/uci_tfm_baseline.ipynb` — executable modeling/split overview
 - `scripts/run_core.py` — regenerate validation-only baseline metrics
 - `scripts/run_tfm_feasibility.py` — rerun the TFM feasibility gate
 - `tables/baseline_validation_metrics.csv` and `tables/tfm_validation_metrics.csv` — current evidence
 - `tables/ebm_global_terms_validation.csv` and `tables/ebm_local_contributions_validation.csv` — exact EBM explanation evidence
-- `docs/MODEL_CARD.md` — living model card
 - `config/evaluation_protocol.json` — frozen validation/test evaluation protocol
 - `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx` — editable proposal submission candidate
 - `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.pdf` — rendered proposal submission candidate
 - `requirements.txt` — pinned core modeling environment
-- `docs/human_study_instrument.md` — the human-evidence (criterion 5) study design
-- `docs/interface_spec.md` — decision-support demo and blinded-study interface requirements
-- `docs/course_concept_alignment.md` — mapping from lecture concepts to project evidence
-- `docs/proposal_source.docx` and `scripts/finalize_proposal_docx.py` — canonical source
-  and reproducible builder for the submission DOCX
+- `docs/human_study_response_template.csv` — ratings/response schema for the human study
+- `docs/proposal_source.docx` and `scripts/finalize_proposal_docx.py` — superseded early
+  source and builder; the submission DOCX is now edited directly, so do not re-run the
+  builder (it would overwrite those edits)
 
 
 ## Reproduce the current checks
