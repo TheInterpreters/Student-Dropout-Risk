@@ -149,8 +149,8 @@ Do not open or report final-test performance until the protocol is frozen and ac
 - [ ] **Generate study artifacts**: explanations, faithfulness/stability results, constrained
   counterfactuals, subgroup diagnostics, the 10 pre-specified study cases.
 - [ ] **Human study** (§6): finalise class-level ethics basics (consent text, withdrawal deadline,
-  course retention deadline, restricted raw-response access); recruit 8–10 (minimum 4); consent;
-  run 1 practice + 10 scored cases; code responses (two reviewers on the agreed subset);
+  course retention deadline, restricted raw-response access); recruit 50 (10 per team member; minimum 40, at least 18 per group); consent;
+  run 1 practice + 10 scored cases; code responses (shared by all members, 20% double-coded);
   analyse accuracy and session time descriptively.
 - [ ] **Model card and reproducibility**: complete §8 with final results; provide one clean-clone
   command regenerating all tables and figures.
@@ -168,9 +168,11 @@ intended-user proxies, so the study evaluates comprehensibility, not model valid
 effectiveness at AIT.
 
 **Design**
-- 8–10 participants (minimum 4), allocated as evenly as practicable by a recorded seed before
-  they see any case; participants and recruiters do not choose the group (each participant gets a
-  pre-assigned link to the Group A or Group B form). Report shortfalls, unequal groups,
+- 50 participants (10 recruited by each team member; minimum 40 with at least 18 per group),
+  allocated 25/25 by a recorded seed before they see any case; participants and recruiters do not
+  choose the group (each participant gets a pre-assigned link to the Group A or Group B form). If a
+  participant does not complete, the next recruit inherits that slot's group (4 spare slots, two per
+  group). Report shortfalls, unequal groups,
   sample size and role category. Collect no names or IDs. Claim no statistical significance.
 - **Group A (control):** profile only. **Group B (explanation):** profile plus feature-contribution
   display that suppresses the base value, final score, probability, capacity boundary and
@@ -183,7 +185,7 @@ effectiveness at AIT.
 - No correctness feedback until all 10 scored responses are locked; debrief afterwards.
 - Primary measure: participant-level accuracy across 10 cases; group means descriptive. Also
   confidence (1–5), total session time (Google Forms cannot record per-case time), and written
-  responses. Never treat ~100 case responses as independent people.
+  responses. Never treat ~500 case responses as independent people.
 - Case selection: after the one-time test run, pick five flagged and five unflagged cases
   deterministically across each group's risk range, outcome labels unused; never choose cases
   because the explanation looks persuasive.
@@ -237,8 +239,9 @@ not proceed.
 plus one paraphrased example per code, with an `other/unclear` code). Rationale themes (do
 Group B cite the highlighted features?), intervention themes (compare with the counterfactuals;
 code concreteness, feasibility before semester two, student- vs institution-controlled action,
-unsupported causal assumptions), missing-information themes. Two members independently code at
-least 20% of responses, blinded to group where practical; report raw agreement, resolve
+unsupported causal assumptions), missing-information themes. Coding is shared: each member codes
+about 10 participants' responses (not their own recruits), blinded to group where practical, and a
+random 20% is coded again by a second member; report raw agreement, resolve
 disagreements, no formal reliability statistic unless the sample supports it. Report theme counts
 by group descriptively.
 
