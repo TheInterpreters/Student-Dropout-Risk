@@ -7,7 +7,11 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 
 root = Path(__file__).resolve().parents[1]
-path = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "docs" / "proposal_source.docx"
+path = (
+    Path(sys.argv[1])
+    if len(sys.argv) > 1
+    else root / "The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx"
+)
 if not path.is_absolute():
     path = root / path
 document = Document(path)

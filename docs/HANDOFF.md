@@ -2,16 +2,19 @@
 
 Updated: 2026-10-27. This file replaces the former `MODEL_CARD.md`, `human_study_instrument.md`,
 `interface_spec.md`, `course_concept_alignment.md`, `proposal_final_audit.md` and `tasks.md`
-(all still recoverable from git history). `README.md` is the public overview.
+(all still recoverable from git history). `README.md` is the public overview;
+`docs/TASK_SPLIT.md` assigns the remaining work to five workstreams.
 
 **Contents:** 1 Status · 2 Scope · 3 Completed work and results · 4 Methodology ·
-5 Next actions (task list) · 6 Human-study protocol · 7 Interface specification ·
+5 Next actions (task list) · 6 Human-study protocol · 7 Study instrument (Google Forms) ·
 8 Model card · 9 Course-criteria alignment · 10 Proposal audit · 11 Repository, commands, hygiene
 
 ---
 
 ## 1. Status — what to show the professor and team
 
+- Target finish: **Thu 19 Nov 2026** (hard stop Fri 20 Nov, 3rd week of November); dated plan
+  and owners in `docs/TASK_SPLIT.md`.
 - Final title: **Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and
   Interpretable Models**.
 - Submission files: `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx`
@@ -20,16 +23,15 @@ Updated: 2026-10-27. This file replaces the former `MODEL_CARD.md`, `human_study
   the PDF after any further DOCX change and re-check the page count.
 - The repository contains only the UCI predictive dataset. The unrelated OfS background-data
   branch has been removed from version control.
-- 26 tracked, in-scope tests exist. On 2026-10-27, 25 passed in a partial environment; the
-  26th (`test_ebm_uses_raw_named_features_and_main_effects_only`) errored only because the
-  `interpret` package was not installed there. Run all 26 in the pinned `.venv-core` environment
-  before submission. Three ignored tests belong to the local archived text branch and are not
-  part of the repository.
+- 26 tracked, in-scope tests exist and **all 26 passed on 2026-10-27** (Python 3.13 with
+  `interpret` 0.7.8 installed; the EBM test needs that package). Each member should still confirm
+  26/26 in their own pinned `.venv-core` (task W3.1). Three ignored tests belong to the local
+  archived text branch and are not part of the repository.
 - All reported model numbers are validation-only. The final test is untouched and no
   human-study result is claimed before data collection.
 
 For an honest status update: methodology, validation evidence and the frozen protocol are
-complete; the explanation audit, interface, one-time final-test run and human study are planned.
+complete; the explanation audit, study form, one-time final-test run and human study are planned.
 
 ## 2. Scope decision
 
@@ -65,7 +67,7 @@ collected.
 - Protocol 1.3 frozen before test access: 1.1 added EBM; 1.2 froze semantic-group SHAP
   aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse,
   subgroup suppression, proxy checks and paired uncertainty; 1.3 made the validation-split audit
-  cases, optional narrative condition and precomputed-output interface rules explicit. None
+  cases and the Google Forms study-instrument rules (replacing the planned custom interface) explicit. None
   changed the split, seed, target, feature windows, models or test data.
 - EBM exact additive reconstruction on all 544 validation cases: maximum error 3.3e-16.
 - TabICL/permutation-SHAP integration passed on two validation cases (artifact maximum local-
@@ -137,16 +139,19 @@ Do not open or report final-test performance until the protocol is frozen and ac
 
 - [ ] **Faithfulness and stability audit** on the validation split (deletion curves, 10 reruns per
   case, top-5 overlap, perturbation test).
-- [ ] **Interface build and pilot** (§7), using validation fixtures; the 10 study cases are loaded
-  only after the final test run. Verify study mode reveals no answer or feedback until all 10
-  scored cases are complete.
-- [ ] **Final test evaluation**: run all frozen models exactly once on the untouched test split.
+- [ ] **Study form build and pilot** (§7), using validation fixtures; the 10 study cases are loaded
+  only after the final test run. Verify the forms reveal no answer or feedback at any point.
+- [ ] **Freeze and tag** (`git tag protocol-1.3-frozen`) once the audit and study-form acceptance
+  checks pass. Subgroup/proxy diagnostics are also reported on the test split (descriptive, same
+  code, inside the final-test script).
+- [ ] **Final test evaluation**: run all frozen models exactly once on the untouched test split
+  (the final-test script must refuse a second run). Who does what: `docs/TASK_SPLIT.md`.
 - [ ] **Generate study artifacts**: explanations, faithfulness/stability results, constrained
   counterfactuals, subgroup diagnostics, the 10 pre-specified study cases.
 - [ ] **Human study** (§6): finalise class-level ethics basics (consent text, withdrawal deadline,
   course retention deadline, restricted raw-response access); recruit 8–10 (minimum 4); consent;
   run 1 practice + 10 scored cases; code responses (two reviewers on the agreed subset);
-  analyse accuracy/time descriptively. Optional: narrative condition if at least 12 recruited.
+  analyse accuracy and session time descriptively.
 - [ ] **Model card and reproducibility**: complete §8 with final results; provide one clean-clone
   command regenerating all tables and figures.
 - [ ] Optional sensitivity checks (Enrolled handling; admission-time window).
@@ -164,38 +169,44 @@ effectiveness at AIT.
 
 **Design**
 - 8–10 participants (minimum 4), allocated as evenly as practicable by a recorded seed before
-  they see any case; participants do not choose their group. Report shortfalls, unequal groups,
+  they see any case; participants and recruiters do not choose the group (each participant gets a
+  pre-assigned link to the Group A or Group B form). Report shortfalls, unequal groups,
   sample size and role category. Collect no names or IDs. Claim no statistical significance.
 - **Group A (control):** profile only. **Group B (explanation):** profile plus feature-contribution
   display that suppresses the base value, final score, probability, capacity boundary and
   predicted class. Neither group ever sees the model output before answering.
 - Task per case: "What do you think the model predicts — will it flag this student as at-risk
-  (yes/no)?" Same 10 cases (five flagged, five unflagged, randomised order). One unscored
+  (yes/no)?" Same 10 cases (five flagged, five unflagged), in one of three seeded pre-shuffled orders per
+  form. One unscored
   practice case with standardised instructions; Group B also gets a contribution-direction
   legend and comprehension check.
 - No correctness feedback until all 10 scored responses are locked; debrief afterwards.
 - Primary measure: participant-level accuracy across 10 cases; group means descriptive. Also
-  confidence (1–5), integer seconds per case, and written responses. Never treat ~100 case
-  responses as independent people.
+  confidence (1–5), total session time (Google Forms cannot record per-case time), and written
+  responses. Never treat ~100 case responses as independent people.
 - Case selection: after the one-time test run, pick five flagged and five unflagged cases
   deterministically across each group's risk range, outcome labels unused; never choose cases
   because the explanation looks persuasive.
 - Exclusions: only withdrawn consent, incomplete task, or accidental exposure to the hidden
   output; log every exclusion with its reason.
-- **Optional exploratory narrative condition** (only if at least 12 participants): split Group B
-  into B1 (chart only) and B2 (chart plus plain-language narrative rendered by a verified local
-  template from the same contributions; no free-form generated text, no output/probability/class).
-  Seeded assignment; descriptive and separate from model results; with fewer than 12, omit B2.
+- The optional plain-language narrative condition was considered and **dropped** (time budget);
+  Group B sees the contribution display only.
 
-**Consent text**
+**Consent text (template; task W4.1 fills every [placeholder] before use)**
 
 > You are invited to take part in a short class research activity about understanding an AI
-> model. Participation is voluntary. You may stop at any time without penalty. Do not enter your
-> name or other identifying information in free-text answers. Your responses will be stored under
-> a random participant ID and reported only in aggregate or as paraphrased comments. You may
-> withdraw until your responses are de-identified and combined into aggregate results; raw
-> responses will be deleted at the course retention deadline. By selecting "I agree," you confirm
-> that you understand this information and consent to participate.
+> model's predictions. It takes about [30 minutes, confirm in the pilot]. You will look at 11 student
+> profiles (one practice and ten scored), guess whether the model flags each student as at-risk, rate
+> your confidence, and write three short answers per profile. We record your answers, confidence and
+> total session time under a random participant code. We do not ask for your name or any identifying
+> information, so please do not enter any in your answers. Participation is voluntary, you must be 18
+> or older, and you may stop at any time without penalty. Your responses are kept in access-restricted
+> storage available only to the research team and reported only in aggregate or as paraphrased
+> comments. You may withdraw until [withdrawal deadline] by giving your participant code to
+> [contact person and how]; after that your responses are de-identified and combined into aggregate
+> results. Raw responses will be deleted by [confirmed retention date]. The risks are no greater than
+> everyday computer use and there is no direct benefit. By ticking "I agree" and confirming that you
+> are 18 or older, you confirm that you understand this information and consent to take part.
 
 Participation or refusal must not affect grades, standing, employment or services. Basic research
 ethics applies (class project; no formal ethics-board process); collect nothing beyond what the
@@ -209,12 +220,12 @@ not proceed.
 |---|---|---|
 | `case_id` | string | pseudonymous ID (C01…); private lookup to the UCI source row |
 | `participant_id` | string | pseudonymous code (P1…P10) |
-| `group` | A / B (B1/B2) | A control; B explanation |
-| `case_order` | integer | position in that participant's randomised sequence |
+| `group` | A / B | A control; B explanation |
+| `case_order` | integer | position in that participant's sequence (set by the form variant) |
 | `predicted_output` | at-risk / not-at-risk | guess at the model's output |
 | `confidence` | 1–5 | self-reported confidence |
 | `correct` | bool | scored afterwards by the researcher; hidden from participants |
-| `time_seconds` | number | time on case |
+| `time_seconds` | number | total session time in seconds from the session log (same value on each of a participant's rows); per-case time is not recorded |
 | `rationale_freetext` | text | "Why do you think the model predicts that?" |
 | `intervention_freetext` | text | "What would you tell this student to do?" |
 | `missing_info_freetext` | text | "What extra info would help you decide?" |
@@ -231,63 +242,63 @@ least 20% of responses, blinded to group where practical; report raw agreement, 
 disagreements, no formal reliability statistic unless the sample supports it. Report theme counts
 by group descriptively.
 
-**Rules.** No direct identifiers. Store responses in `data/human_study/responses.csv`
-(git-ignored via `data/**`); commit only coded/theme summaries. Record time-on-task; take no
+**Rules.** No direct identifiers. Form responses live in one restricted Google Sheet (no email
+collection, no sign-in); the analysis-ready long CSV `data/human_study/responses.csv` is
+git-ignored via `data/**`; commit only coded/theme summaries. Keep a backup only in the
+restricted (not link-shared) Drive subfolder described in `docs/TASK_SPLIT.md` rule 4, never in the
+open team folder, and delete it everywhere (Forms, Sheet, CSV, Drive trash) at the retention deadline.
+Record the total session time in the session log; take no
 think-aloud notes, interviews or recordings. Report both group accuracies and sample size.
 No subgroup comparisons with fewer than five participants.
 
 **Status.** Done: officer role and decision; development model frozen on validation; response
-schema. Open: 10 study cases (after final test); Group B rendering; per-participant randomisation;
-interface (§7); consent screen, assignment, exclusion log, timer; codebook and two-coder subset;
+schema. Open: 10 study cases (after final test); Group B images; seeded assignment list; Google
+Forms (§7); consent, assignment, session and exclusion log; codebook and two-coder subset;
 one-person pilot (check nobody can see the answer); recruitment; coding. Do not collect responses
 before the validation audits pass, the study cases are selected after the single final
 evaluation, and Group B's view is rendered and piloted.
 
-## 7. Interface specification
+## 7. Study instrument — Google Forms (replaces the planned custom interface)
 
-A lightweight browser research interface runs locally or in a controlled course environment,
-demonstrates the frozen model and administers the study. It is not a production AIT service and
-accepts no real AIT student records. It is not publicly deployed.
+**Decision (27 Oct 2026, D8).** Participants answer Google Forms instead of a custom browser
+interface, to protect the Thu 19 Nov finish. The study design, cases, questions, consent and privacy
+rules are unchanged. The decision-support demonstration (formerly "Mode A") becomes a static example
+card (screenshots from a validation fixture) in the report and slides. It accepts no real AIT student
+records. Deviations are listed in `docs/TASK_SPLIT.md` §8 and must be disclosed in the final report.
 
-**Technical pipeline.** Both modes render versioned, precomputed Python outputs (no live
-inference; model weights stay in Python): feature schema and temporal window; predictions under
-the frozen preprocessing; frozen TabICL configuration and top-20% policy; precomputed explanations
-and feature-group mapping; model-card version and limitation text. Case packs and response
-submissions are validated on load: missing, extra, invalid or out-of-range fields are rejected,
-never silently changed. An audit panel shows model, data-split and interface versions. Before
-final-test access, parity is checked with training/validation fixtures; the 10 study cases are
-loaded only after the single final evaluation, then an export-parity check runs without retuning.
+**How it is built.** Case packs follow one JSON contract (task W2.2). Python renders the explanation
+images: a profile card per case and, for Group B only, a contribution chart (direction and magnitude)
+that shows **no** base value, score, probability, capacity boundary or class. A script (Apps Script or
+Forms API) builds **six variants**: Group A and Group B, each with three seeded case orders. A seeded
+list assigns each participant slot a code and a variant; the participant's link is pre-filled with the
+code. Forms are built on validation fixtures first; the 10 study cases and the practice case are added
+only after the single final evaluation, then a parity check runs without retuning.
 
-**Mode A — decision support** (pre-approved, pseudonymised UCI test cases only): profile and
-prediction time; frozen class and probability labelled "estimated model risk, not a causal or
-guaranteed individual probability" with its calibration summary; local feature contributions;
-faithfulness/stability summaries or a clear weak-evidence warning; immutable/historical factors
-separated from changeable ones; a feasible counterfactual or explicit no-recourse result;
-intended-use, non-causality and non-deployment warnings. It must not phrase a prediction as a
-diagnosis, guarantee or automated decision.
+**Form content.** Required consent and 18+ confirmation; participant code; instructions; one unscored
+practice case (Group B also gets the neutral contribution-direction legend and a comprehension check);
+the 10 scored cases, each with the profile (A) or profile plus chart (B), a yes/no "will the model flag
+this student as at-risk?", confidence 1–5 and the three free-text prompts; a thank-you page. No quiz
+mode, no answers or feedback shown.
 
-**Mode B — blinded forward-simulation study:** consent screen before any case; pseudonymous
-participant ID and seeded random A/B group; the same label-free panel in randomised order;
-profile only for A; contributions for B with output, probability, capacity boundary, base value
-and class hidden throughout; one practice case with a comprehension check; record predicted
-output, confidence, integer seconds and the three free-text fields; B2 narrative only if enabled;
-no feedback until all 10 are submitted; support withdrawal and record only permitted exclusion
-reasons.
+**Settings and sessions.** No email collection, no sign-in, response editing off, summary charts hidden,
+form not publicly listed; responses go to one restricted Sheet. Sessions are in person on a team laptop
+(a remote link is only a disclosed fallback). The runner takes the next unused pre-filled link, never
+chooses the group, and records start and end time and any exclusion in the session log.
 
-**Data handling.** No names, AIT IDs or administrative records. Raw responses and free text stay
-outside version control and frontend bundles; model weights and credentials never enter frontend
-code. Only aggregate results and paraphrased comments enter the report.
+**Data handling.** No names, AIT IDs or administrative records. Raw responses and free text stay out of
+version control; model outputs used for scoring stay private. Only aggregate results and paraphrased
+comments enter the report. A transform script (W2.8) turns the wide Sheet export into the long CSV in
+`docs/human_study_response_template.csv`.
 
-**Acceptance checks.** (1) Displayed probabilities match the pipeline (validation fixtures before
-test; exported study cases after). (2) Group B cannot see anything revealing the output, and no
-group gets feedback before all 10 scored cases. (3) Groups see identical profiles and differ only
-in explanation visibility. (4) Case order, seed, timer and exclusion log are reproducible.
-(5) Invalid fields are rejected and no real-person data are persisted. (6) Displayed model version,
-explanation settings and limitations match the model card (§8).
+**Acceptance checks (W2.6).** (1) All six variants build and displayed values match the exports
+(validation fixtures before test; exported study cases after). (2) Group B sees nothing that reveals the
+output, and no feedback appears anywhere. (3) Groups see identical profiles and differ only in
+explanation. (4) Assignment and case order reproduce from the seed. (5) Privacy settings are correct
+(no emails, no sign-in, summary hidden, Sheet restricted). (6) Form text matches the model card and
+consent text. (7) A dry-run export transforms into the right long CSV.
 
-**Gate.** Implementation starts after the model, capacity policy and explanation protocol are
-frozen, using validation fixtures; study data collection starts after the study cases are loaded
-and piloted.
+**Gate.** Forms are built on validation fixtures before the freeze; real cases only after the single
+final evaluation; a one-person pilot passes before any participant session.
 
 ## 8. Model card — student dropout early-warning model
 
@@ -355,7 +366,7 @@ Associations are not causal diagnoses; a feasible counterfactual may not exist f
 | Actionable recourse | Immutable/historical separation; capacity-consistent changes | `constrained_binary_counterfactuals` |
 | Fairness and bias | Flag rate, TPR, FPR, precision, risk, calibration gap; proxy checks | `src/auditing.py` |
 | Correlation is not causation | SHAP, ALE, counterfactuals described as model behaviour | Proposal §2, §5, §6 |
-| Explanation lifecycle | Validation freeze, one final test, model card, interface safeguards | Protocol JSON; this file |
+| Explanation lifecycle | Validation freeze, one final test, model card, study-form safeguards | Protocol JSON; this file |
 
 LIME, PDP, ICE and risk scores are not added merely to maximise method count: SHAP explains
 individual predictions, grouped permutation importance measures global reliance, ALE examines
@@ -366,9 +377,9 @@ complexity is justified.
 
 After the first audit the submission DOCX was edited directly: audit cases moved to the
 validation split; separate-reporting, non-causal and fairness wording sharpened; interface text
-uses precomputed outputs and validation fixtures; optional narrative condition and class-level
-ethics wording added; think-aloud notes dropped; protocol 1.3 recorded; EBM error stated as
-3.3e-16. Word renders five pages (four body, references on page 5, about 3,250 words including
+uses precomputed outputs and validation fixtures (later replaced by Google Forms, see §7); class-level ethics wording added (the optional
+narrative condition was considered and dropped); think-aloud notes dropped; protocol 1.3 recorded; EBM error stated as
+3.3e-16. Word renders five pages (four body, references on page 5, about 3,190 words including
 references); the PDF was re-exported. A numerical check against the tables, artifacts and UCI
 data confirmed every quoted figure.
 
@@ -396,8 +407,10 @@ protocol) · `src/` (`modeling.py`, `explanations.py`, `auditing.py`) · `script
 audit runners) · `tests/` · `tables/` and `artifacts/` (validation evidence) ·
 `eda_uci_data/eda_dropout.ipynb` and `notebooks/uci_tfm_baseline.ipynb` ·
 `docs/human_study_response_template.csv` · the proposal DOCX and PDF.
-`scripts/finalize_proposal_docx.py` and `docs/proposal_source.docx` are **superseded**: the
-submission DOCX has been edited directly, so running the builder would overwrite those edits.
+The submission DOCX is edited directly (only the appointed report editor; every workstream writes its own section and slides, see `docs/TASK_SPLIT.md` §5). The old
+builder `scripts/finalize_proposal_docx.py` and `docs/proposal_source.docx` were removed on
+2026-10-27 because re-running them would have overwritten the current DOCX; both remain in git
+history. `scripts/inspect_proposal_docx.py` prints the DOCX structure and word count.
 
 **Commands** (repository root, `.venv-core`):
 

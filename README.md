@@ -15,7 +15,7 @@ SHAP with 25 training-background rows and 67 evaluations. The real TabICL/SHAP c
 synthetic white-box check pass. Protocol 1.3 fixes signed semantic-group aggregation,
 label-free risk-stratified validation audit cases, capacity-consistent recourse, suppression/proxy rules,
 and paired final-test uncertainty. The untouched test split remains unopened until every
-validation audit and interface acceptance check is complete.
+validation audit and study-form acceptance check is complete.
 
 ## Project Scope
 
@@ -55,7 +55,8 @@ No external review corpus and no second predictive dataset are part of the curre
 ## Repository guide
 
 - `docs/HANDOFF.md` — the single internal document (start here): status, methodology,
-  task list, human-study protocol, interface spec, model card, criteria alignment, audit
+  task list, human-study protocol, study instrument (Google Forms), model card, criteria alignment, audit
+- `docs/TASK_SPLIT.md` — dated plan to Thu 19 Nov: five workstreams, shared report/slides track, dependencies, fair-share hours, recruitment
 - `eda_uci_data/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env)
 - `notebooks/uci_tfm_baseline.ipynb` — executable modeling/split overview
 - `scripts/run_core.py` — regenerate validation-only baseline metrics
@@ -67,9 +68,8 @@ No external review corpus and no second predictive dataset are part of the curre
 - `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.pdf` — rendered proposal submission candidate
 - `requirements.txt` — pinned core modeling environment
 - `docs/human_study_response_template.csv` — ratings/response schema for the human study
-- `docs/proposal_source.docx` and `scripts/finalize_proposal_docx.py` — superseded early
-  source and builder; the submission DOCX is now edited directly, so do not re-run the
-  builder (it would overwrite those edits)
+- `scripts/inspect_proposal_docx.py` — print the proposal DOCX's structure and word count
+  (the submission DOCX is edited directly; there is no builder script)
 
 
 ## Reproduce the current checks
@@ -85,4 +85,4 @@ python scripts/run_temporal_sensitivity.py
 ```
 
 These commands use validation data only. Do not evaluate on the test split until the
-frozen protocol's remaining explanation and interface acceptance checks pass.
+frozen protocol's remaining explanation and study-form acceptance checks pass.

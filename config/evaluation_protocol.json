@@ -3,7 +3,7 @@
   "amendments": [
     "1.1: Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
     "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules.",
-    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), added an optional exploratory plain-language narrative condition for the explanation group (at least 12 participants), and specified precomputed-output interface rules; no model, split, seed, target, feature window, operating policy, or test data changed."
+    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), specified the Google Forms study instrument (replacing the planned custom interface), and added subgroup/proxy diagnostics on the test split to the one-time final evaluation; no model, split, seed, target, feature window, operating policy, or test data changed."
   ],
   "seed": 42,
   "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
@@ -111,7 +111,9 @@
       "brier_score_difference",
       "capacity_recall_difference",
       "capacity_precision_difference"
-    ]
+    ],
+    "subgroup_and_proxy_diagnostics_on_test": "descriptive, same code and suppression rule (n < 30), run once inside the final-test evaluation",
+    "one_run_guard": "lock file artifacts/final_test.lock written before the run and committed right after it; deleting output tables does not clear it; clearing needs a recorded team decision"
   },
   "calibration": {
     "probabilities": "raw frozen-model outputs; no post-test recalibration",
@@ -129,23 +131,18 @@
     "standardized_instructions": true,
     "answer_feedback": "none until all 10 scored cases are submitted",
     "primary_unit": "participant accuracy across 10 cases",
-    "optional_narrative_condition": {
-      "enabled_if_participants_at_least": 12,
-      "design": "explanation group split into contribution chart only and chart plus plain-language narrative rendered by a verified local template from the same contributions; no free-form generated text",
-      "status": "exploratory, reported separately from model results"
-    },
-    "think_aloud_notes": false
+    "think_aloud_notes": false,
+    "instrument": "Google Forms: Group A and Group B forms, each with three seeded pre-shuffled case orders (six variants)",
+    "group_assignment": "seeded list of pre-filled links; neither participants nor recruiters choose the group",
+    "time_recording": "total session time from the session log; per-case time is not recorded"
   },
-  "interface": {
-    "outputs": "versioned precomputed Python outputs; no live inference",
-    "pre_test_parity": "training/validation fixtures",
+  "study_instrument": {
+    "outputs": "versioned precomputed Python outputs and rendered explanation images; no live inference",
+    "pre_test_parity": "validation fixtures",
     "study_cases_loaded": "after the single final evaluation, followed by an export-parity check without retuning",
-    "forbidden_in_frontend_or_version_control": [
-      "model weights",
-      "raw participant responses",
-      "credentials"
-    ],
-    "invalid_fields": "reject missing, extra, invalid or out-of-range fields; never silently change them"
+    "never_shown_to_participants": "model outputs, probabilities, base values, capacity boundary, predicted class",
+    "form_settings": "no email collection, no sign-in, response editing off, summary charts hidden, responses to one restricted Sheet",
+    "group_b_image_rule": "contribution direction and magnitude only"
   },
   "test_access": "locked until this protocol and all integration checks pass"
 }
