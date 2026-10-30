@@ -178,8 +178,8 @@ effectiveness at AIT.
   display that suppresses the base value, final score, probability, capacity boundary and
   predicted class. Neither group ever sees the model output before answering.
 - Task per case: "What do you think the model predicts — will it flag this student as at-risk
-  (yes/no)?" Same 10 cases (five flagged, five unflagged), in one of three seeded pre-shuffled orders per
-  form. One unscored
+  (yes/no)?" Same 10 cases (five flagged, five unflagged), in one of two orders per
+  group (a seeded order or its exact reverse). One unscored
   practice case with standardised instructions; Group B also gets a contribution-direction
   legend and comprehension check.
 - No correctness feedback until all 10 scored responses are locked; debrief afterwards.
@@ -194,19 +194,22 @@ effectiveness at AIT.
 - The optional plain-language narrative condition was considered and **dropped** (time budget);
   Group B sees the contribution display only.
 
-**Consent text (template; task W4.1 fills every [placeholder] before use)**
+**Consent text (original template; the live wording is `CONSENT_TEXT` in `forms/build_spec.py`).** On 30 Oct
+the team removed the withdrawal deadline, named contact and retention date from the consent text to keep it
+flexible; participants contact the person who sent them the form. W4 still records the course retention date
+privately for deletion (W4.10).
 
 > You are invited to take part in a short class research activity about understanding an AI
-> model's predictions. It takes about [30 minutes, confirm in the pilot]. You will look at 11 student
+> model's predictions. It takes about 30 minutes. You will look at 11 student
 > profiles (one practice and ten scored), guess whether the model flags each student as at-risk, rate
 > your confidence, and write three short answers per profile. We record your answers, confidence and
 > total session time under a random participant code. We do not ask for your name or any identifying
 > information, so please do not enter any in your answers. Participation is voluntary, you must be 18
 > or older, and you may stop at any time without penalty. Your responses are kept in access-restricted
 > storage available only to the research team and reported only in aggregate or as paraphrased
-> comments. You may withdraw until [withdrawal deadline] by giving your participant code to
-> [contact person and how]; after that your responses are de-identified and combined into aggregate
-> results. Raw responses will be deleted by [confirmed retention date]. The risks are no greater than
+> comments. To withdraw, give your participant code to the person who sent you the form; once
+> responses are de-identified and combined into aggregate results, they can no longer be separated
+> out. The risks are no greater than
 > everyday computer use and there is no direct benefit. By ticking "I agree" and confirming that you
 > are 18 or older, you confirm that you understand this information and consent to take part.
 
@@ -272,7 +275,7 @@ records. Deviations are listed in `docs/TASK_SPLIT.md` §8 and must be disclosed
 **How it is built.** Case packs follow one JSON contract (task W2.2). Python renders the explanation
 images: a profile card per case and, for Group B only, a contribution chart (direction and magnitude)
 that shows **no** base value, score, probability, capacity boundary or class. A script (Apps Script or
-Forms API) builds **six variants**: Group A and Group B, each with three seeded case orders. A seeded
+Forms API) builds **four forms**: Group A and Group B, each in two case orders (a seeded order and its reverse). A seeded
 list assigns each participant slot a code and a variant; the participant's link is pre-filled with the
 code. Forms are built on validation fixtures first; the 10 study cases and the practice case are added
 only after the single final evaluation, then a parity check runs without retuning.
@@ -293,7 +296,7 @@ version control; model outputs used for scoring stay private. Only aggregate res
 comments enter the report. A transform script (W2.8) turns the wide Sheet export into the long CSV in
 `docs/human_study_response_template.csv`.
 
-**Acceptance checks (W2.6).** (1) All six variants build and displayed values match the exports
+**Acceptance checks (W2.6).** (1) All four forms build and displayed values match the exports
 (validation fixtures before test; exported study cases after). (2) Group B sees nothing that reveals the
 output, and no feedback appears anywhere. (3) Groups see identical profiles and differ only in
 explanation. (4) Assignment and case order reproduce from the seed. (5) Privacy settings are correct
