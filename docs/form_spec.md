@@ -1,6 +1,6 @@
 # Study form spec (W2.1)
 
-Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy validation cases). The builder (`forms/build_spec.py`) is the source of truth: if this page and the forms ever differ, the builder wins. For agreement by **W2 (Han)**, **W4 (Noey)** and **W5 (Lucas)**. The questions in section 8 need an answer.
+Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy validation cases). The builder (`forms/build_spec.py`) is the source of truth: if this page and the forms ever differ, the builder wins. For agreement by **W2 (Han)**, **W4 (Harry)** and **W5 (Lucas)**. The questions in section 8 need an answer.
 
 ## 1. Four forms
 

@@ -1,6 +1,6 @@
 # Case-pack format (W2.2), version 1.0
 
-**Status:** draft for agreement by W1, W2 (Han), W3 and W5 (Lucas). The machine check is `forms/case_pack.py`;
+**Status:** draft for agreement by W1 (Noey), W2 (Han), W3 (Yolanda) and W5 (Lucas). The machine check is `forms/case_pack.py`;
 if this page and that file ever differ, the file wins.
 
 The case pack carries the 11 cases (practice `PR`, scored `C01` to `C10`) from the people who make them to the
