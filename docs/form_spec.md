@@ -23,7 +23,7 @@ Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy va
 5. **Instructions** — W4.2 text under the headings: What you will see; Your task; What each profile shows; For each case; Good to know. Ends with "When you are ready, continue to the practice case."
 6. **Practice profile (not scored)** — Profile + the 5 questions. Group B also sees the chart and 2 chart questions (section 3).
 7. **Student profile 1 of 10 ... 10 of 10** — One page per case: profile (+ chart in Group B) + the 5 questions.
-8. **Closing** — "Which best describes you?" Student / Staff or adviser / Other.
+8. **Closing** — "Which best describes you?" Student / Staff or adviser / Other. Then "About how many minutes did the whole activity take you?" (a number from 1 to 300; self-reported, because the study is online).
 9. **Finish** — "Please press Submit below to send your answers. They are not sent until you do." then the debrief. The form submits here, so finishers never see the decline page.
 10. **Thank you (decline only)** — "Thank you. You chose not to take part, so your answers will not be used. You can close this page now."
 
@@ -69,7 +69,7 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 - No quiz mode; no correct answers or feedback shown anywhere.
 - No email collection; response editing off; summary charts hidden; no "submit another response" link.
 - No sign-in: check that "Restrict to users in AIT" is off (W2.4).
-- Closed to responses until the pilot; opened only for tests and sessions.
+- Closed to responses until the pilot; open only for tests and the study window (Fri 13 – Tue 17 Nov). Participants answer online on their own device (D3).
 - Responses go to one restricted Sheet shared only with the W4 owner and the W2 reviewer.
 
 ## 7. Links and assignment
@@ -82,7 +82,7 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 
 - [ ] The role question stays at the end (section 2, step 8).
 - [ ] Q3 to Q5 (written answers) are required.
-- [ ] A wrong practice chart answer does not block the form; the session runner asks the participant to re-read the chart explanation, then continue.
+- [ ] Online there is no runner: a wrong practice chart answer is recorded but not corrected. How should wrong answers be reported?
 - [ ] Participants are not told how many of the 10 students are flagged.
 - [ ] Should the instructions say that the model flags only a limited share of students (the top 20%)? The old line about this was dropped; acceptance check 6 compares the form with the model card.
 - [ ] Should "Average grade" read "Average grade (passed units only)"? In the data, the average is 0 exactly when no units were passed, and the lowest non-zero average is 9.8.

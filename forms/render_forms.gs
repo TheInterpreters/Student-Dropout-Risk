@@ -1,13 +1,15 @@
 /**
- * Renders the human-study forms from form_spec.json (fixture build).
+ * Renders the human-study forms from form_spec.json (fixture or study build).
  * Apps Script is a thin renderer: all content and checks live in build_spec.py
  * and test_spec.py. Untested against live Google until the first run.
  *
  * Before running:
  *  1. Upload form_spec.json and assignment_fixture.csv to the team's restricted Drive folder.
  *  2. Fill CONFIG with their file IDs and a TEST response sheet ID.
- *  3. Run renderAll() once and approve the permissions.
- * Output: four forms (Form 1 to Form 4, one per variant in the spec) and a sheet "Assignment links (fixture)".
+ *  3. Optional: put W5.3's chart_<case>.png files in one restricted Drive folder and set CHART_FOLDER_ID.
+ *  4. Run renderAll() once and approve the permissions. Read the log for ROUTE BY HAND,
+ *     SET BY HAND and CHART MISSING lines.
+ * Output: four forms (Form 1 to Form 4, one per variant in the spec) and a sheet "Assignment links (<fixture or study>)".
  * Keep ACCEPTING_RESPONSES false except during a test.
  */
 const CONFIG = {
@@ -15,6 +17,7 @@ const CONFIG = {
   ASSIGNMENT_FILE_ID: 'PASTE_FILE_ID',
   RESPONSE_SHEET_ID: 'PASTE_TEST_SHEET_ID',
   ACCEPTING_RESPONSES: false,
+  CHART_FOLDER_ID: '',  // Drive folder with chart_<case>.png (W5.3); '' keeps the TBD boxes
 };
 
 function renderAll() {
@@ -23,7 +26,7 @@ function renderAll() {
   spec.variants.forEach(function (v) {
     forms[v.variant_id] = buildForm_(spec, v);
   });
-  writeLinks_(forms);
+  writeLinks_(forms, spec);
 }
 
 function readDriveText_(fileId) {
@@ -40,6 +43,11 @@ function buildForm_(spec, v) {
     .setAcceptingResponses(CONFIG.ACCEPTING_RESPONSES)
     .setConfirmationMessage(spec.confirmation || spec.debrief);
   form.setDestination(FormApp.DestinationType.SPREADSHEET, CONFIG.RESPONSE_SHEET_ID);
+  try {
+    form.setRequireLogin(false);  // no sign-in (W2.4, acceptance check 5)
+  } catch (e) {
+    Logger.log('SET BY HAND: "' + v.form_label + '" Settings > Responses > turn off "Restrict to users in AIT"');
+  }
 
   const pages = {};
   const pending = [];
@@ -101,19 +109,45 @@ function addItem_(form, it, pending) {
     case 'paragraph':
       form.addParagraphTextItem().setTitle(it.title).setHelpText(it.help || '').setRequired(required);
       break;
-    case 'short_text':
-      form.addTextItem().setTitle(it.title).setHelpText(it.help || '').setRequired(required);
+    case 'short_text': {
+      const item = form.addTextItem().setTitle(it.title).setHelpText(it.help || '').setRequired(required);
+      if (it.number_range) {  // e.g. the self-reported minutes question
+        item.setValidation(FormApp.createTextValidation()
+          .setHelpText('Please enter a number from ' + it.number_range[0] + ' to ' + it.number_range[1] + '.')
+          .requireNumberBetween(it.number_range[0], it.number_range[1]).build());
+      }
       break;
-    case 'text_block':
-      form.addSectionHeaderItem().setTitle(it.title).setHelpText(it.text || '');
+    }
+    case 'text_block': {
+      // A chart box carries its image file name; insert the image when it is in the chart folder.
+      const blob = it.image ? chartBlob_(it.image) : null;
+      if (blob) {
+        form.addImageItem().setTitle(it.title).setImage(blob);
+      } else {
+        if (it.image && CONFIG.CHART_FOLDER_ID) Logger.log('CHART MISSING: ' + it.image + ' (TBD box kept)');
+        form.addSectionHeaderItem().setTitle(it.title).setHelpText(it.text || '');
+      }
       break;
+    }
     default:
       throw new Error('Unknown item type: ' + it.type);
   }
 }
 
 /** Writes each slot's pre-filled link (code and variant) to a new sheet. */
-function writeLinks_(forms) {
+const chartCache_ = {};
+
+/** Returns the chart image with this file name from CHART_FOLDER_ID, or null. */
+function chartBlob_(name) {
+  if (!CONFIG.CHART_FOLDER_ID) return null;
+  if (!(name in chartCache_)) {
+    const files = DriveApp.getFolderById(CONFIG.CHART_FOLDER_ID).getFilesByName(name);
+    chartCache_[name] = files.hasNext() ? files.next().getBlob() : null;
+  }
+  return chartCache_[name];
+}
+
+function writeLinks_(forms, spec) {
   const rows = Utilities.parseCsv(readDriveText_(CONFIG.ASSIGNMENT_FILE_ID));
   const head = rows[0];
   const iCode = head.indexOf('participant_code');
@@ -128,7 +162,7 @@ function writeLinks_(forms) {
       .withItemResponse(codeItem.asTextItem().createResponse(rows[r][iCode]));
     out.push(rows[r].concat([response.toPrefilledUrl()]));
   }
-  const ss = SpreadsheetApp.create('Assignment links (fixture)');
+  const ss = SpreadsheetApp.create('Assignment links (' + (spec.pack_kind || 'fixture') + ')');
   const sheet = ss.getSheets()[0];
   sheet.getRange(1, 1, out.length, out[0].length).setValues(out);
   Logger.log('Links sheet: ' + ss.getUrl());

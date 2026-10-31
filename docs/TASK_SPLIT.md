@@ -49,8 +49,8 @@ only after what it depends on is done. **Done when** is the check the reviewer u
    `figures/`, so results reproduce from one command.
 7. After any DOCX change, the report editor re-exports the PDF. For the proposal, re-check the page
    count (body 4 pages, references on page 5).
-8. **Weekends are buffer, not plan.** If a deadline slips, tell the group the same day. (Participant
-   sessions may use Sat 14 / Sun 15 Nov if participants prefer.)
+8. **Weekends are buffer, not plan.** If a deadline slips, tell the group the same day. (Participants
+   may also answer on Sat 14 / Sun 15 Nov.)
 9. **Git workflow.** Work on your own branch (`w1-audit`, `w2-forms`, ...), commit small, `git pull
    --rebase origin main` before pushing, merge to `main` only after your reviewer has looked at it, and
    never force-push. Review time is part of the plan (§7).
@@ -64,43 +64,46 @@ only if the whole team agrees **and** tells W3 before the freeze (Mon 9 Nov).
 |---|---|---|---|
 | D1 | Final deadline and extra deliverables | **Fri 20 Nov 2026** hard stop (3rd week of November), team finish Thu 19 Nov. Deliverables: final report (DOCX and PDF) and the slide deck; if the instructor asks for more, tell the report editor at once and it uses the buffer day | Fixed date for every task deadline |
 | D2 | Optional narrative condition (B2) | **Dropped.** Not built; removed from the DOCX, HANDOFF and protocol (ID W5.4 unused) | Adds build and checking time to a 24-day plan; the core study is unaffected |
-| D3 | How sessions run | **In person and supervised**: the session runner opens the participant's pre-filled Google Form link on a team laptop, or on the participant's own device while the runner is present. A remote link is only a fallback to reach the minimum of 40, and is disclosed as a limitation | Keeps the controlled, no-sharing conditions we planned; own devices make 50 sessions feasible |
+| D3 | How sessions run | **Online and unsupervised** (changed 31 Oct, team decision): each participant opens their own pre-filled Google Form link on their own device, in their own time, between Fri 13 and Tue 17 Nov. No room, laptops or session runner. Disclosed in the report as a deviation and a limitation (§8) | We do not have the people or room time to supervise 50 sessions; the cases, questions, groups and privacy rules are unchanged |
 | D4 | Subgroup and proxy diagnostics on the test split too | **Yes**, descriptive, same code, run once inside the final-test script | One extra call; recorded in the protocol before the freeze |
 | D5 | Decision-support demonstration (formerly "Mode A") | **Static example case card** (screenshots from validation fixtures) in the report and slides; no software | The form replaces the app; the example still shows what an officer would see |
 | D6 | Pilot participants count toward the 50 | **No.** The pilot is one extra person | Keeps the 50 clean and the groups balanced (25/25) |
 | D7 | Withdrawal window and anonymity | **Current plan:** responses are pseudonymised (random participant code); withdrawal is possible until de-identification; then the code link is deleted. Never call the data "anonymous" in the consent text before de-identification | Pseudonymised is not fully anonymous; withdrawal needs a link |
 | D8 | Study instrument | **Google Forms, not a custom interface.** Four forms: Group A and Group B, each in two case orders (a seeded order and its exact reverse; agreed 30 Oct); explanation images made in Python; responses to a restricted Sheet | Saves about 30–40 hours in a 24-day plan; the study design is unchanged |
 
-## 2. Participants — everyone recruits and runs their own sessions (W4 coordinates)
+## 2. Participants — everyone recruits and sends their own links (W4 coordinates)
 
 - **Target: 50 participants in total. Every team member recruits 10** voluntary adults from the
-  AIT community (students are fine; a few staff or advisers are a bonus), **books them into slots and
-  runs those 10 sessions** from the W4 session sheet, about 2 per day on Fri 13 – Tue 17 Nov. Each
-  recruiter has **10 confirmed session slots by Fri 6 Nov** and sends reminders.
+  AIT community (students are fine; a few staff or advisers are a bonus) and **sends each one their own
+  link** from W4 between Fri 13 and Tue 17 Nov, with one reminder after two days. Each recruiter has
+  **10 people who agreed to take part by Fri 6 Nov**.
 - **Recruiters do not choose groups.** Each participant gets the **next unused pre-filled link** from a
   seeded assignment list (task W5.8), held by the W4 coordinator. The link carries the participant code
   and the form variant; a recruiter cannot pick or swap it. 50 splits evenly, so groups will be 25 and 25.
+- **No list of who got which code.** A recruiter sends the link and never writes the code next to a
+  person's name (rule 4). W4's send log holds codes only, never names.
 - W4 keeps a count per recruiter only (no names or IDs in the repo). People consent only inside the
-  form, at the session.
-- **Minimum: 40 completed sessions with at least 18 in each group** (so 18/22 is acceptable, 17/23 is
-  not). If fewer than 50 attend by Tue 17 Nov, proceed once the minimum is met and report the achieved
+  form, before the first question.
+- **Minimum: 40 completed responses with at least 18 in each group** (so 18/22 is acceptable, 17/23 is
+  not). If fewer than 50 submit by Tue 17 Nov, proceed once the minimum is met and report the achieved
   sample honestly; below the minimum, describe the study as pilot-scale.
 - **Replacements keep the groups balanced.** The seeded list holds 4 spare slots (two Group A, two
-  Group B). If a participant does not complete (no-show, withdrawal, incomplete session), the next
+  Group B). If a participant does not complete (no submission by the deadline, withdrawal, incomplete), the next
   recruited participant **inherits that empty slot's group and variant**; a spare is used only when a
-  slot is empty, choosing the group that keeps the totals closest to balanced. Incomplete sessions are
+  slot is empty, choosing the group that keeps the totals closest to balanced. Incomplete responses are
   logged and excluded. The older documents said "8–10, minimum 4" (see §8).
-- **Scale check:** 50 sessions of about 30 minutes plus changeover is roughly 33 laptop-hours; see W4.5.
+- **Time:** about 30 minutes per person on their own device; the form's last question asks how many
+  minutes it took (self-reported, §8 item 3).
 
 ## 3. Timeline at a glance (2026)
 
 | Phase | Dates | What | Who |
 |---|---|---|---|
 | **P0** Setup | Tue 27 – Wed 28 Oct | Owners and editor appointed (decisions D1–D8 already settled), environment and tests | all |
-| **P1** Build (validation only) | Thu 29 Oct – Fri 6 Nov | Audit, form generator, images, final-test script, session kit, assignment lists, report methods drafts | W1–W5 + everyone (R) |
+| **P1** Build (validation only) | Thu 29 Oct – Fri 6 Nov | Audit, form generator, images, final-test script, send-out kit, assignment lists, report methods drafts | W1–W5 + everyone (R) |
 | **P2** Gate | Mon 9 Nov | Freeze and tag; go/no-go for the test run | W1, W2, W3 |
 | **P3** Final test and study cases | Tue 10 – Thu 12 Nov | One test run, export cases, build real forms, model card | W3, W2, W5 |
-| **P4** Study | Fri 13 – Wed 18 Nov | Pilot, 50 sessions, scoring, shared coding | W4 coordinates; everyone runs own sessions |
+| **P4** Study | Fri 13 – Wed 18 Nov | Pilot, 50 online responses, scoring, shared coding | W4 coordinates; everyone sends their own links |
 | **P5** Wrap-up | Mon 16 – Thu 19 Nov | Report sections, cross-review, slides, merge, final check | **everyone** |
 | **Buffer** | Fri 20 Nov | Final export and submission | all |
 
@@ -109,10 +112,10 @@ only if the whole team agrees **and** tells W3 before the freeze (Mon 9 Nov).
 | Date | Checkpoint | Must be true |
 |---|---|---|
 | Fri 30 Oct | Foundations | Form spec and case-pack contract agreed, ethics note done, 20-case script selects cases, report/slide outline and Google Docs created |
-| Fri 6 Nov | Build complete | Audit tables done, form acceptance passed on validation fixtures, final-test script dry-run OK, 50 slots booked, every section has a methods draft |
+| Fri 6 Nov | Build complete | Audit tables done, form acceptance passed on validation fixtures, final-test script dry-run OK, 50 participants agreed, every section has a methods draft |
 | **Mon 9 Nov** | **Gate / go-no-go** | Freeze tag created; if not ready, escalate the same day |
-| Fri 13 Nov | Study start | Real forms built, pilot passed, sessions begin |
-| Tue 17 Nov | Sessions done | 50 sessions complete (minimum 40, at least 18 per group); slide drafts in |
+| Fri 13 Nov | Study start | Real forms built, pilot passed, links sent |
+| Tue 17 Nov | Responses close (23:59) | 50 responses complete (minimum 40, at least 18 per group); slide drafts in |
 | Thu 19 Nov | Finish line | Report, slides, PDF, model card, README and HANDOFF final |
 
 **Final deliverables checklist (all done by Thu 19 Nov):**
@@ -151,7 +154,7 @@ ID W1.6 moved to W2.2.
 | W2.2 | **Case-pack data contract:** JSON fields per case (case id, profile fields, Group B contribution values, image file names; the model output is kept **private** for scoring only). Agreed with W1, W3 and W5. | [I] | Thu 29 Oct | Schema file in the repo agreed by the four owners. |
 | W2.3 | **Form generator** (Google Apps Script or Forms API) that builds all four forms from the case packs and images, including consent, 18+, pre-filled code and the practice case. First run on **validation fixtures** as dummy cases. | [D: W2.1, W2.2, W5.8, W4.1, W4.2] | Wed 4 Nov | Four test forms build from one command; reviewer can rebuild them identically. |
 | W2.4 | **Privacy settings and response Sheet:** no email collection, no sign-in, response editing off, summary charts hidden, form not publicly listed; one **restricted** Sheet shared only with the W4 owner and reviewer. | [D: W2.1] | Wed 4 Nov | Settings checklist signed by the reviewer; Sheet permissions show only the two people. |
-| W2.8 | **Response transform script:** form export (wide Sheet) → long CSV with the template columns in `docs/human_study_response_template.csv` (participant, group, case order from the variant, case id, answers, free text, session time from the log, complete flag). Tested with dummy rows marked fake. | [D: W2.1] | Wed 4 Nov | Dummy export becomes the right long CSV; output labelled "dummy". |
+| W2.8 | **Response transform script:** form export (wide Sheet) → long CSV with the template columns in `docs/human_study_response_template.csv` (participant, group, case order from the variant, case id, answers, free text, self-reported time, complete flag). Tested with dummy rows marked fake. | [D: W2.1] | Wed 4 Nov | Dummy export becomes the right long CSV; output labelled "dummy". |
 | W2.5 | **Dry run:** submit dummy responses to the test forms, export them and run W2.8; then delete the test responses. | [D: W2.3, W2.4, W2.8] | Thu 5 Nov | Export and transform give correct rows; test data deleted from Forms and Sheet. |
 | W2.6 | **Acceptance checks** (HANDOFF §7): (1) all four forms build and displayed values match the exports; (2) Group B sees nothing that reveals the output and no feedback appears anywhere; (3) groups see identical profiles and differ only in explanation; (4) assignment and case order reproduce from the seed; (5) privacy settings correct; (6) form text matches the model card and consent text; (7) dry-run export transforms correctly. | [D: W5.3, W2.3, W2.4, W2.5, W2.8] | Fri 6 Nov | All seven checks recorded as passed by the reviewer. **Gate condition (b).** |
 | W2.7 | **Real forms:** after the test run, build the four forms from the 10 study cases and the practice case (running W5.3's image renderer), repeat the parity check without retuning, and prepare the pre-filled links per the assignment list for W4. | [D: W3.9, W5.8] | Thu 12 Nov | Displayed values equal the exported frozen outputs; links tested by opening each variant once. |
@@ -175,14 +178,14 @@ ID W1.6 moved to W2.2.
 | ID | Task | Depends | Deadline | Done when |
 |---|---|---|---|---|
 | W4.1 | **Consent form and information sheet** (the first section of every form): take the template in HANDOFF §6 and fill every placeholder: purpose, about how long it takes, what is recorded, voluntary, 18+, how to withdraw, how data are stored. **The consent text no longer states a withdrawal deadline, a named contact or a retention date, to keep it flexible (team decision, 30 Oct); participants contact the person who sent them the form.** W4 still finds the real course retention date and records it privately for W4.10. Also set who may see raw responses and the deletion plan. **Lock the team Drive first (rule 4):** change the shared folder from "Anyone with the link" to Restricted, and create the restricted raw-data subfolder. | [I] | Fri 30 Oct (Drive lock: Wed 28 Oct) | Drive set to Restricted; consent form has no placeholder left and is read by all five owners; the same text is what the form shows. |
-| W4.5 | Recruitment plan, per-recruiter count and tentative session calendar (sessions Fri 13 – Tue 17 Nov, weekend allowed). Also book a **quiet room (about 6 h per day)** and **2–3 laptops** for those days; participants may use their own device while the runner is present. | [I] | Fri 30 Oct | Calendar, room and laptops booked; counts shared; **50 slots booked by Fri 6 Nov** (10 per recruiter). |
-| W4.2 | Session materials: **standardised instruction text first (the form needs it)**, then practice-case script, debrief script, a **participant card** (their code and who to contact to withdraw, handed out at the session), and an "if something goes wrong" sheet (laptop charged, spare slot, no-show rule). | [D: W4.1] | Tue 3 Nov | Instruction text delivered to W2 by Tue 3 Nov; any member can run a session from the sheet alone. |
+| W4.5 | Recruitment plan, per-recruiter count and send-out schedule: links go out Fri 13 Nov after the pilot, one reminder after two days, responses close Tue 17 Nov 23:59. No room or laptops (online, D3). | [I] | Fri 30 Oct | Schedule and counts shared; **50 participants agreed by Fri 6 Nov** (10 per recruiter). |
+| W4.2 | Send-out kit: **standardised instruction text first (the form needs it)**, then the **invitation message** each recruiter sends with the link (what it is, about 30 minutes, one sitting, own device, the deadline, who to contact to withdraw), the reminder message, and a short "if something goes wrong" note (link does not open, form closed, link sent to the wrong person, spare rule). The debrief is the form's last page. | [D: W4.1] | Tue 3 Nov | Instruction text delivered to W2 by Tue 3 Nov; any member can send links from the kit alone. |
 | W4.3 | Codebook (comprehension, actionability, information gaps, `other/unclear`) with one paraphrased example per code. | [I] | Fri 6 Nov | Written **before** any group comparison. |
 | W4.12 | **Verify** that the participant numbers (target 50, 10 per recruiter, 25/25; minimum 40 with at least 18 per group; 4 spares) and the replacement rule (§2) are identical in `config/evaluation_protocol.json`, `docs/HANDOFF.md` §6 and the proposal DOCX §5.4 **before the freeze**. | [I] | Fri 6 Nov | All three show the same numbers; no "8–10" or "minimum 4" left anywhere. |
-| W4.6 | One-person pilot on the real forms (check nobody can see the answer early, the link and code work, and the sheet receives the row); fix issues. | [D: W2.7] | Fri 13 Nov (morning) | Pilot finds no leakage; fixes logged; pilot row deleted; **the real session time is measured** and the consent text and the laptop schedule (W4.5) are updated to match. |
-| W4.7 | Coordinate the study: hand each recruiter the next pre-filled links, keep the **session log** (start and end time per participant code, exclusions with reasons), check daily that the Sheet has the right rows. (Each member runs their own 10 sessions, §2; with about 10 sessions a day, check the laptop and room schedule every morning.) | [D: W4.6, W4.5] | Tue 17 Nov | 50 complete sessions (minimum 40, at least 18 per group) logged; replacements follow §2; response Sheet backed up each day to the restricted W4 Drive subfolder (not git, not the open team folder). |
-| W4.8 | **Rolling, shared task:** coding starts as soon as the first sessions finish (not before the codebook W4.3) and is complete only after the last session (W4.7). **All five members code**: each codes the free text of about 10 participants who are **not their own recruits** (about 100 responses per field, 3 fields), blinded to group where practical, as assigned by the W5.9 script; a random 20% (10 participants) is coded again by a second member for raw agreement. The **W4 owner leads**: trains everyone on the codebook and resolves disagreements. If behind on Tue 17 Nov, code the rationale and intervention fields first and missing-information last. | [D: W4.7 (last session), W4.3, W5.9] | Wed 18 Nov (rolling from Fri 13 Nov) | All responses coded; raw agreement on the double-coded 20%; theme counts by group. |
-| W4.11 | Run W2.8 on the real export, then the scoring/analysis script (W5.6). | [D: W4.7, W5.6] | Wed 18 Nov | Group accuracy, session time and sample sizes tabulated; no significance claims. |
+| W4.6 | One-person pilot on the real forms, done online like a real participant (check nobody can see the answer early, the link and code work, and the sheet receives the row); fix issues. | [D: W2.7] | Fri 13 Nov (morning) | Pilot finds no leakage; fixes logged; pilot row deleted; **the pilot's self-reported time is checked** and the consent time is updated if needed. |
+| W4.7 | Coordinate the study: hand each recruiter the next pre-filled links, keep the **send log** (per participant code: recruiter, date sent, submitted yes/no, exclusions with reasons; no names, no times), check daily that the Sheet has the right rows, and give out spares after the deadline (§2). | [D: W4.6, W4.5] | Tue 17 Nov | 50 complete responses (minimum 40, at least 18 per group) logged; replacements follow §2; response Sheet backed up each day to the restricted W4 Drive subfolder (not git, not the open team folder). |
+| W4.8 | **Rolling, shared task:** coding starts as soon as the first responses arrive (not before the codebook W4.3) and is complete only after the last response (W4.7). **All five members code**: each codes the free text of about 10 participants who are **not their own recruits** (about 100 responses per field, 3 fields), blinded to group where practical, as assigned by the W5.9 script; a random 20% (10 participants) is coded again by a second member for raw agreement. The **W4 owner leads**: trains everyone on the codebook and resolves disagreements. If behind on Tue 17 Nov, code the rationale and intervention fields first and missing-information last. | [D: W4.7 (last response), W4.3, W5.9] | Wed 18 Nov (rolling from Fri 13 Nov) | All responses coded; raw agreement on the double-coded 20%; theme counts by group. |
+| W4.11 | Run W2.8 on the real export, then the scoring/analysis script (W5.6). | [D: W4.7, W5.6] | Wed 18 Nov | Group accuracy, self-reported time and sample sizes tabulated; no significance claims. |
 | W4.10 | Delete raw responses and any case-link files **on the confirmed retention date from W4.1**, and only after the human-results review (R7); keep aggregates only. If that date is after submission, keep the data in the restricted store until then and record the plan; if it is before Thu 19 Nov, W4.1 raises it at once and the verification chain moves earlier. | [D: W4.8, W4.11, R7] | Thu 19 Nov at the earliest (after R7); otherwise the confirmed retention date | Deletion done everywhere (Forms, Sheet, laptop CSV, restricted Drive subfolder **and its Drive trash**, any export) and noted in the private governance note. |
 
 ID W4.9 moved to W5.8.
@@ -194,7 +197,7 @@ ID W4.9 moved to W5.8.
 | W5.8 | Generate the **seeded assignment list:** 50 participant slots plus 4 spares (one per form, so two per group), groups 25/25, each slot assigned a participant code and one of the four forms; record the seed; write the replacement rule (§2) on the sealed list; give it to the W4 owner. | [I] | Mon 2 Nov | List reproduces from the seed; recruiters never see or choose a participant's group; replacement rule is on the list. |
 | W5.9 | **Coding assignment and agreement script:** reads the long CSV from W2.8 and assigns each participant's free-text responses to one primary coder who is **not the recruiter**, balanced across the five members, plus a random 20% to a second coder; hides the group column where practical; computes raw agreement on the double-coded set. Tested on dummy rows marked fake. | [I] (schema in `docs/human_study_response_template.csv`) | Fri 6 Nov | Every participant has exactly one primary coder, 10 participants have a second coder, no coder codes their own recruits; dummy run passes. |
 | W5.3 | **Image renderer in Python:** a profile card for each case and, for Group B, the contribution chart (direction and magnitude only), plus the neutral legend and the comprehension-check question for the practice case. Runs on the W2.2 case packs. | [D: W2.2] | Thu 5 Nov | Images for validation fixtures built; reviewer confirms **no** base value, score, probability, capacity boundary or class appears anywhere. |
-| W5.6 | Scoring and analysis script: `correct` against the frozen output, participant-level accuracy, group means, confidence and session time; descriptive only, no significance tests. Reads the long CSV from W2.8. Test with **dummy rows marked fake**. | [I] (schema in `docs/human_study_response_template.csv`) | Fri 6 Nov | Runs on dummy data; output labelled "dummy" and never committed as a result. |
+| W5.6 | Scoring and analysis script: `correct` against the frozen output, participant-level accuracy, group means, confidence and self-reported time; descriptive only, no significance tests. Reads the long CSV from W2.8. Test with **dummy rows marked fake**. | [I] (schema in `docs/human_study_response_template.csv`) | Fri 6 Nov | Runs on dummy data; output labelled "dummy" and never committed as a result. |
 | W5.1 | **Static demo card** (replaces Mode A): one example case with profile, prediction labelled "estimated model risk", contributions, warnings, counterfactual or no-recourse, intended-use and non-causality notes, as an image from a **validation fixture** for the report and slides. | [D: W2.2] | Wed 11 Nov | Image reviewed; no test case shown. |
 | W5.5 | Audit figures for the report: deletion curves and stability plots. | [D: W1.2, W1.3] | Wed 11 Nov | Figures regenerate from scripts. |
 
@@ -221,11 +224,11 @@ section is cross-reviewed by a different workstream.
 |---|---|---|---|---|
 | R1 | Report and slide setup: outline, section and slide owners, shared Google Doc and Slides in the team Drive (drafts only, no raw data), template, and the **report editor appointed** (§10). | [I] | Fri 30 Oct | Outline and owner list shared; empty Doc and Slides exist. |
 | R2 | **Methods drafts:** each owner writes what their part built and how (no results yet), matching HANDOFF. | [D: R1] | Fri 6 Nov | Every section has a methods draft; each owner's reviewer has read it. |
-| R3 | **Results sections** (all but human study): each owner adds results and limitations for the rows in the table above, plus their 3 discussion bullets. Form screenshots and the demo card use **validation fixtures**, never the 10 test cases, until after the last session. | [D: W1.5, W2.6, W3.6, W5.5, W5.1, R2] | Mon 16 Nov | Sections complete in the Google Doc; every number matches the tables. |
+| R3 | **Results sections** (all but human study): each owner adds results and limitations for the rows in the table above, plus their 3 discussion bullets. Form screenshots and the demo card use **validation fixtures**, never the 10 test cases, until after the last response. | [D: W1.5, W2.6, W3.6, W5.5, W5.1, R2] | Mon 16 Nov | Sections complete in the Google Doc; every number matches the tables. |
 | R4 | **Cross-review:** each owner reads and comments on a different workstream's section (W1→W2, W2→W3, W3→W4, W4→W5, W5→W1), checking numbers against tables and claims against HANDOFF. | [D: R3] | Wed 18 Nov | Comments resolved by the writers; no claim beyond the evidence. |
 | R5 | **Slides:** each owner makes 2–3 slides for their own part (W4's human-results slide is filled in at R6). One shared look, one message per slide. | [D: R1, R3] | Tue 17 Nov | Draft deck complete with placeholders only for human results. |
-| R6 | **Human-study results section and slide** by the W4 owner (using the W4.11 analysis), including limitations and sample size. | [D: W4.8, W4.11, R4] | Thu 19 Nov (12:00) | Section and slide in the shared files; sample size, group counts, accuracy, session time and themes match the analysis. |
-| R7 | **Review of the human-results section:** the **W3 owner** (not the author) checks it against the analysis outputs: sample size and group counts, accuracy, session time, themes, deviations disclosed, and that no significance or causal claim is made. | [D: R6] | Thu 19 Nov (15:00) | Comments resolved by the W4 owner before the merge. |
+| R6 | **Human-study results section and slide** by the W4 owner (using the W4.11 analysis), including limitations and sample size. | [D: W4.8, W4.11, R4] | Thu 19 Nov (12:00) | Section and slide in the shared files; sample size, group counts, accuracy, self-reported time and themes match the analysis. |
+| R7 | **Review of the human-results section:** the **W3 owner** (not the author) checks it against the analysis outputs: sample size and group counts, accuracy, self-reported time, themes, deviations disclosed, and that no significance or causal claim is made. | [D: R6] | Thu 19 Nov (15:00) | Comments resolved by the W4 owner before the merge. |
 | R8 | **Merge and export:** the report editor assembles the final report DOCX, adds references and figures, exports the PDF, and merges the deck. | [D: R4, R5, R7, W3.8] | Thu 19 Nov (17:00) | Report DOCX and PDF and the deck are complete and consistent. |
 | R9 | **Final read and rehearsal:** two members who are not the editor read the PDF and deck end to end; one timed rehearsal; README and HANDOFF updated with results. | [D: R8] | Thu 19 Nov (evening); Fri 20 Nov = buffer | No inconsistency left; rehearsal done; PDF is current. |
 
@@ -243,8 +246,8 @@ Mon 9 Nov           W3.4 FREEZE + TAG   (needs W1.5 + W2.6 + W3.2 + W4.12)
 Tue 10 Nov          W3.5 FINAL TEST (once)
 Wed 11 Nov          W3.9 export 10 study cases · W5.5 audit figures · W5.1 demo card
 Thu 12 Nov          W2.7 build real forms · W3.6 model card + final-test figures
-Fri 13 Nov          W4.6 pilot (morning) ─> sessions start (afternoon)  [each member runs own 10]
-Fri 13-Tue 17 Nov   W4.7 sessions  ·  W4.8 coding starts as sessions finish
+Fri 13 Nov          W4.6 pilot (morning, online) ─> links sent (afternoon)  [each member sends own 10]
+Fri 13-Tue 17 Nov   W4.7 responses come in  ·  W4.8 coding starts as they arrive
 Mon 16 Nov          R3 results sections written by every owner
 Tue 17 Nov          R5 slide drafts
 Wed 18 Nov          W4.8 coding done (rolling since Fri 13) · W4.11 transform + analysis · W3.8 clean-clone check · R4 cross-review
@@ -254,7 +257,7 @@ Fri 20 Nov          buffer / submission
 ```
 
 **Blocking rules.** (1) W3.5 cannot start until W1.5, W2.6 and W3.4 are done. (2) No participant
-session until W2.7 is built and W4.6 passes. (3) After W3.5, no retuning and no model selection.
+link is sent until W2.7 is built and W4.6 passes. (3) After W3.5, no retuning and no model selection.
 
 ## 7. Fair-share check (estimated hours per person)
 
@@ -266,16 +269,16 @@ per workstream.
 | W1 owner (+ report editor) | 30 audit (incl. timing test) + 9 editor (R1 3, R8 6) = **39** | 41.5 | **80.5** |
 | W2 owner | 4 + 2 + 12 + 3 + 6 + 4 + 5 + 4 = **40** | 41.5 | **81.5** |
 | W3 owner | 8 + 6 + 2 + 3 + 9 + 7 = 35, + 3 intro/data section + 1.5 (R7 review) = **39.5** | 41.5 | **81** |
-| W4 owner | 4 + 4 (W4.5) + 5 + 3 + 2 + 3 + 8 (W4.7: 50-session coordination) + 3 (coding lead) + 3 + 1 + 4 (R6) = **40** | 41.5 | **81.5** |
+| W4 owner | 4 + 4 (W4.5) + 5 + 3 + 2 + 3 + 8 (W4.7: coordinating 50 online responses) + 3 (coding lead) + 3 + 1 + 4 (R6) = **40** | 41.5 | **81.5** |
 | W5 owner | 4 (W5.8) + 12 + 7 (W5.6) + 4 + 4 + 4 (W5.9) + 4 (W3.8) = **39** | 41.5 | **80.5** |
 
-**Shared work per person (about 41.5 h):** day-1 setup 2 · recruiting 10 participants 6 · running
-their own 10 sessions 7 · shared response coding 9 (about 300 short responses plus second-coding) ·
+**Shared work per person (about 41.5 h):** day-1 setup 2 · recruiting 10 participants 6 · sending
+links to their own 10 and following up 7 (in-person estimate; online needs less) · shared response coding 9 (about 300 short responses plus second-coding) ·
 methods draft (R2) 3 · results section (R3) 5 · cross-review (R4) 2 · slides (R5) 3 · final read and
 rehearsal (R9) 1.5 · reviewing their partner's work and PRs 3.
 
 **Result:** totals range from 80.5 to 81.5 hours (about ±0.6%); the W3 owner's R7 review is included.
-Going from 25 to 50 participants adds about 15 hours per person (recruiting, running sessions and
+Going from 25 to 50 participants adds about 15 hours per person (recruiting, following up and
 coding), on top of the Google Form saving of roughly 30–40 hours of interface work. Optional W3.7
 (about 6 h) is excluded; the W3 owner takes it if time allows. If the meeting finds someone with a
 lighter or heavier load, move a whole task and update the table.
@@ -292,10 +295,10 @@ achieved numbers.
 1. **Google Forms replace the custom browser interface** (D8): a deliberate scope decision to protect the
    3-week deadline. The study design, cases, questions and privacy rules are unchanged.
 2. **Case order:** two fixed orders per group, a seeded order and its exact reverse (four forms in total), instead of a fresh random order per person. Changed on 30 Oct from three seeded orders per group (six variants); reversing the order balances position effects within each group.
-3. **Timing:** per-case time is not recorded; only total session time (from the session log).
+3. **Timing:** per-case time is not recorded; total time is self-reported in the form's last question, because nobody observes the online sessions.
 4. **Decision-support demonstration:** a static example card instead of a working screen (D5).
-5. **Withdrawal and exclusions** are handled by hand through the participant code and the session log.
-6. **Remote link** is a fallback only (D3); if used, disclose it as less controlled.
+5. **Withdrawal and exclusions** are handled by hand through the participant code and W4's send log.
+6. **Online instead of in person** (D3, changed 31 Oct because we lack the people and room time to supervise 50 sessions): participants answered unsupervised on their own devices. State this as a limitation: distractions, looking things up or help from others cannot be ruled out, and nobody could correct a misread chart on the practice case.
 7. The optional narrative condition was dropped (D2), and think-aloud notes were dropped earlier.
 
 ## 9. Risks and what to do
@@ -303,21 +306,21 @@ achieved numbers.
 | Risk | Early warning | Response |
 |---|---|---|
 | Form generator not ready by Fri 6 Nov | W2.3 slips past Wed 4 Nov | W2 escalates immediately; build the four forms by hand from the spec (copy-paste) as a fallback; the W5 owner helps |
-| Fewer than 50 recruited | Fewer than 50 booked slots on Fri 6 Nov | Everyone recruits more that week; the minimum is 40 with at least 18 per group |
-| Not enough laptops or room time for 50 sessions | Calendar shows clashes (W4.5) | Book 2–3 laptops, allow participants' own devices with the runner present, use the weekend |
+| Fewer than 50 recruited | Fewer than 50 agreed on Fri 6 Nov | Everyone recruits more that week; the minimum is 40 with at least 18 per group |
+| Online answers are rushed or careless | Very short self-reported times or near-empty written answers in the daily Sheet check (W4.7) | Decide before the freeze whether any time limit leads to exclusion; otherwise keep the rows and report the time distribution |
 | Coding is too heavy in the same week as sessions and the report | Coding less than half done on Tue 17 Nov | Everyone codes about 9 h in total; code rationale and intervention fields first; the W4 owner reassigns the remainder |
 | Test run reveals a problem | Odd numbers on Tue 10 Nov | Report honestly; **no tuning and no re-run**; document as a limitation |
 | Retention date earlier than Thu 19 Nov, or later than submission | Found in W4.1 | Earlier: move the verification chain (R6, R7, W4.8) earlier. Later: keep the data in the restricted store until that date; never delete before R7 |
 | Someone deletes the final-test output and re-runs the test | Missing output tables | The committed `final_test.lock` blocks the second run; report honestly if it happened (W3.2) |
-| A participant does not complete | Empty slot in the session log | The next recruit inherits that slot's group and variant (§2); log the exclusion |
-| Session no-shows | Empty slots on Fri 13 – Tue 17 Nov | Four spare slots (two per group); recruiters reschedule |
-| Sessions take longer than 40 minutes (11 profiles with three written answers each) | The W4.6 pilot timing | Shorten the instructions first; if still long, make the missing-information prompt optional on the last cases and disclose it as a deviation; update the consent time and the schedule before any session |
+| A participant does not complete | No submission in W4's send log by the deadline | The next recruit inherits that slot's group and variant (§2); log the exclusion |
+| No response after the link is sent | No submission two days after sending | Recruiter sends one reminder; after the deadline the spare for that form goes to a new person (§2) |
+| Responses take longer than 40 minutes (11 profiles with three written answers each) | The W4.6 pilot's self-reported time | Shorten the instructions first; if still long, make the missing-information prompt optional on the last cases and disclose it as a deviation; update the consent time before any link is sent |
 | DOCX edit conflicts | Two people edit the DOCX | Only the report editor edits it (rule 3) |
 | Writing left to the last days | R2 methods drafts missing on Fri 6 Nov | Owner writes it that weekend; editor reports the gap at the checkpoint |
 | SHAP/TabICL runs too slowly on laptops | The W1.1 timing test shows hours per run | Split the 20 cases across several members' machines; never reduce the cases or runs (the protocol is frozen) |
 | A Group B image reveals the output | Reviewer finds a probability, base value or class in an image | Fix W5.3 and rebuild; rerun the W2.6 check before the pilot |
-| A participant gets the wrong form or the link is shared | Session log shows a mismatch, or a code appears twice | Each link is single-use by convention and tied to a code; discard and replace the duplicate row |
-| Google Form settings expose data | Summary charts, email collection or public listing found | W2.4 checklist; re-check before the pilot and before every batch of sessions |
+| A participant gets the wrong form or the link is shared | The W2.8 transform reports a code on the wrong form or twice | Each link is single-use by convention and tied to a code; discard and replace the duplicate row |
+| Google Form settings expose data | Summary charts, email collection or public listing found | W2.4 checklist; re-check before the pilot and before the links go out |
 | `tabicl` or `xgboost` missing on someone's machine | Day-1 import check fails | Fix on Wed 28 Oct; the audit and final-test scripts need them |
 | Merge conflicts in shared files | Rebase errors | Per-workstream branches (rule 9); only the editor touches the DOCX |
 
@@ -339,7 +342,7 @@ one other person's work (3 h, already counted in §7). Change it if a pair works
 real course deadline and any required deliverable beyond the report and deck (for example a presentation
 date); the course retention deadline (task W4.1); each person's real availability on Fri 13 – Tue 17 Nov.
 
-| Recruiter | Participants recruited (target 10 each) | Slots booked by Fri 6 Nov |
+| Recruiter | Participants recruited (target 10 each) | Agreed by Fri 6 Nov |
 |---|---|---|
 | Member 1 | | |
 | Member 2 | | |

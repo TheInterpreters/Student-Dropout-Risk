@@ -151,7 +151,7 @@ Do not open or report final-test performance until the protocol is frozen and ac
 - [ ] **Human study** (§6): finalise class-level ethics basics (consent text, withdrawal deadline,
   course retention deadline, restricted raw-response access); recruit 50 (10 per team member; minimum 40, at least 18 per group); consent;
   run 1 practice + 10 scored cases; code responses (shared by all members, 20% double-coded);
-  analyse accuracy and session time descriptively.
+  analyse accuracy and self-reported time descriptively.
 - [ ] **Model card and reproducibility**: complete §8 with final results; provide one clean-clone
   command regenerating all tables and figures.
 - [ ] Optional sensitivity checks (Enrolled handling; admission-time window).
@@ -184,7 +184,7 @@ effectiveness at AIT.
   legend and comprehension check.
 - No correctness feedback until all 10 scored responses are locked; debrief afterwards.
 - Primary measure: participant-level accuracy across 10 cases; group means descriptive. Also
-  confidence (1–5), total session time (Google Forms cannot record per-case time), and written
+  confidence (1–5), self-reported total time (online; Google Forms cannot time cases), and written
   responses. Never treat ~500 case responses as independent people.
 - Case selection: after the one-time test run, pick five flagged and five unflagged cases
   deterministically across each group's risk range, outcome labels unused; never choose cases
@@ -203,7 +203,7 @@ privately for deletion (W4.10).
 > model's predictions. It takes about 30 minutes. You will look at 11 student
 > profiles (one practice and ten scored), guess whether the model flags each student as at-risk, rate
 > your confidence, and write three short answers per profile. We record your answers, confidence and
-> total session time under a random participant code. We do not ask for your name or any identifying
+> how long you say it took, under a random participant code. We do not ask for your name or any identifying
 > information, so please do not enter any in your answers. Participation is voluntary, you must be 18
 > or older, and you may stop at any time without penalty. Your responses are kept in access-restricted
 > storage available only to the research team and reported only in aggregate or as paraphrased
@@ -230,7 +230,7 @@ not proceed.
 | `predicted_output` | at-risk / not-at-risk | guess at the model's output |
 | `confidence` | 1–5 | self-reported confidence |
 | `correct` | bool | scored afterwards by the researcher; hidden from participants |
-| `time_seconds` | number | total session time in seconds from the session log (same value on each of a participant's rows); per-case time is not recorded |
+| `time_seconds` | number | self-reported total time in seconds (the form's last question in minutes × 60; same value on each of a participant's rows); per-case time is not recorded |
 | `rationale_freetext` | text | "Why do you think the model predicts that?" |
 | `intervention_freetext` | text | "What would you tell this student to do?" |
 | `missing_info_freetext` | text | "What extra info would help you decide?" |
@@ -253,13 +253,13 @@ collection, no sign-in); the analysis-ready long CSV `data/human_study/responses
 git-ignored via `data/**`; commit only coded/theme summaries. Keep a backup only in the
 restricted (not link-shared) Drive subfolder described in `docs/TASK_SPLIT.md` rule 4, never in the
 open team folder, and delete it everywhere (Forms, Sheet, CSV, Drive trash) at the retention deadline.
-Record the total session time in the session log; take no
+Total time is self-reported in the form (sessions are online, with no observer); take no
 think-aloud notes, interviews or recordings. Report both group accuracies and sample size.
 No subgroup comparisons with fewer than five participants.
 
 **Status.** Done: officer role and decision; development model frozen on validation; response
 schema. Open: 10 study cases (after final test); Group B images; seeded assignment list; Google
-Forms (§7); consent, assignment, session and exclusion log; codebook and two-coder subset;
+Forms (§7); consent, assignment, send and exclusion log; codebook and two-coder subset;
 one-person pilot (check nobody can see the answer); recruitment; coding. Do not collect responses
 before the validation audits pass, the study cases are selected after the single final
 evaluation, and Group B's view is rendered and piloted.
@@ -287,9 +287,10 @@ this student as at-risk?", confidence 1–5 and the three free-text prompts; a t
 mode, no answers or feedback shown.
 
 **Settings and sessions.** No email collection, no sign-in, response editing off, summary charts hidden,
-form not publicly listed; responses go to one restricted Sheet. Sessions are in person on a team laptop
-(a remote link is only a disclosed fallback). The runner takes the next unused pre-filled link, never
-chooses the group, and records start and end time and any exclusion in the session log.
+form not publicly listed; responses go to one restricted Sheet. Sessions are online and
+unsupervised: each participant opens their own pre-filled link on their own device (changed 31 Oct;
+disclosed as a limitation). W4 gives each recruiter the next unused link, nobody chooses the group,
+and W4's send log records each code's recruiter, send date, submission and any exclusion (no names, no times).
 
 **Data handling.** No names, AIT IDs or administrative records. Raw responses and free text stay out of
 version control; model outputs used for scoring stay private. Only aggregate results and paraphrased
@@ -304,7 +305,7 @@ explanation. (4) Assignment and case order reproduce from the seed. (5) Privacy 
 consent text. (7) A dry-run export transforms into the right long CSV.
 
 **Gate.** Forms are built on validation fixtures before the freeze; real cases only after the single
-final evaluation; a one-person pilot passes before any participant session.
+final evaluation; a one-person pilot passes before any participant link is sent.
 
 ## 8. Model card — student dropout early-warning model
 

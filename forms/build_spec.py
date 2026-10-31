@@ -38,7 +38,8 @@ DECISIONS_PENDING = [
     "Survey 1 is dropped. No background questions appear in this form.",
     "Role item S6.1 is included (default; confirm in W2.1).",
     "Q3 to Q5 are required (default; question bank item 10).",
-    "A wrong practice answer makes the runner re-read the legend and continue (default; item 4).",
+    "Online, no runner: the two practice chart answers are recorded but not corrected; the team decides before the freeze how wrong answers are reported.",
+    "Sessions are online and unsupervised (team decision, 31 Oct); total time is self-reported in S6.2.",
     "Participants are not told the flag mix (default; item 8).",
     "Four forms: each group sees the seeded order (Form 1 and Form 3) and its reverse (Form 2 and Form 4). Agreed by the team on 30 Oct; TASK_SPLIT, HANDOFF and the protocol JSON updated.",
     "Order seed and allocation seed are placeholders. Total is 50 participants (25 per group, 13 or 12 per form).",
@@ -49,8 +50,8 @@ DECISIONS_PENDING = [
 CONSENT_TEXT = "\n\n".join([
     "What this is\nYou are invited to take part in a short class research activity about how people understand the predictions of an AI model. It takes about 30 minutes.",
     "What you will do\n• Look at 11 student profiles (1 practice and 10 scored).\n• For each one, guess whether the model flagged the student as at risk (yes or no).\n• Rate how confident you are.\n• Write three short answers.",
-    "What we record\n• Your answers, your confidence ratings and your total session time.\n• They are stored under a random participant code.\n• We do not ask for your name or any identifying information. Please do not type any such information into your answers.",
-    "Your choice\n• Taking part is voluntary, and you must be 18 or older.\n• You can stop at any time without penalty.\n• Taking part, or not, will not affect your grades, standing, employment or any services.",
+    "What we record\n• Your answers, your confidence ratings and how long you say the activity took.\n• They are stored under a random participant code.\n• We do not ask for your name or any identifying information. Please do not type any such information into your answers.",
+    "Your choice\n• Taking part is voluntary, and you must be 18 or older.\n• You can stop at any time without penalty. If you close the page before pressing Submit, nothing is sent.\n• Taking part, or not, will not affect your grades, standing, employment or any services.",
     "How your data is used\n• Your responses are kept in access-restricted storage that only the research team can open.\n• They are used only for this course project, and reported only as group totals or paraphrased comments.",
     "If you want to withdraw\nTo withdraw after you submit, send your participant code to the person who sent you this form. Later we remove the codes and combine the responses into group results. After that, your answers can no longer be separated out.",
     "Risk & Benefits\nThe risks are no greater than everyday computer use. There is no direct benefit to you.",
@@ -63,7 +64,7 @@ INSTRUCTION_BLOCKS = [
     ("Your task", "Guess what the model predicted. We are not asking what you think will happen to the student."),
 ]
 FOR_EACH_CASE = ("For each case", "\u2022 Choose Yes if you think the model flagged the student as at risk, or No if you think it did not.\n\u2022 Rate your confidence from 1 (not at all) to 5 (very).\n\u2022 Answer three short questions in your own words.")
-GOOD_TO_KNOW = ("Good to know", "\u2022 There are no right or wrong answers to the three written questions. We want your honest reasoning.\n\u2022 Please do not type names or any identifying details.\n\u2022 You will not be told whether your answers are correct during the session.\n\u2022 Please work on your own, and do not discuss the cases with anyone until the session is over.\n\u2022 You can stop at any time without penalty.")
+GOOD_TO_KNOW = ("Good to know", "\u2022 There are no right or wrong answers to the three written questions. We want your honest reasoning.\n\u2022 Please do not type names or any identifying details.\n\u2022 You will not be told whether your answers are correct during the activity.\n\u2022 Please do it in one sitting, on your own, without looking anything up, and do not discuss the cases with anyone until you have submitted.\n\u2022 You can stop at any time without penalty.")
 READY_LINE = "When you are ready, continue to the practice case."
 INSTR_A = ("Each profile shows the student's recorded information only. "
            "Use it to decide what you think the model will do.")
@@ -219,6 +220,8 @@ def build_variant(group, index, seed, order, cases_by_id):
                                 profile_items(cases_by_id[case_id], group) + question_items(case_id)))
     sections.append(section("S6", "Closing", "", [
         item_mc("S6.1", "Which best describes you?", ["Student", "Staff or adviser", "Other"]),
+        dict(item_text("S6.2", "short_text", "About how many minutes did the whole activity take you?",
+                       help_text="Please enter a number, for example 30."), number_range=[1, 300]),
     ]))
     finish = section("COMPLETE", "Finish", FINISH_TEXT + "\n\n" + DEBRIEF, [])
     finish["after"] = "SUBMIT"  # completers submit here and never reach the decline page
@@ -259,9 +262,24 @@ def build_assignment(variant_ids):
     return rows
 
 
-def build_all():
-    header, rows = load_uci()
-    pack, lookup = build_cases(header, rows)
+def load_pack(pack_path, private_path):
+    """Read a study case pack (W3.9 export) and its private file; refuse anything that fails the W2.2 check."""
+    with open(pack_path, encoding="utf-8") as f:
+        pack = json.load(f)
+    with open(private_path, encoding="utf-8") as f:
+        lookup = json.load(f)
+    problems = case_pack.validate_pack(pack) + case_pack.validate_private(lookup, pack.get("pack_kind"))
+    if problems:
+        raise SystemExit("Case pack failed the W2.2 check (python3 forms/case_pack.py):\n  " + "\n  ".join(problems))
+    return pack, lookup
+
+
+def build_all(pack_path=None, private_path=None):
+    if pack_path:
+        pack, lookup = load_pack(pack_path, private_path)
+    else:
+        header, rows = load_uci()
+        pack, lookup = build_cases(header, rows)
     cases_by_id = {c["case_id"]: c for c in pack["cases"]}
     variants = []
     seed = ORDER_SEEDS[0]
@@ -271,7 +289,9 @@ def build_all():
     for group in ["A", "B"]:
         for index in (1, 2):
             variants.append(build_variant(group, index, seed, orders[index], cases_by_id))
-    spec = {"spec_status": "FIXTURE 0.1 (dummy cases, placeholders)", "form_title": FORM_TITLE,
+    status = ("FIXTURE 0.1 (dummy cases, placeholders)" if pack["pack_kind"] == "fixture"
+              else "STUDY: " + pack["source"])
+    spec = {"spec_status": status, "pack_kind": pack["pack_kind"], "form_title": FORM_TITLE,
             "debrief": DEBRIEF, "confirmation": CONFIRMATION, "decisions_pending": DECISIONS_PENDING,
             "profile_groups": [{"heading": h, "fields": [{"field": f, "label": l, "kind": k} for f, l, k in fs]} for h, fs in labels.GROUPS],
             "variants": variants}
@@ -280,21 +300,32 @@ def build_all():
 
 def write_outputs(pack, lookup, spec, assignment):
     OUT.mkdir(parents=True, exist_ok=True)
-    with open(OUT / "case_pack_fixture.json", "w", encoding="utf-8") as f:
-        json.dump(pack, f, indent=2, ensure_ascii=False)
-    with open(OUT / "private_lookup_fixture.json", "w", encoding="utf-8") as f:
-        json.dump(lookup, f, indent=2)
+    kind = pack["pack_kind"]
+    if kind == "fixture":  # a study pack is an input and stays where W3 put it
+        with open(OUT / "case_pack_fixture.json", "w", encoding="utf-8") as f:
+            json.dump(pack, f, indent=2, ensure_ascii=False)
+        with open(OUT / "private_lookup_fixture.json", "w", encoding="utf-8") as f:
+            json.dump(lookup, f, indent=2)
     with open(OUT / "form_spec.json", "w", encoding="utf-8") as f:
         json.dump(spec, f, indent=2, ensure_ascii=False)
-    with open(OUT / "assignment_fixture.csv", "w", newline="", encoding="utf-8") as f:
+    with open(OUT / ("assignment_%s.csv" % kind), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["slot", "participant_code", "variant_id", "group", "role"])
         w.writeheader()
         w.writerows(assignment)
 
 
 def main():
-    pack, lookup, spec, assignment = build_all()
+    import argparse
+    ap = argparse.ArgumentParser(description="Build the form spec and assignment list. "
+                                 "Without options: the fixture (test) build.")
+    ap.add_argument("--case-pack", help="study case pack from W3.9 (case_pack_study.json)")
+    ap.add_argument("--private", help="the private lookup that goes with --case-pack")
+    args = ap.parse_args()
+    if bool(args.case_pack) != bool(args.private):
+        ap.error("--case-pack and --private must be given together")
+    pack, lookup, spec, assignment = build_all(args.case_pack, args.private)
     write_outputs(pack, lookup, spec, assignment)
+    print("Build:", pack["pack_kind"])
     print("Wrote outputs to", OUT)
     print("Variants:", [v["variant_id"] for v in spec["variants"]])
     print("Assignment rows:", len(assignment))
