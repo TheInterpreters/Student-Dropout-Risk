@@ -4,7 +4,7 @@ Status: fixture only. Dummy cases from the validation split, placeholders marked
 Nothing here is published. Do not run with real cases before the final test run.
 
 ## Files
-- build_spec.py: builds the case pack, four form specs (A1, A2, B1, B2), and the assignment list (50 main slots plus 4 spares, one per form).
+- build_spec.py: builds the case pack, four form specs (A1, A2, B1, B2), and the assignment list (50 main slots, 4 spares (one per form) and 1 pilot link on Form 3; delete the pilot's response row after the pilot).
 - test_spec.py: checks the spec (profile fields, validation-only cases, seeded orders, A/B parity, leak scan, assignment).
 - render_forms.gs: Apps Script renderer. Creates the six forms and a links sheet.
 - out/: generated outputs. Ignored by git (private lookup and codes).

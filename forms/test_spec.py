@@ -90,14 +90,17 @@ def main():
         if re.search(r"\b" + re.escape(phrase) + r"\b", blob):
             fails.append("forbidden phrase in spec: '%s'" % phrase)
 
-    # 8. assignment: 50 main slots (25 per group, 13/12 per form) plus 4 spares (one per form), unique codes
+    # 8. assignment: 50 main slots (25 per group, 13/12 per form), 4 spares (one per form), 1 pilot, unique codes
     codes = [r["participant_code"] for r in assignment]
     if len(set(codes)) != len(codes):
         fails.append("duplicate participant codes")
     main = [r for r in assignment if r["role"] == "main"]
     spares = [r for r in assignment if r["role"] == "spare"]
-    if len(main) + len(spares) != len(assignment):
+    pilots = [r for r in assignment if r["role"] == "pilot"]
+    if len(main) + len(spares) + len(pilots) != len(assignment):
         fails.append("assignment has rows with an unknown role")
+    if len(pilots) != 1 or not pilots[0]["participant_code"].startswith("PILOT-") or pilots[0]["variant_id"] not in by_id:
+        fails.append("expected exactly one pilot row with a PILOT- code on a real form")
     if len(main) != 50:
         fails.append("assignment has %d main slots, expected 50" % len(main))
     for g in ("A", "B"):
@@ -124,6 +127,34 @@ def main():
         titles = [i["title"] for s in v["sections"] for i in s["items"]]
         if any("form version" in t.lower() for t in titles):
             fails.append("%s shows a form version field" % v["variant_id"])
+
+    # 13. the case pack follows the W2.2 format; bar ids and combined bars match the definitions in src/
+    import case_pack as cp
+    for problem in cp.validate_pack(pack) + cp.validate_private(lookup, pack.get("pack_kind")):
+        fails.append("case pack: " + problem)
+    try:
+        # Read the definitions straight from src/ (no heavy imports): the column rule and the two groups.
+        import ast
+        mod = ast.parse((b.ROOT / "src" / "modeling.py").read_text(encoding="utf-8"))
+        fn = [n for n in mod.body if isinstance(n, ast.FunctionDef) and n.name == "clean_column_name"][0]
+        space = {}
+        exec(compile(ast.Module(body=[fn], type_ignores=[]), "src/modeling.py", "exec"), space)
+        model_clean = space["clean_column_name"]
+        exp = ast.parse((b.ROOT / "src" / "explanations.py").read_text(encoding="utf-8"))
+        node = [n for n in exp.body if isinstance(n, (ast.Assign, ast.AnnAssign))
+                and getattr(n.target if isinstance(n, ast.AnnAssign) else n.targets[0], "id", "") == "FIRST_SEMESTER_GROUPS"][0]
+        FIRST_SEMESTER_GROUPS = ast.literal_eval(node.value)
+        for field in cp.profile_field_labels():
+            if cp.clean_column_name(field) != model_clean(field):
+                fails.append("bar id rule differs from src/modeling.py for %s" % field)
+        if set(cp.GROUP_BARS) != set(FIRST_SEMESTER_GROUPS):
+            fails.append("combined bar names differ from src/explanations.py")
+        for g, members in cp.GROUPED_FIELDS.items():
+            raw = {m for m in FIRST_SEMESTER_GROUPS.get(g, ()) if not m.startswith("first_semester_")}
+            if {cp.clean_column_name(f) for f in members} != raw:
+                fails.append("members of combined bar %s differ from src/explanations.py" % g)
+    except Exception as e:
+        fails.append("could not read src/ definitions for the bar-id cross-check: %s" % e)
 
     # 12. ending: completers go S6 -> COMPLETE -> submit; only the two decline answers route, to DECLINE (last page)
     for v in variants:

@@ -2,14 +2,16 @@
 """Fixture build for the human-study forms. No real cases, no model outputs.
 
 Uses validation-split rows only (artifacts/split_ids.csv). Writes to forms/out/:
-  case_pack_fixture.json       profile cards: PR (practice) and C01-C10 (scored)
-  private_lookup_fixture.json  case -> UCI source row. Keep private.
-  form_spec.json               six variants: A1-A3 (control), B1-B3 (explanation)
-  assignment_fixture.csv       participant slots (50 main + 4 spares) -> form
+  case_pack_fixture.json       PR (practice) and C01-C10 (scored), in the W2.2 format (forms/case_pack.py);
+                               contributions are PLACEHOLDERS until real validation SHAP values exist
+  private_lookup_fixture.json  case -> UCI source row (model_flag null in fixtures). Keep private.
+  form_spec.json               four forms: A1, A2 (control), B1, B2 (explanation)
+  assignment_fixture.csv       participant slots (50 main + 4 spares + 1 pilot) -> form
 Anything marked [TBD] or 'placeholder' must be replaced before a real run.
 """
 import csv
 import json
+import case_pack
 import labels
 import pathlib
 import random
@@ -24,6 +26,8 @@ ORDER_SEEDS = [11]  # one fixed order shared by both groups; placeholder seed, r
 ALLOCATION_SEED = 2026         # placeholder: record real seed
 PER_GROUP = 25  # 50 participants, 25 per group (13 + 12 across the group's two forms)
 SPARES_PER_FORM = 1  # 4 spares, one per form (two per group), held by W4 (TASK_SPLIT section 2)
+PILOT_FORM = "B1"     # pilot (W4.6) uses Form 3: Group B shows the most (charts and comprehension check)
+PILOT_CODE = "PILOT-01"  # distinct prefix so the pilot row is easy to find and delete
 PRACTICE_ID = "PR"
 SCORED_IDS = ["C%02d" % i for i in range(1, 11)]
 FORM_TITLE = "Understanding an AI Model's Predictions: Class Research Activity"
@@ -100,14 +104,22 @@ def validation_ids():
 def build_cases(header, rows):
     fields = set(profile_fields(header))
     chosen = random.Random(FIXTURE_SEED).sample(validation_ids(), len(SCORED_IDS) + 1)
+    bars = sorted(case_pack.bar_labels().items())
+    fake = random.Random(FIXTURE_SEED + 100)  # placeholder bars only; separate so the chosen cases stay the same
     cases, lookup = [], {}
     for case_id, src in zip([PRACTICE_ID] + SCORED_IDS, chosen):
         values = rows[src]
         profile = [{"field": h, "value": v.strip()} for h, v in zip(header, values) if h in fields]
-        cases.append({"case_id": case_id, "profile": profile})
-        lookup[case_id] = {"source_row_id": src}
-    pack = {"pack_status": "FIXTURE: dummy cases from the validation split. Not for scoring.",
-            "cases": cases}
+        contributions = [{"bar_id": bar_id, "label": label, "value": round(fake.uniform(-0.15, 0.15), 4)}
+                         for bar_id, label in fake.sample(bars, case_pack.TOP_K)]
+        contributions.sort(key=lambda bar: -abs(bar["value"]))
+        cases.append({"case_id": case_id, "role": "practice" if case_id == PRACTICE_ID else "scored",
+                      "profile": profile, "chart_file": case_pack.chart_file(case_id),
+                      "contributions": contributions})
+        lookup[case_id] = {"source_row_id": src, "model_flag": None}
+    pack = {"contract_version": case_pack.CONTRACT_VERSION, "pack_kind": "fixture", "protocol_version": "1.3",
+            "source": "FIXTURE: 11 dummy cases from the validation split (FIXTURE_SEED %d). Not for scoring." % FIXTURE_SEED,
+            "model_ref": "none (fixture)", "contributions_placeholder": True, "cases": cases}
     return pack, lookup
 
 
@@ -138,8 +150,10 @@ def section(sec_id, title, description, items):
 def profile_items(case, group):
     items = [item_block(case["case_id"] + ".profile", "Student profile", profile_text(case))]
     if group == "B":
-        items.append(item_block(case["case_id"] + ".chart", "Contribution chart",
-                                "[TBD: chart image rendered by W5.3; placeholder in fixture]"))
+        chart = item_block(case["case_id"] + ".chart", "Contribution chart",
+                           "[TBD: chart image rendered by W5.3; placeholder in fixture]")
+        chart["image"] = case_pack.chart_file(case["case_id"])  # file name the renderer will insert
+        items.append(chart)
     return items
 
 
@@ -239,6 +253,9 @@ def build_assignment(variant_ids):
         for _ in range(SPARES_PER_FORM):
             rows.append({"slot": len(rows) + 1, "participant_code": new_code(), "variant_id": variant,
                          "group": variant[0], "role": "spare"})
+    # One pilot link (W4.6): not one of the 50 and not a spare; its response row is deleted after the pilot.
+    rows.append({"slot": len(rows) + 1, "participant_code": PILOT_CODE, "variant_id": PILOT_FORM,
+                 "group": PILOT_FORM[0], "role": "pilot"})
     return rows
 
 
