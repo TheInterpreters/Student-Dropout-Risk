@@ -18,6 +18,7 @@ from src.evaluation import (
     reliability_table, save_reliability_figure,
 )
 from src.modeling import capacity_predictions
+from src.freeze import create_snapshot, file_hash, verify_snapshot
 
 LOCK = ROOT / "artifacts" / "final_test.lock"
 TAG = "protocol-1.3-frozen"
@@ -72,13 +73,16 @@ def check_gate(approval_path):
             "command": sys.argv}
 
 
-def execute(split, out, bootstrap_resamples=None):
+def execute(split, out, bootstrap_resamples=None, checkpoint=None):
     import joblib
     import numpy as np
     import pandas as pd
     protocol = load_protocol()
     train, evaluation, columns = development_frames(split)
-    metrics, predictions, fitted = evaluate_frozen_models(train, evaluation, columns)
+    if checkpoint is None:
+        metrics, predictions, fitted = evaluate_frozen_models(train, evaluation, columns)
+    else:
+        metrics, predictions, fitted = evaluate_frozen_models(train, evaluation, columns, checkpoint=checkpoint)
     out.mkdir(parents=True, exist_ok=True)
     metrics.insert(0, "split", split)
     metrics.to_csv(out / "metrics.csv", index=False)
@@ -125,19 +129,68 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--split", choices=["validation", "test"], default="validation")
     parser.add_argument("--approval", help="tracked freeze approval JSON; required for test")
+    parser.add_argument("--create-local-freeze", type=Path, help="create a private snapshot and exit; no test access")
+    parser.add_argument("--checkpoint", type=Path, help="cached TabICL checkpoint to copy into the snapshot")
+    parser.add_argument("--deviation-note", help="honest record of incomplete checks; not reviewer approval")
+    parser.add_argument("--local-freeze", type=Path, help="alternative to pushed-tag approval")
+    parser.add_argument("--acknowledge-incomplete-checks", action="store_true")
     parser.add_argument("--confirm-final-test", action="store_true")
     args = parser.parse_args(argv)
+    if args.create_local_freeze:
+        if args.split != "validation" or args.local_freeze or args.approval or args.confirm_final_test:
+            parser.error("snapshot creation cannot be combined with evaluation/approval options")
+        if not args.checkpoint or not args.deviation_note:
+            parser.error("snapshot creation requires --checkpoint and --deviation-note")
+        if LOCK.exists():
+            raise FileExistsError("cannot create a replacement freeze after final-test access")
+        verify_environment()
+        destination = args.create_local_freeze.resolve()
+        if not destination.is_relative_to((ROOT / "data").resolve()):
+            parser.error("local snapshots must stay in ignored data/ storage")
+        path = create_snapshot(ROOT, destination, args.checkpoint.resolve(), args.deviation_note)
+        print("Local freeze created (not independently approved):", path)
+        return 0
+    if args.split != "test" and (args.local_freeze or args.approval or args.confirm_final_test
+                                 or args.acknowledge_incomplete_checks):
+        parser.error("freeze/approval/confirmation options require --split test")
     if args.split == "test":
-        if not args.confirm_final_test or not args.approval:
-            parser.error("test access needs --approval and --confirm-final-test; do not run before freeze")
+        if not args.confirm_final_test or bool(args.approval) == bool(args.local_freeze):
+            parser.error("test access needs exactly one of --approval/--local-freeze and --confirm-final-test")
         if LOCK.exists():
             raise FileExistsError("final-test lock exists; never rerun or clear without a recorded team decision")
-        metadata = check_gate(args.approval)
+        checkpoint = None
+        if args.local_freeze:
+            if not args.acknowledge_incomplete_checks:
+                parser.error("local freeze requires --acknowledge-incomplete-checks; this is a protocol deviation")
+            verify_environment()
+            path = args.local_freeze.resolve()
+            checkpoint = verify_snapshot(ROOT, path)
+            metadata = {
+                "freeze_mode": "local_snapshot", "local_freeze": str(path),
+                "local_freeze_sha256": file_hash(path),
+                "protocol_sha256": file_hash(ROOT / "config" / "evaluation_protocol.json"),
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "review_status": "not independently approved",
+                "incomplete_checks_and_deviation": json.loads(path.read_text(encoding="utf-8"))[
+                    "incomplete_checks_and_deviation"],
+            }
+        else:
+            metadata = check_gate(args.approval)
         acquire_lock(LOCK, metadata)
         # Never clear the lock on failure: a partial run still used the test split.
-        result = execute("test", ROOT / "tables" / "final_test")
+        if checkpoint is None:
+            result = execute("test", ROOT / "tables" / "final_test")
+        else:
+            result = execute("test", ROOT / "tables" / "final_test", checkpoint=checkpoint)
+            verify_snapshot(ROOT, args.local_freeze.resolve())
+            import joblib
+            bundle_path = ROOT / "data" / "final_evaluation" / "selected_model.joblib"
+            bundle = joblib.load(bundle_path)
+            bundle["local_freeze_sha256"] = metadata["local_freeze_sha256"]
+            joblib.dump(bundle, bundle_path)
+            result["model_bundle_sha256"] = file_hash(bundle_path)
         LOCK.write_text(json.dumps({**metadata, **result, "status": "completed"}, indent=2), encoding="utf-8")
-        print("Final test complete. Commit artifacts/final_test.lock immediately; never rerun.")
+        print("Final test complete. Preserve artifacts/final_test.lock and freeze evidence; never rerun.")
     else:
         result = execute("validation", ROOT / "tables" / "final_test_dry_run")
         print("VALIDATION DRY RUN ONLY:", json.dumps(result))

@@ -8,6 +8,24 @@ Aye Khin Khin Hpone (Yolanda) - 125970, Nguyen Liem Son (Lucas) - 126729, Witcha
 
 ## Current Development
 
+**Latest W3 result (2 Nov):** the single final evaluation is complete on 545 held-out cases under
+the authorized local hashed freeze; preserve `artifacts/final_test.lock` and never rerun it.
+Final metrics/intervals/reliability/subgroup outputs are in `tables/final_test/`.
+TabICL ROC-AUC is 0.9566 and Brier 0.0740; paired intervals do not establish superiority
+over XGBoost or EBM. Real study cases and 11 genuine charts have been exported privately.
+See HANDOFF sections 8 and 12 for results, deviations and handover. Earlier unopened-test
+statements below describe the pre-final workflow, not current status. Live privacy acceptance,
+real-form build and pilot remain incomplete; no human responses have been collected by this work.
+
+**2 Nov accelerated amendment:** the full explanation audit was stopped at the owner's request.
+The default `python scripts/run_explanation_audit.py` now runs a one-case/two-seed validation
+smoke check (47.37 seconds in the recorded run, single-case top-five overlap 0.8). It checks
+execution, not explanation quality; faithfulness, background/perturbation stability and recourse
+auditing are omitted and must be disclosed. `--full-audit` explicitly opts into the old workload.
+The local hashed-freeze alternative and incomplete live checks are documented in HANDOFF section 12.
+These amendments supersede the original full-audit/tag prerequisites described below; genuine
+study charts, consent/privacy, consistent assignments and the once-only test lock are retained.
+
 EDA, validation-only model selection, and the explanation integration gate are complete.
 The frozen development configuration uses TabICL 2.2.0 with four estimators, a top-20%
 cohort-capacity outreach policy, grouped perturbations, and model-agnostic permutation
@@ -96,5 +114,6 @@ Run `python scripts/reproduce_results.py` for tests and fixture-only checks; it 
 final test. Real-model validation regeneration is an explicit, expensive option.
 
 The study uses W5's sealed assignment CSV throughout; form exports require explicit source
-variants to prevent same-group case-order mislabelling. No private seed/list, real test result,
-Google permission check or live acceptance sign-off is claimed by this implementation.
+variants to prevent same-group case-order mislabelling. Real test aggregates are now available;
+no private seed/list sealing or live acceptance sign-off is claimed. Private fitted models,
+study lookups, case packs and chart handover files are intentionally excluded from Git.

@@ -1,9 +1,29 @@
 # Task Split and Timeline — Five Workstreams plus a Shared Report/Slides Track
 
+**Latest W3 status (2 Nov, evening):** local hashed freeze and once-only five-model final evaluation
+completed (545 test cases); real case pack and 11 genuine charts exported and validated. Final
+aggregates/plots and completed lock are retained; model, snapshot and case lookup stay private.
+Model card/results and member handover are in HANDOFF sections 8/12. W3's implementation and
+local execution are complete, but independent W5 clean-clone verification, private assignment sealing,
+real-form build, restricted response storage, live acceptance, pilot and actual study are not.
+Earlier "test not run" notes below are historical and superseded; never rerun the final evaluation.
+
 Draft for the team meeting on Tue 27 Oct 2026. Workstreams are roles, not names: agree who takes
 which one and record it in the tracker (§10); the decisions are already settled in §1. Methodology and
 protocol live in `docs/HANDOFF.md`; this file says **who does what, by when, in what order, and when
 each task counts as done**.
+
+**Accelerated amendment (2 Nov, evening; takes precedence over the original schedule/gates below):**
+Yolanda replaced W1's full audit with one validation-case/two-seed exploratory smoke check.
+W1.1-W1.4's original large audit outputs are omitted, not passed; W1.5 becomes a limitation note
+describing the smoke result and missing evidence. The smoke check completed in 47.37 seconds,
+with top-five overlap 0.8 on that single case. Default `scripts/run_explanation_audit.py` runs
+the short check; only `--full-audit` opts back into the old workload. Local hashed freeze replaces
+mandatory committed/tagged publication when selected; record incomplete gates without fake approvals.
+Consent/privacy, genuine chart values, consistent assignment and the once-only final-test lock remain.
+See HANDOFF section 12 and `config/evaluation_protocol.json`; historical requirements below do not
+override this amendment. No real collection or full-audit completion is claimed.
+The current full unit suite contains **62 passing tests**, with separate form checks passing.
 
 **What changed on 27 Oct:** participants answer a **Google Form** instead of a custom-built interface
 (decision D8). The study itself is unchanged: same two groups, same 10 cases, same questions, same
@@ -166,6 +186,16 @@ ID W1.6 moved to W2.2.
 | W2.7 | **Real forms:** after the test run, build the four forms from the 10 study cases and the practice case (running W5.3's image renderer), repeat the parity check without retuning, and prepare the pre-filled links per the assignment list for W4. | [D: W3.9, W5.8] | Thu 12 Nov | Displayed values equal the exported frozen outputs; links tested by opening each variant once. |
 
 ### W3 Yolanda — Final evaluation, study cases and reproducibility
+
+2 Nov follow-up: the exact pinned Python 3.12 environment, 58 tests and five-model
+validation dry run pass locally. One SHAP explanation took 20.88 seconds; the full W1 audit
+is deferred (at least 2.44 hours plus additional work). Live W2.6 is not passed: chart/policy
+parity and restricted Sheet access still fail. See HANDOFF section 12 for evidence and next actions.
+No freeze or final-test run is approved by these checks.
+Later on 2 Nov, Yolanda selected the documented local hashed-freeze alternative (HANDOFF section 12),
+without requiring a commit/pushed tag or inventing independent approval. The full audit is now
+running, superseding its earlier deferral. All 61 current tests pass; the once-only final-test
+lock remains mandatory and the real final evaluation has not yet been performed.
 
 | ID | Task | Depends | Deadline | Done when |
 |---|---|---|---|---|

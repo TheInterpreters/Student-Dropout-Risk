@@ -10,8 +10,11 @@ import numpy as np
 import pandas as pd
 
 from scripts import run_final_test as final
-from scripts.run_explanation_audit import area_interval, run_audit
+from scripts import export_study_cases as export
+from scripts import run_explanation_audit as audit
+from scripts.run_explanation_audit import area_interval, run_audit, run_smoke_check
 from src.evaluation import load_protocol, reliability_table
+from src.freeze import create_snapshot, file_hash, verify_snapshot
 
 
 class FakeModel:
@@ -21,6 +24,97 @@ class FakeModel:
 
 
 class EvaluationRunnerTests(unittest.TestCase):
+    def test_default_audit_cli_never_runs_full_audit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            result = {"mode": "exploratory_smoke", "full_audit_completed": False}
+            with patch.object(audit, "ROOT", root), \
+                 patch.object(audit, "development_frames", return_value=(None, None, [])), \
+                 patch.object(audit, "selected_model"), \
+                 patch.object(audit, "run_smoke_check", return_value=result) as smoke, \
+                 patch.object(audit, "run_audit") as full:
+                self.assertEqual(audit.main([]), 0)
+                smoke.assert_called_once()
+                full.assert_not_called()
+                evidence = json.loads((root / "artifacts" / "explanation_smoke_validation.json").read_text())
+                self.assertFalse(evidence["full_audit_completed"])
+
+    def test_local_snapshot_detects_changed_inputs_and_checkpoint(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for name in ("requirements.txt", "artifacts/split_ids.csv",
+                         "eda_uci_data/data/dropout_data.csv", "src/example.py"):
+                path = root.joinpath(*name.split("/"))
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic")
+            checkpoint = root / "synthetic.ckpt"
+            checkpoint.write_bytes(b"synthetic model")
+            manifest = create_snapshot(root, root / "data" / "freeze", checkpoint, "live acceptance incomplete")
+            frozen_checkpoint = verify_snapshot(root, manifest)
+            self.assertEqual(file_hash(checkpoint), file_hash(frozen_checkpoint))
+            code = root / "src" / "example.py"
+            code.write_text("changed")
+            with self.assertRaisesRegex(ValueError, "input changed"):
+                verify_snapshot(root, manifest)
+            code.write_text("synthetic")
+            extra = root / "src" / "extra.py"
+            extra.write_text("new input")
+            with self.assertRaisesRegex(ValueError, "file set changed"):
+                verify_snapshot(root, manifest)
+            extra.unlink()
+            frozen_checkpoint.write_bytes(b"changed")
+            with self.assertRaisesRegex(ValueError, "checkpoint changed"):
+                verify_snapshot(root, manifest)
+            with self.assertRaises(FileExistsError):
+                create_snapshot(root, root / "data" / "freeze", checkpoint, "incomplete")
+
+    def test_local_test_requires_explicit_deviation_acknowledgement(self):
+        with patch.object(final, "execute") as execute, \
+             patch.object(final, "LOCK", Path("nonexistent-synthetic-final-lock")):
+            with self.assertRaises(SystemExit):
+                final.main(["--split", "test", "--local-freeze", "dummy.json", "--confirm-final-test"])
+            execute.assert_not_called()
+
+    def test_local_test_binds_bundle_and_keeps_once_only_lock(self):
+        import joblib
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "config").mkdir()
+            (root / "config" / "evaluation_protocol.json").write_text("{}")
+            manifest = root / "manifest.json"
+            manifest.write_text(json.dumps({"incomplete_checks_and_deviation": "form acceptance incomplete"}))
+            bundle_path = root / "data" / "final_evaluation" / "selected_model.joblib"
+            bundle_path.parent.mkdir(parents=True)
+            joblib.dump({"model": "synthetic"}, bundle_path)
+            lock = root / "final_test.lock"
+            args = ["--split", "test", "--local-freeze", str(manifest),
+                    "--confirm-final-test", "--acknowledge-incomplete-checks"]
+            with patch.object(final, "ROOT", root), patch.object(final, "LOCK", lock), \
+                 patch.object(final, "verify_environment"), \
+                 patch.object(final, "verify_snapshot", return_value=root / "checkpoint") as verify, \
+                 patch.object(final, "execute", return_value={"split": "test"}) as execute:
+                self.assertEqual(final.main(args), 0)
+                self.assertEqual(verify.call_count, 2)
+                self.assertEqual(execute.call_args.kwargs["checkpoint"], root / "checkpoint")
+                with self.assertRaises(FileExistsError):
+                    final.main(args)
+                self.assertEqual(execute.call_count, 1)
+            evidence = json.loads(lock.read_text())
+            self.assertEqual(evidence["status"], "completed")
+            self.assertEqual(evidence["review_status"], "not independently approved")
+            self.assertEqual(evidence["model_bundle_sha256"], file_hash(bundle_path))
+            self.assertEqual(joblib.load(bundle_path)["local_freeze_sha256"], file_hash(manifest))
+            artifacts = root / "artifacts"
+            artifacts.mkdir()
+            (artifacts / "final_test.lock").write_text(json.dumps(evidence))
+            bundle_path.write_bytes(b"tampered model")
+            with patch.object(export, "ROOT", root), \
+                 patch.object(export, "verify_snapshot"), \
+                 patch.object(export, "development_frames") as frames:
+                with self.assertRaisesRegex(ValueError, "bundle changed"):
+                    export.main([])
+                frames.assert_not_called()
+
     def test_lock_survives_deleted_outputs_and_refuses_repeat(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "final_test.lock"
@@ -138,6 +232,17 @@ class EvaluationRunnerTests(unittest.TestCase):
         self.assertEqual(set(tables["stability_validation"]["variation"]), {"seed", "background", "perturbation"})
         self.assertFalse(timing["test_evaluated"])
         self.assertTrue((tables["stability_validation"]["top_5_overlap"] == 1).all())
+        with patch("scripts.run_explanation_audit.permutation_shap_values", side_effect=fake_shap) as explain:
+            result = run_smoke_check(train, validation, columns, FakeModel(), protocol)
+        self.assertEqual(explain.call_count, 2)
+        self.assertEqual(result["mode"], "exploratory_smoke")
+        self.assertFalse(result["full_audit_completed"])
+        self.assertFalse(result["test_evaluated"])
+        self.assertEqual(result["single_case_top_5_overlap"], 1.)
+        with patch("scripts.run_explanation_audit.permutation_shap_values",
+                   return_value=SimpleNamespace(values=np.full((1, len(columns)), np.nan))):
+            with self.assertRaisesRegex(ValueError, "non-finite"):
+                run_smoke_check(train, validation, columns, FakeModel(), protocol)
 
 
 if __name__ == "__main__":

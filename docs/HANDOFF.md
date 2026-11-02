@@ -314,9 +314,12 @@ final evaluation; a one-person pilot passes before any participant link is sent.
 
 ## 8. Model card — student dropout early-warning model
 
-**Status.** Development model and protocol selected; final test locked. Protocol 1.3 freezes the
-EBM baseline plus validation-split audit cases, explanation, uncertainty, suppression, recourse
-and human-study rules. The policy ranks each cohort and flags at most the top 20%.
+**Status (2 Nov, final evaluation completed).** The five frozen models were evaluated once on
+545 held-out cases using the owner-authorized local hashed freeze. The completed final-test lock
+prevents reruns. This was an accelerated protocol deviation without independent approval:
+the full explanation audit was replaced by a one-case smoke check, and live form acceptance
+was incomplete. These limitations must accompany reported results. The policy ranks each cohort
+and flags at most the top 20%.
 
 **Intended use.** Decision support for a student-support officer prioritising voluntary outreach
 after first-semester results. Not an autonomous decision system; must not be used to deny
@@ -339,14 +342,40 @@ precision 0.9907, Brier 0.0757, ECE 0.0325. The 0.0060 gap to TabICL is modest; 
 same-test-set comparison decides whether complexity is justified. Raw probabilities are evaluated
 with Brier, 10-bin ECE and a reliability curve; no recalibration after test access.
 
+**Final held-out results (545 cases; one run).**
+
+| Model | ROC-AUC | Brier | Recall at 20% capacity | Precision at 20% capacity |
+|---|---|---|---|---|
+| Logistic regression | 0.9525 | 0.0822 | 0.5070 | 0.9908 |
+| Depth-3 tree | 0.9099 | 0.0999 | 0.5023 | 0.9817 |
+| XGBoost | 0.9557 | 0.0711 | 0.5070 | 0.9908 |
+| Main-effects EBM | 0.9539 | 0.0768 | 0.5117 | 1.0000 |
+| TabICL | 0.9566 | 0.0740 | 0.5070 | 0.9908 |
+
+Every model flags 109/545 cases (20%). TabICL balanced accuracy is 0.7520, macro-F1 0.7664,
+10-bin ECE 0.0323, and confusion matrix TN=331, FP=1, FN=105, TP=108. Its ROC-AUC advantage
+over EBM is 0.0027 (paired 95% bootstrap interval -0.0071 to 0.0138); over XGBoost it is
+0.0009 (-0.0061 to 0.0086). These do not establish superiority over either comparator.
+XGBoost has the lowest point-estimate Brier score; EBM has the highest capacity recall/precision.
+Do not select or tune a different model after seeing the held-out results. Full tables, 2,000-resample
+paired intervals, reliability plots and descriptive subgroup/proxy screens are in `tables/final_test/`.
+
 **Explanation evidence.** Permutation SHAP (25 background rows, 67 evaluations) reconstructed
 probabilities within 4.1e-8 on two validation cases (artifact max 3.2e-8); synthetic white-box
 rank Spearman 1.0. EBM intercept plus main effects reconstruct validation probabilities within
-3.3e-16 (intrinsic reference). Deletion, top-five, perturbation and human results are pending.
+3.3e-16 (intrinsic reference). The accelerated smoke check produced top-five overlap 0.8 on
+one validation case across two seeds; this is not a general stability estimate. Full deletion,
+background/perturbation stability and constrained-recourse auditing were omitted, not passed.
+Human-study results do not exist yet.
 
 **Fairness and limitations.** Retain subgroup counts, suppress metrics below n=30, report the
 all-feature proxy screen. Single institution; may not transfer across countries or time.
 Associations are not causal diagnoses; a feasible counterfactual may not exist for every student.
+Final descriptive gender-group flag rates were 0.1224 and 0.3238, with recalls 0.4100 and
+0.5929 respectively (coded groups 0/1). These differences do not demonstrate fairness or causation.
+Small-group performance metrics are suppressed in the tables; cross-country/generalisation claims
+remain unsupported. Human study, live privacy acceptance and independent clean-clone verification
+remain outstanding.
 
 ## 9. Course-criteria alignment
 
@@ -444,13 +473,75 @@ Ignored local text-branch material (`text_analysis/`, `data/text/`, `requirement
 
 ## 12. Member handover and remaining gates (2 Nov 2026)
 
+### Latest W3 completion record (2 Nov, evening; supersedes earlier pending-status notes)
+
+The owner authorized completing W3 and committing the combined work directly on `main`.
+The local freeze and **single final evaluation are completed**, with lock status `completed`.
+The final evaluation was not repeated when a later explanation-export process was interrupted:
+only the unfinished export was restarted from the saved model, before any study pack existed.
+No scientific code/configuration was changed after creating the snapshot.
+
+- Frozen manifest SHA-256: `37a021d34d722e7dfec9e72481f41b1c28655b20d412cfc506abc244b99422b3`.
+- Protocol SHA-256: `ae7bfe66294cec154622e6828862f575a02413a7e32099b1a53e3e1a0c1c44ac`.
+- Five-model evaluation: **545 held-out cases**, completed lock `artifacts/final_test.lock`;
+  final aggregates/plots and 22-file hash manifest under `tables/final_test/`. Do not rerun it.
+- Private fitted model: `data/final_evaluation/selected_model.joblib`; its SHA-256 is bound in
+  the completed lock. Preserve it and `data/local_freeze/` privately; a Git clone alone does not
+  contain these assets and must not trigger another final evaluation.
+- Real export: `data/study_cases/case_pack_study.json` and
+  `data/study_cases/private_lookup_study.json`: **one validation practice plus ten test cases**,
+  genuine signed grouped SHAP contributions, five flagged/five unflagged scored cases selected
+  from saved predictions without using outcome labels. Format/provenance checks pass.
+- Chart handover: **11 genuine chart PNGs** under `forms/out/images_study/`; the renderer's
+  forbidden-text check passes. Visual/live parity review remains outstanding.
+- Validation dry-run tables were generated before the accelerated amendment. Their manifest
+  deliberately records that earlier protocol hash; they are historical dry-run evidence, not the
+  final frozen protocol. The smoke artifact records the reduced explanation evidence.
+
+**W3 deliverable handover:** send the real case pack and chart PNGs through restricted storage to
+Han/Lucas. Give the private lookup only to the designated scorer/coordinator; do not upload it
+to participant-facing Forms/Drive assets or Git. Harry/Lucas still need to seal the canonical
+private assignment; no real assignment was generated or certified by W3. Han must build the
+real forms using that same assignment, then check chart/profile/order parity and updated wording.
+The response Sheet is still institution-wide link-editable by the owner's earlier choice.
+Restrict it, repeat privacy/routing checks and perform the pilot before any real collection.
+No live form rebuild, recruitment, pilot or response collection is claimed complete here.
+Independent W5 clean-clone/hash verification remains a separate member task.
+
+**Latest amendment (2 Nov, 21:00):** at Yolanda's request, the hours-long validation audit was
+stopped and replaced by an **exploratory smoke check**, now the default command. This supersedes
+the full-audit requirements and running/deferred status in earlier notes below and earlier sections.
+Those notes/settings retain historical context; do not report the full audit as completed.
+Local hashed freeze remains the alternative to mandatory Git publication. Privacy, truthful consent,
+genuine study contributions, consistent assignment and once-only final-test locking remain unchanged.
+
+The real smoke run completed in **47.37 seconds** (excluding startup/model preparation):
+one middle-risk validation case, two SHAP explanations with seeds 42/43, finite probabilities,
+correct contribution shapes and finite grouped values. Single-case top-five overlap was **0.8**.
+This is execution evidence, **not an explanation-quality pass or multi-case stability estimate**.
+Evidence: `artifacts/explanation_smoke_validation.json`.
+After this amendment, all **62 unit tests** and separate form checks pass, including a regression
+that proves the default CLI does not invoke the full audit. No final-test lock was created.
+Omitted: deletion faithfulness/uncertainty, multi-case seed stability, background stability,
+prediction-preserving perturbation stability and constrained-recourse auditing.
+
+```powershell
+.\.venv-core\Scripts\python.exe scripts\run_explanation_audit.py
+```
+
+The superseded full audit runs only with explicit `--full-audit`; its original settings are retained
+for reproducibility, not an accelerated-workflow requirement. The stopped run is incomplete and is
+not resumed automatically. Do not mix earlier timing estimates or partial output with smoke results.
+The report must disclose the reduced explanation evaluation; no faithfulness/recourse findings are
+established by this change. The final test has not been run by the smoke check.
+
 **Status:** implementation and synthetic regression checks are not a signed operational acceptance.
 The test split has not been evaluated by this handover work. Do not invent review results, mark the
 blank W2.6 acceptance table passed, or run the final test early. A different reviewer must check new
-code and claims. Today only Python 3.13 is available on the handover machine; the documented pinned
-Python 3.12 environment still needs verification on a member's machine.
-The current handover interpreter also lacks `tabicl` and `xgboost`. Real-model fitting/audit jobs
-must run in the pinned environment; they have not been executed or certified here.
+code and claims. Follow-up verification on 2 Nov installed Python 3.12.10 alongside the existing
+3.13 interpreter and restored every exact requirement into ignored `.venv-core/`. The environment
+verifier and `pip check` pass. All five models completed a validation-only dry run; the full
+explanation audit remains deferred, not passed.
 Verification on this machine: **58 unit tests pass**, the separate form-spec checks pass, and
 the fixture build renders 11 charts plus 11 optional profile images. Synthetic tests cover scoring,
 coding, final-run locks, validation-output structure and source-form/provenance errors; they are
@@ -458,6 +549,122 @@ not evidence of final model performance or successful live Google Forms configur
 The follow-up regressions cover closure before settings, rollback after partially opening forms,
 and missing/contradictory practice exports. Rebuild live forms with the updated renderer; any failure
 to close is reported for manual action. Never distribute links after a renderer error.
+
+### Follow-up environment, validation and live checks (2 Nov)
+
+Run commands with `.\.venv-core\Scripts\python.exe` on this Windows machine. The exact pinned
+environment passes all 58 tests, separate form checks and rendering of 22 fixture images.
+`scripts/run_final_test.py --split validation` completed on **544 validation cases**, fitting
+logistic regression, the depth-3 tree, XGBoost, main-effects EBM and TabICL. The 22 output-file
+hashes in `tables/final_test_dry_run/manifest.json` match. Each model's ten reliability bins
+cover all 544 cases, flag rates stay at or below 20%, and the six specified performance metrics
+are suppressed for subgroups below 30. These are dry-run checks, not final results or freeze approval.
+TabICL downloaded `tabicl-classifier-v2-20260212.ckpt` on first use. Record the exact checkpoint
+revision/hash before freeze as well as package versions; do not assume "latest" will stay unchanged.
+
+One real validation SHAP explanation completed in **20.88 seconds**.
+`artifacts/audit_runtime_validation.json` records its 20 selected validation IDs and estimates
+**8,769 seconds (2.44 hours)** for 420 seed/background explanations alone. Perturbation explanations
+and deletion predictions add runtime. The full audit was explicitly deferred after this estimate;
+faithfulness, stability and recourse results still require the complete run and independent review.
+The final test was not evaluated and no final-test lock was created.
+
+Live checks are **partial and not accepted**:
+
+- All four supplied respondent pages were reachable without cookies in an anonymous HTTP check.
+  This does not certify every anonymous submission path.
+- A routing-only decline check reached the thank-you/decline page without submitting. Its synthetic
+  draft was cleared; no participant-code link or response was submitted.
+- Google initially displayed "Draft saved", contradicting the consent's pre-Submit promise.
+  With Yolanda's approval, **Settings > Presentation > Disable autosave for all respondents**
+  was enabled in all four existing forms. Changes were saved to Drive and all four respondent
+  pages subsequently displayed **"Saving disabled"**. Repeat this manual setting and live check
+  after every rebuild; the Apps Script renderer does not configure it.
+- The inspected Group B Form 4 still contains **11 chart placeholders** and lacks the agreed
+  top-20%-of-full-cohort instruction. Its editor showed quiz mode, response editing,
+  one-response/sign-in enforcement, question shuffling, another-response link and results
+  summary off, and email collection set to "Do not collect"; these observations do not sign off
+  the other forms or actual submission behaviour.
+- The supplied response Sheet's general access allows **institution-wide link editing**.
+  This fails the restricted-storage requirement. Permissions were deliberately left unchanged
+  at Yolanda's request; the owner must restrict access and explicitly add the designated W4
+  coordinator and reviewer before any real collection.
+- The supplied live Apps Script is older than the repository renderer and still uses manual
+  settings/routing fallbacks. It was inspected, not replaced or executed. Rebuild with the
+  reviewed repository version, fixture charts and the agreed assignment; repeat acceptance.
+- Respondent pages were available during the checks. Closing the test forms afterwards could
+  not be verified because the editor's controls timed out. The owner must close test responses
+  outside supervised checks; no link distribution or real collection is authorised.
+
+No public Form/Drive URLs, file IDs, assignment codes or raw answers belong in this log or Git.
+Private downloaded assignment workbooks are ignored; keep them in restricted storage.
+
+### Local-freeze amendment and accelerated preparation (2 Nov, evening)
+
+Yolanda explicitly selected a local hashed freeze in place of a mandatory commit, clean checkout
+and pushed tag. This is a workflow deviation, **not independent approval**. The original tagged
+path remains available. The once-only final-test lock, pinned environment and explicit final-test
+confirmation remain mandatory for both paths. Do not clear the lock after a failure.
+
+The full validation explanation audit is now running; the earlier deferral is superseded by this
+request. Do not start a duplicate. Inspect its actual outputs when complete; no pass is assumed.
+After the local-freeze implementation, **61 tests pass**, including synthetic tampering,
+checkpoint-binding and repeat-run tests; the separate form checks pass. Mocked test messages saying
+"Final test complete" are synthetic tests, not evidence that the actual holdout was evaluated.
+
+The local mode copies scientific source/configuration, requirements, original dataset, split IDs
+and the selected cached TabICL checkpoint into ignored `data/local_freeze/`. It hashes the copied
+files and verifies both copies and current inputs before final evaluation. It rejects added,
+deleted or changed input files and changed checkpoint bytes. Model fitting uses that exact copied
+checkpoint with auto-download disabled. Preserve the entire snapshot privately.
+
+Create the snapshot only after the intended inputs are settled. Example (replace the checkpoint
+path and note with actual values; this command creates evidence only, not a final-test run):
+
+```powershell
+.\.venv-core\Scripts\python.exe scripts\run_final_test.py --create-local-freeze data\local_freeze --checkpoint "<actual cached checkpoint path>" --deviation-note "<actual completed, incomplete and skipped checks; no invented sign-offs>"
+```
+
+Final evaluation under the local workflow, **after inspecting the audit**, uses:
+
+```powershell
+.\.venv-core\Scripts\python.exe scripts\run_final_test.py --split test --local-freeze data\local_freeze\manifest.json --acknowledge-incomplete-checks --confirm-final-test
+```
+
+The lock records the snapshot digest and honest deviation note, not a fictitious reviewer.
+Successful evaluation also binds the saved model bundle by SHA-256. Study export verifies the
+snapshot, current inputs and model digest without requiring a Git tag for local mode. If inputs
+change afterwards, stop and investigate rather than silently refitting or re-running the test.
+No actual local snapshot or final evaluation is claimed merely by documenting these commands.
+
+The requested priority is preparing the human study without another fixture-only rebuild.
+No new approval is asserted by this note, no response collection has been started by this work,
+and the existing final-test guard has not been changed. Changes and validation evidence remain
+local for a later combined commit.
+
+Ready locally: the four-form generator with updated instructions, chart renderer, assignment
+generator, response transformer, scoring/coding tools, pinned environment and successful
+validation dry-run outputs. Existing live forms have autosave disabled.
+
+Not present at the preparation check:
+
+- `data/study_cases/case_pack_study.json` (real study profiles and contributions);
+- `data/final_evaluation/selected_model.joblib` (saved fitted final model and predictions);
+- `artifacts/final_test.lock` (no completed final evaluation);
+- `data/human_study/assignment_list.csv` (canonical private W5 study assignment).
+
+Consequently, a real-study build cannot yet be produced from these local materials. Do not rename
+the fixture pack or its random contributions as study data. If a member already has genuine
+study exports and the agreed assignment, obtain them through restricted storage and validate
+their provenance before rendering. Otherwise, produce them through the documented evaluation/export
+workflow. Using validation cases instead would be a different study design and must be described
+as such, not silently substituted for the planned test-case study.
+
+Once genuine material exists, the remaining preparation is one coherent build: validate the pack,
+render the 11 charts, build the spec using the same private assignment, upload the public pack
+outputs/charts (never the private lookup), and run the current Apps Script once. Verify the new
+links/forms, repeat the manual autosave setting and restrict response storage before real collection.
+The full audit is still deferred, and existing chart/policy/privacy acceptance failures remain open.
 
 ### What each member takes next
 
@@ -494,7 +701,7 @@ configurations on train only, evaluates the selected split, and writes metrics, 
 bootstrap comparisons, reliability curves, runtime, subgroup suppression and proxy tables under
 `tables/final_test_dry_run/`. Check these before freeze; do not report them as final-test results.
 
-### Freeze and once-only final test (do not run now)
+### Original tagged freeze and once-only final test (alternative to local amendment above)
 
 After W1.5, all seven W2.6 checks, the validation dry run, and W4.12 pass, the W3 owner and a
 different reviewer create and commit `config/freeze_approval.json`:
@@ -520,7 +727,7 @@ clean tagged revision. Do not change any model, split or setting after it.
 python scripts/run_final_test.py --split test --approval config/freeze_approval.json --confirm-final-test
 ```
 
-The runner requires a clean checkout at the pushed freeze tag and matching tracked approval. It
+The original tagged mode requires a clean checkout at the pushed freeze tag and matching tracked approval. It
 also rejects Python versions other than 3.12 and any installed version that differs from a pin
 in `requirements.txt`; resolve environment problems before attempting a final run. It
 creates `artifacts/final_test.lock` exclusively **before loading/evaluating the test split**.
@@ -588,9 +795,9 @@ than hand-editing flags. Consistently wrong answers remain included and are repo
 
 ### Remaining non-code and independent-review gates
 
-- Verify the exact pinned Python 3.12 environment; current-machine tests do not certify its versions.
-- Record real-model validation audit/dry-run results and independent code reviews; synthetic tests alone
-  do not demonstrate final statistical values or actual TabICL/SHAP runtime.
+- Have another member reproduce the verified pinned environment and review the validation dry-run outputs.
+- Run the full validation explanation audit and record independent code/results reviews; timing one
+  explanation and a successful five-model dry run do not establish faithfulness/stability/recourse findings.
 - Finish unchecked form-spec decisions, retention plan, proposal participant-number parity and recruitment.
 - Verify real Drive/Sheet sharing, anonymous-access settings, Google draft saving, all routing paths and
   actual exports. Rebuild forms with the updated script. Acceptance table stays blank until checked.

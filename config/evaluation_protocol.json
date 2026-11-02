@@ -3,9 +3,24 @@
   "amendments": [
     "1.1: Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
     "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules.",
-    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), specified the Google Forms study instrument (replacing the planned custom interface), and added subgroup/proxy diagnostics on the test split to the one-time final evaluation; no model, split, seed, target, feature window, operating policy, or test data changed."
+    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), specified the Google Forms study instrument (replacing the planned custom interface), and added subgroup/proxy diagnostics on the test split to the one-time final evaluation; no model, split, seed, target, feature window, operating policy, or test data changed.",
+    "2 Nov accelerated amendment, before final-test access: owner replaced the full explanation audit with a one-case, two-seed exploratory execution check and selected a local content-hashed freeze instead of mandatory Git publication. Omitted analyses and incomplete acceptance are disclosed, not marked passed. Model settings, data/splits, SHAP settings for study charts, once-only test lock, participant consent/privacy and assignment consistency are unchanged."
   ],
   "seed": 42,
+  "explanation_check": {
+    "mode": "exploratory_smoke",
+    "amendment": "2 Nov: full validation audit stopped at the owner's request before final-test access; replaced by a short exploratory execution check, not an explanation-quality certification.",
+    "cases": 1,
+    "seeds": [42, 43],
+    "omitted_analyses": [
+      "ranked-versus-random deletion faithfulness and uncertainty",
+      "multi-case seed stability",
+      "training-background stability",
+      "prediction-preserving perturbation stability",
+      "constrained recourse audit"
+    ],
+    "legacy_settings": "faithfulness/stability sections below describe the superseded full audit, available only with explicit --full-audit; not required or claimed by the accelerated workflow"
+  },
   "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
   "primary_feature_window": "first_semester",
   "sensitivity_feature_window": "enrollment",

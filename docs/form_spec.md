@@ -76,6 +76,8 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 
 - No quiz mode; no correct answers or feedback shown anywhere.
 - No email collection; response editing off; summary charts hidden; no "submit another response" link.
+- Disable autosave for all respondents in Settings > Presentation after every build; confirm
+  "Saving disabled" on all four respondent pages before collecting any answers.
 - No sign-in: check that "Restrict to users in AIT" is off (W2.4).
 - Closed to responses until the pilot; open only for tests and the study window (Fri 13 – Tue 17 Nov). Participants answer online on their own device (D3).
 - Responses go to one restricted Sheet shared only with the W4 owner and the W2 reviewer.
@@ -103,6 +105,9 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 The two online consent changes (self-reported duration and closing before Submit) have been reviewed in the
 builder. Submission/decline behaviour and any Google draft-saving behaviour still need checking in the live
 forms; this is not a completed W2.4 privacy or W2.6 acceptance sign-off.
+Follow-up on 2 Nov found Google draft saving enabled. Yolanda chose to disable it; the setting was
+saved in all four existing forms and "Saving disabled" verified on their respondent pages.
+Other live acceptance requirements remain open (HANDOFF section 12); fresh builds need the setting again.
 
 ## 9. Implementation safeguards and handover (2 Nov)
 

@@ -18,6 +18,7 @@ from src.explanations import (
     semantic_feature_groups,
 )
 from src.modeling import capacity_predictions, prepare_tfm_frame
+from src.freeze import file_hash, verify_snapshot
 
 
 def main(argv=None):
@@ -31,11 +32,24 @@ def main(argv=None):
         raise ValueError("study export requires a completed final-test lock")
     if hashlib.sha256((ROOT / "config" / "evaluation_protocol.json").read_bytes()).hexdigest() != lock["protocol_sha256"]:
         raise ValueError("protocol changed after the final test")
-    bundle = joblib.load(ROOT / "data" / "final_evaluation" / "selected_model.joblib")
-    frozen = subprocess.check_output(
-        ["git", "rev-parse", "protocol-1.3-frozen^{commit}"], cwd=ROOT, text=True).strip()
-    if bundle["frozen_commit"] != frozen or lock["frozen_commit"] != frozen:
-        raise ValueError("saved model/lock do not match the frozen tag")
+    bundle_path = ROOT / "data" / "final_evaluation" / "selected_model.joblib"
+    if lock.get("freeze_mode") == "local_snapshot":
+        manifest_path = Path(lock["local_freeze"])
+        if file_hash(manifest_path) != lock["local_freeze_sha256"]:
+            raise ValueError("local-freeze manifest changed after final evaluation")
+        verify_snapshot(ROOT, manifest_path)
+        if file_hash(bundle_path) != lock["model_bundle_sha256"]:
+            raise ValueError("saved model bundle changed after final evaluation")
+        bundle = joblib.load(bundle_path)
+        if bundle.get("local_freeze_sha256") != lock["local_freeze_sha256"]:
+            raise ValueError("saved model does not match local freeze")
+        frozen = "local-sha256:" + lock["local_freeze_sha256"]
+    else:
+        bundle = joblib.load(bundle_path)
+        frozen = subprocess.check_output(
+            ["git", "rev-parse", "protocol-1.3-frozen^{commit}"], cwd=ROOT, text=True).strip()
+        if bundle["frozen_commit"] != frozen or lock["frozen_commit"] != frozen:
+            raise ValueError("saved model/lock do not match the frozen tag")
     train, test, columns = development_frames("test")
     _, validation, _ = development_frames("validation")
     if list(columns) != bundle["columns"] or not np.array_equal(test["source_row_id"], bundle["source_row_ids"]):

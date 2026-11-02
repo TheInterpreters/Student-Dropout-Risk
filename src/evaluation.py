@@ -79,11 +79,13 @@ def fairness_outputs(frame, probabilities, predictions, columns):
     return pd.concat(groups, ignore_index=True), proxy
 
 
-def evaluate_frozen_models(train, evaluation, columns):
+def evaluate_frozen_models(train, evaluation, columns, checkpoint=None):
     protocol = load_protocol()
     models = build_baselines(columns)
     models["explainable_boosting_main_effects"] = build_ebm(columns)
     models["tabicl"] = build_tfm("tabicl", columns, protocol["model"]["n_estimators"])
+    if checkpoint is not None:
+        models["tabicl"].set_params(model_path=str(checkpoint), allow_auto_download=False)
     metrics, predictions, fitted = [], {}, {}
     for name, model in models.items():
         prepare = prepare_tfm_frame if name == "tabicl" else (

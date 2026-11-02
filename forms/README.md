@@ -31,8 +31,10 @@ the study case pack (W2.7). Nothing is open to participants before the pilot.
    If opening the completed forms fails partway, the script attempts to close all four again and
    reports any that require manual closure. Do not distribute links after any error.
    `CHART MISSING` warnings are allowed only for fixtures, never real study builds.
-6. Open one link in a private window: the form must open without a sign-in. Keep
-   `ACCEPTING_RESPONSES` false except during tests.
+6. Before enabling responses, in **each** form select Settings > Presentation >
+   **Disable autosave for all respondents**. This is a manual post-build setting; the renderer
+   does not set it. Open each respondent page and verify **Saving disabled**, then test without
+   a Google sign-in. Keep `ACCEPTING_RESPONSES` false except during tests.
 
 ## Dry run (W2.5, Thu 5 Nov)
 1. Turn responses on for the test only. Submit fake answers (write "fake" in the text boxes) through a
@@ -54,7 +56,11 @@ the study case pack (W2.7). Nothing is open to participants before the pilot.
 
 ## Still open
 Final order seed, privately sealed W5 assignment (W5.8), and `decisions_pending` in `out/form_spec.json`.
-The code is ready for member validation; real-model dry runs and live acceptance are not certified.
+The pinned-environment validation-only model dry run now passes; live acceptance does not.
+The 2 Nov live check disabled autosave on the four existing forms and verified "Saving disabled",
+but Form 4 still has chart placeholders/missing cohort-policy wording and the response Sheet is
+institution-wide link-editable. Permissions were left unchanged at Yolanda's request.
+Rebuild with the current renderer, repeat the manual autosave setting and all seven acceptance checks.
 
 ## W5 block-randomised assignment option
 

@@ -1,4 +1,4 @@
-"""W1: validation-only faithfulness, stability and constrained-recourse audit."""
+"""Validation explanation smoke check; the superseded full audit requires --full-audit."""
 from __future__ import annotations
 
 import argparse
@@ -30,6 +30,43 @@ def area_interval(values, seed=42):
     means = values[rng.integers(0, len(values), size=(2000, len(values)))].mean(axis=1)
     return {"n_cases": len(values), "mean_area": float(values.mean()),
             "ci_lower_95": float(np.quantile(means, .025)), "ci_upper_95": float(np.quantile(means, .975))}
+
+
+def run_smoke_check(train, validation, columns, model, protocol):
+    start = perf_counter()
+    settings = protocol["shap"]
+    check = protocol["explanation_check"]
+    xtrain = prepare_tfm_frame(train, columns)
+    xval = prepare_tfm_frame(validation, columns)
+    probability = np.asarray(model.predict_proba(xval))[:, 1]
+    if not np.isfinite(probability).all() or ((probability < 0) | (probability > 1)).any():
+        raise ValueError("invalid validation probabilities")
+    # One deterministic middle-risk validation case, selected without outcome labels.
+    position = int(np.argsort(probability, kind="stable")[len(probability) // 2])
+    case = xval.iloc[[position]]
+    background = xtrain.sample(n=settings["background_size"], random_state=42)
+    groups = semantic_feature_groups(columns)
+    rankings = []
+    for seed in check["seeds"]:
+        explanation = permutation_shap_values(
+            model.predict_proba, background, case, max_evals=settings["max_evals"], seed=seed)
+        values = np.asarray(explanation.values)
+        if values.shape != (1, len(columns)) or not np.isfinite(values).all():
+            raise ValueError("invalid SHAP contribution shape or non-finite contributions")
+        grouped = aggregate_shap_by_group(values[0], columns, groups)
+        if not np.isfinite(grouped["signed_shap"].to_numpy()).all():
+            raise ValueError("non-finite grouped contributions")
+        rankings.append(grouped["feature_group"].tolist())
+    return {
+        "mode": "exploratory_smoke", "split": "validation", "test_evaluated": False,
+        "execution_checks_passed": True, "full_audit_completed": False,
+        "source_row_id": int(validation.iloc[position]["source_row_id"]),
+        "seeds": check["seeds"], "n_explanations": len(rankings),
+        "single_case_top_5_overlap": top_k_overlap(rankings, k=5),
+        "elapsed_seconds": perf_counter() - start,
+        "omitted_analyses": check["omitted_analyses"],
+        "limitation": "Execution sanity check only; one case does not establish faithfulness, stability or recourse quality.",
+    }
 
 
 def run_audit(train, validation, columns, model, protocol, timing_only=False):
@@ -138,11 +175,23 @@ def run_audit(train, validation, columns, model, protocol, timing_only=False):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--timing-only", action="store_true", help="time one real validation SHAP explanation")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--timing-only", action="store_true", help="time one real validation SHAP explanation")
+    modes.add_argument("--full-audit", action="store_true", help="explicitly run the superseded, hours-long audit")
     args = parser.parse_args(argv)
     train, validation, columns = development_frames("validation")
     model = selected_model(train, columns)
-    tables, timing = run_audit(train, validation, columns, model, load_protocol(), args.timing_only)
+    protocol = load_protocol()
+    if not args.full_audit and not args.timing_only:
+        if protocol["explanation_check"]["mode"] != "exploratory_smoke":
+            raise ValueError("default explanation-check mode must be explicitly configured")
+        result = run_smoke_check(train, validation, columns, model, protocol)
+        path = ROOT / "artifacts" / "explanation_smoke_validation.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(result, indent=2), encoding="utf-8")
+        print(json.dumps(result, indent=2))
+        return 0
+    tables, timing = run_audit(train, validation, columns, model, protocol, args.timing_only)
     for name, frame in tables.items():
         path = ROOT / "tables" / (name + ".csv")
         path.parent.mkdir(parents=True, exist_ok=True)

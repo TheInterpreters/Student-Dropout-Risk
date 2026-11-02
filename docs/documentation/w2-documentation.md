@@ -189,6 +189,14 @@ the study has no additional survey and the human study is the only instrument. T
 
 ## 11. Acceptance results (W2.6), to fill in
 
+2 Nov partial live check (not acceptance): draft autosave was disabled in all four existing forms
+with Yolanda's approval and their respondent pages displayed "Saving disabled". One decline route
+was checked without submission and its synthetic draft cleared. Form 4 still has 11 chart
+placeholders and lacks the agreed full-cohort instruction; the response Sheet is institution-wide
+link-editable, not Restricted. Yolanda requested leaving permissions unchanged for now.
+The live script is older than the repository renderer. All seven checks require completion/review
+after rebuilding; do not mark the table passed from these partial observations.
+
 | # | Check | Result | Date | Reviewer | Notes |
 |---|---|---|---|---|---|
 | 1 | All four forms build; displayed values match the case pack | | | | |
