@@ -451,10 +451,13 @@ code and claims. Today only Python 3.13 is available on the handover machine; th
 Python 3.12 environment still needs verification on a member's machine.
 The current handover interpreter also lacks `tabicl` and `xgboost`. Real-model fitting/audit jobs
 must run in the pinned environment; they have not been executed or certified here.
-Verification on this machine: **55 unit tests pass**, the separate form-spec checks pass, and
+Verification on this machine: **58 unit tests pass**, the separate form-spec checks pass, and
 the fixture build renders 11 charts plus 11 optional profile images. Synthetic tests cover scoring,
 coding, final-run locks, validation-output structure and source-form/provenance errors; they are
 not evidence of final model performance or successful live Google Forms configuration.
+The follow-up regressions cover closure before settings, rollback after partially opening forms,
+and missing/contradictory practice exports. Rebuild live forms with the updated renderer; any failure
+to close is reported for manual action. Never distribute links after a renderer error.
 
 ### What each member takes next
 
@@ -578,6 +581,10 @@ answers, and computes accuracy per participant before group means. `chart_checks
 reports correct counts and denominators. Private scored rows, participant summaries, coding text and
 exclusion logs remain under ignored `data/human_study/`. Only reviewed aggregate summaries may be
 copied into report tables; no participant codes/free text or fake results in Git.
+Scoring requires the matching participant export: included participants' groups must agree, Group B
+practice answers must be present, and the imported combined-correct flag must match those answers.
+Invalid exports stop analysis before outputs are written; regenerate them with the transformer rather
+than hand-editing flags. Consistently wrong answers remain included and are reported as wrong.
 
 ### Remaining non-code and independent-review gates
 

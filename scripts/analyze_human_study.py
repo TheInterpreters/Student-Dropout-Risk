@@ -10,6 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from forms import case_pack
+from forms.transform_responses import CHART_CHECK
 
 
 def read_csv(path):
@@ -106,10 +107,22 @@ def main(argv=None):
     by_id = {p["participant_id"]: p for p in participant_rows}
     if len(by_id) != len(participant_rows) or any(p["participant_id"] not in by_id for p in people):
         raise ValueError("participant export is duplicated or missing included participants")
+    for person in people:
+        pid = person["participant_id"]
+        if by_id[pid].get("group") != person["group"]:
+            raise ValueError(pid + ": participant export group differs from scored responses")
     group_b = [by_id[p["participant_id"]] for p in people if p["group"] == "B"]
+    for person in group_b:
+        pid = person["participant_id"]
+        b1, b2 = person.get("chart_check_b1"), person.get("chart_check_b2")
+        if not b1 or not b2:
+            raise ValueError(pid + ": missing Group B practice answers; check the participant export")
+        expected = str(int(b1 == CHART_CHECK["P.B1"] and b2 == CHART_CHECK["P.B2"]))
+        if person.get("chart_check_ok") != expected:
+            raise ValueError(pid + ": practice summary contradicts answers; regenerate the participant export")
     checks = []
-    for field, correct in (("chart_check_b1", "More worried about this student"),
-                           ("chart_check_b2", "A bigger effect"), ("chart_check_ok", "1")):
+    for field, correct in (("chart_check_b1", CHART_CHECK["P.B1"]),
+                           ("chart_check_b2", CHART_CHECK["P.B2"]), ("chart_check_ok", "1")):
         checks.append({"label": args.label, "check": field, "n_participants": len(group_b),
                        "n_correct": sum(p[field] == correct for p in group_b)})
     out = Path(args.out)

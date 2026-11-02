@@ -7,8 +7,8 @@
  *  1. Upload form_spec.json and assignment_fixture.csv to the team's restricted Drive folder.
  *  2. Fill CONFIG with their file IDs and a TEST response sheet ID.
  *  3. Optional: put W5.3's chart_<case>.png files in one restricted Drive folder and set CHART_FOLDER_ID.
- *  4. Run renderAll() once and approve the permissions. Essential setting/routing failures
- *     abort and leave forms closed; inspect any CHART MISSING fixture warnings.
+ *  4. Run renderAll() once and approve the permissions. Forms close before other settings.
+ *     After any error verify closure before retrying; inspect CHART MISSING fixture warnings.
  * Output: four forms (Form 1 to Form 4, one per variant in the spec) and a sheet "Assignment links (<fixture or study>)".
  * Keep ACCEPTING_RESPONSES false except during a test.
  */
@@ -38,7 +38,21 @@ function renderAll() {
   });
   writeLinks_(forms, spec);
   if (CONFIG.ACCEPTING_RESPONSES) {
-    Object.keys(forms).forEach(function (id) { forms[id].setAcceptingResponses(true); });
+    try {
+      Object.keys(forms).forEach(function (id) { forms[id].setAcceptingResponses(true); });
+    } catch (e) {
+      const failures = [];
+      Object.keys(forms).forEach(function (id) {
+        try {
+          forms[id].setAcceptingResponses(false);
+        } catch (closeError) {
+          failures.push(id + ': ' + closeError.message);
+        }
+      });
+      throw new Error('Opening forms failed: ' + e.message +
+        (failures.length ? '. Could not close; close manually: ' + failures.join('; ') :
+          '. All forms closed again.'));
+    }
   }
 }
 
@@ -48,12 +62,12 @@ function readDriveText_(fileId) {
 
 function buildForm_(spec, v) {
   const form = FormApp.create(spec.form_title + ' - ' + v.form_label);
+  form.setAcceptingResponses(false);
   form.setCollectEmail(false)
     .setAllowResponseEdits(false)
     .setLimitOneResponsePerUser(false)
     .setPublishingSummary(false)
     .setShowLinkToRespondAgain(false)
-    .setAcceptingResponses(false)
     .setConfirmationMessage(spec.confirmation || spec.debrief);
   form.setDestination(FormApp.DestinationType.SPREADSHEET, CONFIG.RESPONSE_SHEET_ID);
   try {

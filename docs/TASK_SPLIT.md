@@ -127,7 +127,7 @@ only if the whole team agrees **and** tells W3 before the freeze (Mon 9 Nov).
 **Final deliverables checklist (all done by Thu 19 Nov):**
 - [ ] Final report DOCX and PDF, in the repo root next to the proposal
 - [ ] Slide deck (PPTX or Google Slides export), rehearsed once, timed
-- [ ] Repo on `main`: tag `protocol-1.3-frozen` pushed, tests passing (26/26), final-test outputs under `tables/`
+- [ ] Repo on `main`: tag `protocol-1.3-frozen` pushed, all current tests passing (58 as of 2 Nov), separate form checks passing, final-test outputs under `tables/`
 - [ ] Completed model card (`docs/HANDOFF.md` §8) and README/HANDOFF updated with results
 - [ ] Raw participant data deleted everywhere (Forms, Sheet, exports, Drive trash) on the confirmed retention date, after the human-results review (R7), or the date and plan recorded; aggregates only kept
 - [ ] Drive folder Restricted, no Drive or Form URL in the repo
@@ -169,7 +169,7 @@ ID W1.6 moved to W2.2.
 
 | ID | Task | Depends | Deadline | Done when |
 |---|---|---|---|---|
-| W3.1 | Confirm the pinned `.venv-core` works and all **26** tests pass (the EBM test needs `interpret`). | [I] | Wed 28 Oct | Test log shows 26/26 OK. |
+| W3.1 | Confirm the pinned `.venv-core` works and all current tests pass (58 as of 2 Nov; the original suite had 26; the EBM test needs `interpret`, Apps Script mocks need Node.js). | [I] | Wed 28 Oct | Current full-suite test log shows no failures or skips; separate form checks pass. |
 | W3.2 | Write `scripts/run_final_test.py`: refit frozen models on train and evaluate once on test (discrimination, capacity recall/precision, Brier, 10-bin ECE, reliability curve, runtime, `paired_bootstrap_model_differences` 2,000 resamples seed 42, and subgroup/proxy tables per D4). **One-run guard:** a separate lock file (`artifacts/final_test.lock`) is written **before** the run starts and committed right after it, so deleting the output tables cannot allow a second run; the script refuses to run while the lock exists, and clearing it needs a recorded team decision. | [I] | Fri 6 Nov | Dry-run on the **validation** split gives the right columns; guard test passes, including "output deleted, lock still blocks". |
 | W3.3 | One-command clean-clone script that regenerates every reported table and figure. Note in the README that TabICL downloads its model weights on first use and needs internet. | [I] | Fri 13 Nov | Script written and runs on the author's machine. |
 | W3.4 | **Freeze:** confirm protocol 1.3 values, the settled decisions D1–D8 and the participant plan, create the git tag `protocol-1.3-frozen` and **push it** (`git push origin protocol-1.3-frozen`). | [D: W1.5, W2.6, W3.2, W4.12] | Mon 9 Nov | Tag exists on GitHub; reviewer confirms no model, split or setting changed since. **Gate condition (c).** |

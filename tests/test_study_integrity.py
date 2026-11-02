@@ -8,7 +8,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 from forms import build_spec as b, case_pack as cp, transform_responses as tr
-from scripts.analyze_human_study import score_responses, write_csv, read_csv
+from scripts.analyze_human_study import main as analyze, score_responses, write_csv, read_csv
 from scripts.assign_human_coding import assign_coding, raw_agreement
 
 
@@ -24,6 +24,16 @@ def dummy_rows(n=50):
                 "intervention_freetext": "fake intervention", "missing_info_freetext": "fake gap",
             })
     return rows
+
+
+def dummy_people(n=50):
+    return [
+        {"participant_id": f"DUMMY-{i:03d}", "group": "A" if i % 2 == 0 else "B",
+         "chart_check_b1": "" if i % 2 == 0 else "More worried about this student",
+         "chart_check_b2": "" if i % 2 == 0 else "A bigger effect",
+         "chart_check_ok": "" if i % 2 == 0 else "1"}
+        for i in range(n)
+    ]
 
 
 class StudyIntegrityTests(unittest.TestCase):
@@ -96,6 +106,88 @@ assert.throws(() => context.renderAll(), /Missing study chart/);
         with self.assertRaises(ValueError):
             score_responses(dummy_rows(1)[:-1], lookup, "dummy")
 
+    def test_forms_close_before_settings_and_rollback_partial_opening(self):
+        harness = r"""
+const vm = require('vm'), fs = require('fs'), assert = require('assert');
+let accepting = true;
+const form = {
+  setAcceptingResponses(value) { accepting = value; return this; },
+  setCollectEmail() { assert.strictEqual(accepting, false); throw Error('setting failed'); }
+};
+const context = {FormApp: {create: () => form}};
+vm.createContext(context);
+vm.runInContext(fs.readFileSync(process.argv[1], 'utf8'), context);
+assert.throws(() => context.buildForm_({form_title:'dummy'}, {form_label:'Form 1'}), /setting failed/);
+assert.strictEqual(accepting, false);
+const states = {A1:false, A2:false};
+context.readDriveText_ = () => JSON.stringify({pack_kind:'fixture', variants:[
+  {variant_id:'A1'}, {variant_id:'A2'}]});
+context.buildForm_ = (spec, v) => ({
+  setAcceptingResponses(value) {
+    states[v.variant_id] = value;
+    if (value && v.variant_id === 'A2') throw Error('opening failed');
+  }
+});
+context.writeLinks_ = () => {};
+vm.runInContext("CONFIG.ACCEPTING_RESPONSES = true;", context);
+assert.throws(() => context.renderAll(), /opening failed/);
+assert.deepStrictEqual(states, {A1:false, A2:false});
+context.buildForm_ = (spec, v) => ({
+  setAcceptingResponses(value) {
+    if (value) throw Error('opening failed');
+    throw Error('closing failed');
+  }
+});
+assert.throws(() => context.renderAll(), /closing failed/);
+"""
+        import shutil
+        if not shutil.which("node"):
+            self.skipTest("Node required for Apps Script mock")
+        result = subprocess.run(
+            ["node", "-e", harness, str(ROOT / "forms" / "render_forms.gs")],
+            capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_analysis_rejects_inconsistent_or_missing_practice_export(self):
+        lookup = {cid: {"source_row_id": i, "model_flag": int(1 <= i <= 5)}
+                  for i, cid in enumerate(cp.CASE_IDS)}
+        for changes in ({"chart_check_b1": "Cannot tell"},
+                        {"chart_check_b2": "Cannot tell"},
+                        {"chart_check_ok": "0"},
+                        {"chart_check_b1": "", "chart_check_ok": "0"},
+                        {"chart_check_b2": "", "chart_check_ok": "0"},
+                        {"group": "A"}):
+            with self.subTest(changes=changes), tempfile.TemporaryDirectory() as folder:
+                out = Path(folder)
+                write_csv(out / "responses.csv", dummy_rows(2))
+                (out / "private.json").write_text(json.dumps(lookup))
+                participants = dummy_people(2)
+                participants[1].update(changes)
+                write_csv(out / "people.csv", participants)
+                with self.assertRaises(ValueError):
+                    analyze([str(out / "responses.csv"), "--private", str(out / "private.json"),
+                             "--participants", str(out / "people.csv"), "--label", "dummy",
+                             "--out", str(out / "results")])
+                self.assertFalse((out / "results").exists())
+
+    def test_analysis_retains_consistently_wrong_practice_answers(self):
+        lookup = {cid: {"source_row_id": i, "model_flag": int(1 <= i <= 5)}
+                  for i, cid in enumerate(cp.CASE_IDS)}
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder)
+            write_csv(out / "responses.csv", dummy_rows(2))
+            (out / "private.json").write_text(json.dumps(lookup))
+            participants = dummy_people(2)
+            participants[1].update(chart_check_b1="Cannot tell", chart_check_ok="0")
+            write_csv(out / "people.csv", participants)
+            analyze([str(out / "responses.csv"), "--private", str(out / "private.json"),
+                     "--participants", str(out / "people.csv"), "--label", "dummy",
+                     "--out", folder])
+            self.assertEqual(len(read_csv(out / "participants_dummy.csv")), 2)
+            checks = read_csv(out / "chart_checks_dummy.csv")
+            self.assertEqual([r["n_correct"] for r in checks], ["0", "1", "0"])
+            self.assertTrue(all(r["n_participants"] == "1" for r in checks))
+
     def test_coding_and_agreement(self):
         rows = dummy_rows()
         members = ["M1", "M2", "M3", "M4", "M5"]
@@ -125,9 +217,7 @@ assert.throws(() => context.renderAll(), /Missing study chart/);
             out = Path(folder)
             write_csv(out / "responses.csv", dummy_rows())
             (out / "private.json").write_text(json.dumps(lookup), encoding="utf-8")
-            write_csv(out / "people.csv", [
-                {"participant_id": f"DUMMY-{i:03d}", "chart_check_b1": "More worried about this student",
-                 "chart_check_b2": "A bigger effect", "chart_check_ok": "1"} for i in range(50)])
+            write_csv(out / "people.csv", dummy_people())
             write_csv(out / "log.csv", [
                 {"participant_code": f"DUMMY-{i:03d}", "recruiter": f"M{i % 5 + 1}"} for i in range(50)])
             commands = [

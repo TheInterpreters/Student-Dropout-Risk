@@ -26,7 +26,10 @@ the study case pack (W2.7). Nothing is open to participants before the pilot.
    overwriting the old copies so the file IDs stay the same.
 4. Apps Script: paste `render_forms.gs`, fill CONFIG (file IDs, the TEST response sheet, optional
    `CHART_FOLDER_ID`), trash the old forms and links sheet, run `renderAll()`.
-5. Any setting/routing error aborts the run with forms closed. Inspect and resolve it before retrying;
+5. Each form is closed immediately after creation, before other settings/routing. A failure to
+   close aborts the build: inspect the newly created form and close it manually before retrying.
+   If opening the completed forms fails partway, the script attempts to close all four again and
+   reports any that require manual closure. Do not distribute links after any error.
    `CHART MISSING` warnings are allowed only for fixtures, never real study builds.
 6. Open one link in a private window: the form must open without a sign-in. Keep
    `ACCEPTING_RESPONSES` false except during tests.
