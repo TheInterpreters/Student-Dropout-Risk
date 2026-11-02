@@ -7,8 +7,8 @@ Owner: Lucas. Reviewer: see `docs/TASK_SPLIT.md` section 10. Task definitions an
 
 | ID | Task | Where | Status |
 |---|---|---|---|
-| W5.8 | Seeded assignment list (50 slots + 4 spares, 25/25) | `scripts/make_assignment_list.py`, `tests/test_assignment_list.py` | Done, PR #2 in review |
-| W5.3 | Image renderer (Group B charts, optional profile cards) | `forms/render_images.py`, `tests/test_render_images.py` | Done, PR #3 in review |
+| W5.8 | Seeded assignment list (50 main + 4 spares + 1 pilot, 25/25 main groups) | `scripts/make_assignment_list.py`, `tests/test_assignment_list.py` | Implemented in PR #2; CLI/schema/pilot fixes and 8 passing tests verified by Yolanda on 2 Nov. Private seed/list sealing remains |
+| W5.3 | Image renderer (Group B charts, optional profile cards) | `forms/render_images.py`, `tests/test_render_images.py` | Implemented in PR #3; 6 tests pass and sample charts/profile inspected by Yolanda on 2 Nov. Live form insertion/checks remain |
 | W5.6 | Scoring and analysis script | not started | Due Fri 6 Nov |
 | W5.9 | Coding assignment and agreement script | not started | Due Fri 6 Nov |
 | W5.1 | Static demo card (from a validation fixture) | not started | Due Wed 11 Nov |
@@ -23,7 +23,15 @@ Update this table when a task changes.
     python -m unittest tests.test_assignment_list -v
 
 - Writes `data/human_study/assignment_list.csv` and `assignment_list_RULES.txt` (git-ignored).
+- CSV columns match W2: `slot,participant_code,variant_id,group,role`. The pilot is `PILOT-01`
+  on B1, excluded from the 50 main participants and removed from study analysis.
 - Forms: A1/A2 = Group A (seeded order / exact reverse), B1/B2 = Group B (same).
+- This block-randomised assignment differs from the W2 builder's default even with the same seed.
+  Agree and seal ONE list before links are distributed. If adopting W5, use this CSV as
+  `ASSIGNMENT_FILE_ID` in `forms/render_forms.gs` and the same CSV with
+  `forms/transform_responses.py --assignment`. Do not mix or replace lists after sending links.
+- The 8 tests include CLI execution, mocked Apps Script pre-filled links and synthetic response
+  CSV transformation for all four forms, spares and pilot. They do not replace live acceptance checks.
 - **The real seed, the CSV and the codes are not in the repo.** Anyone with the seed can rebuild the
   list and see each participant's group. They are held by the W4 owner and the W4 reviewer only
   (rule 4 in `docs/TASK_SPLIT.md`). Tests use a dummy seed.
