@@ -38,7 +38,6 @@ DECISIONS_PENDING = [
     "Survey 1 is dropped. No background questions appear in this form.",
     "Role item S6.1 is included (default; confirm in W2.1).",
     "Q3 to Q5 are required (default; question bank item 10).",
-    "Online, no runner: the two practice chart answers are recorded but not corrected; the team decides before the freeze how wrong answers are reported.",
     "Sessions are online and unsupervised (team decision, 31 Oct); total time is self-reported in S6.2.",
     "Participants are not told the flag mix (default; item 8).",
     "Four forms: each group sees the seeded order (Form 1 and Form 3) and its reverse (Form 2 and Form 4). Agreed by the team on 30 Oct; TASK_SPLIT, HANDOFF and the protocol JSON updated.",
@@ -62,6 +61,7 @@ CONSENT_TEXT = "\n\n".join([
 INSTRUCTION_BLOCKS = [
     ("What you will see", "You will see 11 student profiles: 1 practice case, then 10 scored cases. For each profile, a machine-learning model has already predicted whether that student is at high risk of dropping out after their first semester."),
     ("Your task", "Guess what the model predicted. We are not asking what you think will happen to the student."),
+    ("How students are flagged", "For outreach, the model flags at most the top 20% of students ranked by estimated risk in a full cohort. The 10 scored profiles are a selected sample, not a representative cohort: do not assume that 20% of these profiles are flagged."),
 ]
 FOR_EACH_CASE = ("For each case", "\u2022 Choose Yes if you think the model flagged the student as at risk, or No if you think it did not.\n\u2022 Rate your confidence from 1 (not at all) to 5 (very).\n\u2022 Answer three short questions in your own words.")
 GOOD_TO_KNOW = ("Good to know", "\u2022 There are no right or wrong answers to the three written questions. We want your honest reasoning.\n\u2022 Please do not type names or any identifying details.\n\u2022 You will not be told whether your answers are correct during the activity.\n\u2022 Please do it in one sitting, on your own, without looking anything up, and do not discuss the cases with anyone until you have submitted.\n\u2022 You can stop at any time without penalty.")

@@ -1,6 +1,6 @@
 # Case-pack format (W2.2), version 1.0
 
-**Status:** draft for agreement by W1 (Noey), W2 (Han), W3 (Yolanda) and W5 (Lucas). The machine check is `forms/case_pack.py`;
+**Status:** format reviewed on 2 Nov by Yolanda on behalf of W1, W3 and W5 with their authorisation (§8); W2 integration and delivered-data checks remain. The machine check is `forms/case_pack.py`;
 if this page and that file ever differ, the file wins.
 
 The case pack carries the 11 cases (practice `PR`, scored `C01` to `C10`) from the people who make them to the
@@ -166,8 +166,13 @@ Private file:
 
 ## 8. To agree
 
-- [ ] **W3:** where the practice case comes from. Proposal: one validation-split case, so it is not a test case and can appear in screenshots.
-- [ ] **W3:** the ID rule in section 6 (ascending `source_row_id`).
-- [ ] **W1:** contributions computed as in section 4 (same SHAP settings as the audit, top 5, group sums).
-- [ ] **W5:** the two group bar names, and charts named `chart_<case_id>.png`.
-- [ ] **W5:** fixture charts drawn from `forms/out/case_pack_fixture.json`; its bars are placeholders until real validation SHAP values exist.
+Contract review, 2 Nov 2026: Yolanda approves the following format requirements on behalf of the owners with
+their authorisation. The SHAP settings match `config/evaluation_protocol.json`; the two semantic groups and
+signed aggregation match `src/explanations.py`, and the form tests cross-check the group members and bar IDs.
+This is not verification of real SHAP computation, delivered charts or the future study export.
+
+- [x] **W3:** practice case from the validation split, not a test case. Screenshots remain subject to the restricted-data rules.
+- [x] **W3:** the ID rule in section 6 (ascending `source_row_id`).
+- [x] **W1:** section 4 is consistent with the frozen settings and signed-group aggregation; actual audit/export computations still need verification.
+- [x] **W5:** the two group bar names, and charts named `chart_<case_id>.png`.
+- [x] **W5:** fixture charts use `forms/out/case_pack_fixture.json`; placeholder bars are for testing only, not real study collection. Chart delivery and visual acceptance remain outstanding.
