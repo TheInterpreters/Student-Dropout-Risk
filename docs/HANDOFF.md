@@ -182,6 +182,11 @@ effectiveness at AIT.
   group (a seeded order or its exact reverse). One unscored
   practice case with standardised instructions; Group B also gets a contribution-direction
   legend and comprehension check.
+- Both groups' instructions state the at-most-top-20% full-cohort policy and explicitly distinguish it
+  from the selected 10-case sample; the sample's actual flag mix is not disclosed to participants
+  (Yolanda's authorised review, 2 Nov).
+- Record and report Group B practice-chart answers without correction or automatic exclusion for wrong
+  answers. Report correct counts and denominators per item and for both items together.
 - No correctness feedback until all 10 scored responses are locked; debrief afterwards.
 - Primary measure: participant-level accuracy across 10 cases; group means descriptive. Also
   confidence (1–5), self-reported total time (online; Google Forms cannot time cases), and written

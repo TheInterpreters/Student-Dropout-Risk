@@ -2,6 +2,10 @@
 
 Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy validation cases). The builder (`forms/build_spec.py`) is the source of truth: if this page and the forms ever differ, the builder wins. For agreement by **W2 (Han)**, **W4 (Harry)** and **W5 (Lucas)**. The questions in section 8 need an answer.
 
+Review update, 2 Nov 2026: Yolanda is reviewing on behalf of the other owners with their authorisation.
+The decisions below are reflected in the builder; the live forms must be rebuilt by Han and checked.
+This review does not certify live Google Forms settings or response-Sheet permissions.
+
 ## 1. Four forms
 
 | Form | Group | Each profile shows | Case order (by case ID) | Main slots |
@@ -20,7 +24,7 @@ Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy va
 2. **Research information and consent** — W4.1 consent text, then "I have read the information above and I agree to take part." I agree / I do not agree. "I do not agree" goes to the Thank-you page.
 3. **Age check** — "I confirm that I am 18 years or older." Yes / No. "No" goes to the Thank-you page.
 4. **Participant code** — Pre-filled from the participant's link. "This code is already filled in from your link. Do not change it. Please note it down in case you want to withdraw later."
-5. **Instructions** — W4.2 text under the headings: What you will see; Your task; What each profile shows; For each case; Good to know. Ends with "When you are ready, continue to the practice case."
+5. **Instructions** — W4.2 text under the headings: What you will see; Your task; How students are flagged; What each profile shows; For each case; Good to know. Both groups are told: "For outreach, the model flags at most the top 20% of students ranked by estimated risk in a full cohort. The 10 scored profiles are a selected sample, not a representative cohort: do not assume that 20% of these profiles are flagged." Ends with "When you are ready, continue to the practice case."
 6. **Practice profile (not scored)** — Profile + the 5 questions. Group B also sees the chart and 2 chart questions (section 3).
 7. **Student profile 1 of 10 ... 10 of 10** — One page per case: profile (+ chart in Group B) + the 5 questions.
 8. **Closing** — "Which best describes you?" Student / Staff or adviser / Other. Then "About how many minutes did the whole activity take you?" (a number from 1 to 300; self-reported, because the study is online).
@@ -82,8 +86,12 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 
 - [ ] The role question stays at the end (section 2, step 8).
 - [ ] Q3 to Q5 (written answers) are required.
-- [ ] Online there is no runner: a wrong practice chart answer is recorded but not corrected. How should wrong answers be reported?
+- [x] Yolanda, on behalf of the owners (2 Nov): record and report wrong practice chart answers, without correction or automatic exclusion. The participant export retains both answers and `chart_check_ok`; report the number of Group B participants who answered each item correctly and both correctly, with denominators.
 - [ ] Participants are not told how many of the 10 students are flagged.
-- [ ] Should the instructions say that the model flags only a limited share of students (the top 20%)? The old line about this was dropped; acceptance check 6 compares the form with the model card.
-- [ ] Should "Average grade" read "Average grade (passed units only)"? In the data, the average is 0 exactly when no units were passed, and the lowest non-zero average is 9.8.
-- [ ] W5: chart images are named `chart_<case ID>.png` (e.g. `chart_C07.png`), 11 in total, and depend on the case-pack format (W2.2).
+- [x] Yolanda, on behalf of the owners (2 Nov): state the top-20% full-cohort policy in both groups' instructions, explicitly distinguishing it from the selected 10-case sample. Do not disclose the sample's actual flag mix. Check the rebuilt live forms in acceptance check 6.
+- [ ] Keep "Average grade" unchanged pending stronger evidence for "(passed units only)". The [official UCI definition](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success), checked on 2 Nov, says "Grade average in the 1st semester (between 0 and 20)"; it does not specify passed units only. The observed data pattern alone does not establish that definition.
+- [x] Yolanda, on behalf of W5 (2 Nov): approve the naming contract `chart_<case ID>.png` (e.g. `chart_C07.png`), 11 in total, using W2.2. This approves the format, not delivery or visual acceptance of the charts.
+
+The two online consent changes (self-reported duration and closing before Submit) have been reviewed in the
+builder. Submission/decline behaviour and any Google draft-saving behaviour still need checking in the live
+forms; this is not a completed W2.4 privacy or W2.6 acceptance sign-off.
