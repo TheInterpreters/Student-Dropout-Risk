@@ -78,6 +78,9 @@ Scoring (W5.6): a guess is correct when (Q1 is "Yes") equals (`model_flag` is 1)
 1. Number the scored cases `C01` to `C10` in **ascending `source_row_id`**, never by flag or risk, so the IDs give nothing away.
 2. Check both files before handing them over; this must print `PASS`:
    `python3 forms/case_pack.py case_pack_study.json private_lookup_study.json`
+   The checker now also enforces unique source rows, ascending C01-C10 source IDs, split membership
+   (PR = validation, scored study cases = test) and profile parity with the public source row.
+   The fixture mode requires all 11 rows to be validation rows. Row IDs are zero-based in the original UCI CSV.
 3. Put both files in the restricted Drive folder and tell W2 and W5.
 
 ## 7. Example (fixture case `C01`, shortened; contribution values are placeholders)

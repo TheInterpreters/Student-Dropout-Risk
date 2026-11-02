@@ -170,7 +170,8 @@ assert.strictEqual(output[55][5], 'mock://B1/PILOT-01');
             spec_path.write_text(json.dumps(spec), encoding="utf-8")
             self.assertEqual(transform.main(
                 paths + ["--assignment", str(assignment_path), "--spec", str(spec_path),
-                         "--label", "dummy", "--out-dir", folder]), 0)
+                         "--label", "dummy", "--out-dir", folder,
+                         "--variants", *exports]), 0)
             with (out / "responses_long_dummy.csv").open(newline="", encoding="utf-8") as f:
                 long_rows = list(csv.DictReader(f))
             with (out / "responses_participants_dummy.csv").open(newline="", encoding="utf-8") as f:

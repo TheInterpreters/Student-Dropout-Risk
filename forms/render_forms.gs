@@ -7,8 +7,8 @@
  *  1. Upload form_spec.json and assignment_fixture.csv to the team's restricted Drive folder.
  *  2. Fill CONFIG with their file IDs and a TEST response sheet ID.
  *  3. Optional: put W5.3's chart_<case>.png files in one restricted Drive folder and set CHART_FOLDER_ID.
- *  4. Run renderAll() once and approve the permissions. Read the log for ROUTE BY HAND,
- *     SET BY HAND and CHART MISSING lines.
+ *  4. Run renderAll() once and approve the permissions. Essential setting/routing failures
+ *     abort and leave forms closed; inspect any CHART MISSING fixture warnings.
  * Output: four forms (Form 1 to Form 4, one per variant in the spec) and a sheet "Assignment links (<fixture or study>)".
  * Keep ACCEPTING_RESPONSES false except during a test.
  */
@@ -22,11 +22,24 @@ const CONFIG = {
 
 function renderAll() {
   const spec = JSON.parse(readDriveText_(CONFIG.SPEC_FILE_ID));
+  if (spec.pack_kind === 'study') {
+    if (!CONFIG.CHART_FOLDER_ID) throw new Error('Study build requires a chart folder.');
+    spec.variants.forEach(function (v) {
+      v.sections.forEach(function (sec) {
+        sec.items.forEach(function (it) {
+          if (it.image && !chartBlob_(it.image)) throw new Error('Missing study chart: ' + it.image);
+        });
+      });
+    });
+  }
   const forms = {};
   spec.variants.forEach(function (v) {
     forms[v.variant_id] = buildForm_(spec, v);
   });
   writeLinks_(forms, spec);
+  if (CONFIG.ACCEPTING_RESPONSES) {
+    Object.keys(forms).forEach(function (id) { forms[id].setAcceptingResponses(true); });
+  }
 }
 
 function readDriveText_(fileId) {
@@ -40,13 +53,13 @@ function buildForm_(spec, v) {
     .setLimitOneResponsePerUser(false)
     .setPublishingSummary(false)
     .setShowLinkToRespondAgain(false)
-    .setAcceptingResponses(CONFIG.ACCEPTING_RESPONSES)
+    .setAcceptingResponses(false)
     .setConfirmationMessage(spec.confirmation || spec.debrief);
   form.setDestination(FormApp.DestinationType.SPREADSHEET, CONFIG.RESPONSE_SHEET_ID);
   try {
     form.setRequireLogin(false);  // no sign-in (W2.4, acceptance check 5)
   } catch (e) {
-    Logger.log('SET BY HAND: "' + v.form_label + '" Settings > Responses > turn off "Restrict to users in AIT"');
+    throw new Error('Form remains closed: verify no sign-in for "' + v.form_label + '": ' + e.message);
   }
 
   const pages = {};
@@ -76,8 +89,7 @@ function buildForm_(spec, v) {
     try {
       p.item.setChoices(choices);
     } catch (e) {
-      Logger.log('ROUTE BY HAND: "' + p.item.getTitle() + '" ' + JSON.stringify(p.goto));
-      p.item.setChoices(p.labels.map(function (label) { return p.item.createChoice(label); }));
+      throw new Error('Form remains closed: routing failed for "' + p.item.getTitle() + '": ' + e.message);
     }
   });
 
@@ -88,7 +100,7 @@ function buildForm_(spec, v) {
     try {
       pages[next.id].setGoToPage(FormApp.PageNavigationType.SUBMIT);
     } catch (e) {
-      Logger.log('ROUTE BY HAND: after section "' + sec.title + '" choose Submit form');
+      throw new Error('Form remains closed: completion routing failed: ' + e.message);
     }
   });
   return form;

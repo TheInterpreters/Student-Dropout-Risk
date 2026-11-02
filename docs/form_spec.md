@@ -12,11 +12,15 @@ This review does not certify live Google Forms settings or response-Sheet permis
 |---|---|---|---|---|
 | Form 1 | A | Profile only | C03 C07 C01 C02 C06 C05 C04 C10 C09 C08 | 13 |
 | Form 2 | A | Profile only | C08 C09 C10 C04 C05 C06 C02 C01 C07 C03 | 12 |
-| Form 3 | B | Profile + contribution chart | C03 C07 C01 C02 C06 C05 C04 C10 C09 C08 | 13 |
-| Form 4 | B | Profile + contribution chart | C08 C09 C10 C04 C05 C06 C02 C01 C07 C03 | 12 |
+| Form 3 | B | Profile + contribution chart | C03 C07 C01 C02 C06 C05 C04 C10 C09 C08 | 12 |
+| Form 4 | B | Profile + contribution chart | C08 C09 C10 C04 C05 C06 C02 C01 C07 C03 | 13 |
 
 - Forms 2 and 4 use the exact reverse of the seeded order in Forms 1 and 3. The practice case (`PR`) always comes first and is not scored.
-- Order seed 11 and allocation seed 2026 are to be recorded as final (W5.8). The real study cases replace the dummy ones after the final test (W2.7); the case IDs and order stay the same.
+- Counts above use the W5 block-randomised assignment, the study handoff implementation. The W2
+  builder's default fixture assignment instead has B1/B2 counts 13/12; do not use that default for real links.
+- Order seed 11 is the current fixture value, not certified final. The W5 allocation seed is privately
+  agreed and sealed with the CSV/hash; 2026 is only the W2 fixture allocation seed. Record the final order
+  seed before the freeze. Real study case IDs and the frozen case order stay the same.
 
 ## 2. Page flow (same in all four forms)
 
@@ -80,6 +84,10 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 
 - 50 main slots (25 per group; 13 or 12 per form), 4 spares (one per form) and 1 pilot link (Form 3, code `PILOT-01`, not counted; its row is deleted after the pilot).
 - Each link pre-fills only the participant code. Recruiters never choose a group: W4 hands out the next link from the sealed list.
+- A study build requires `--assignment` with the sealed W5 CSV. Use that same CSV for rendering
+  and response transformation. Each response export must also be labelled with its **actual source
+  form** using `--variants A1 A2 B1 B2`, not inferred from participant codes. Mismatched codes are
+  dropped and reported even when the two forms belong to the same group.
 - Replacement: if someone does not complete, log it; the next recruit gets the spare for the same form (TASK_SPLIT section 2).
 
 ## 8. Please confirm (W4 and W5)
@@ -95,3 +103,15 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 The two online consent changes (self-reported duration and closing before Submit) have been reviewed in the
 builder. Submission/decline behaviour and any Google draft-saving behaviour still need checking in the live
 forms; this is not a completed W2.4 privacy or W2.6 acceptance sign-off.
+
+## 9. Implementation safeguards and handover (2 Nov)
+
+- Study rendering preflights every chart before creating forms. Routing/login-setting failures raise
+  errors rather than falling back to an apparently working form. Forms start closed and are opened
+  only after rendering and link generation succeed, if explicitly configured.
+- The export transform requires actual source-form identities and finite durations in 1-300 minutes.
+- The case-pack checker verifies unique dataset rows, ascending scored row IDs, validation-only
+  practice, test-only scored study cases, and exact profile/source-row parity. These checks do not
+  prove that supplied SHAP values were computed correctly; the export runner and reviewer must do that.
+- Follow `forms/README.md` for commands and `docs/HANDOFF.md` section 12 for workstream handover.
+  No live acceptance check is marked passed by these code changes.

@@ -86,3 +86,15 @@ python scripts/run_temporal_sensitivity.py
 
 These commands use validation data only. Do not evaluate on the test split until the
 frozen protocol's remaining explanation and study-form acceptance checks pass.
+
+## Team handover (2 Nov 2026)
+
+See [HANDOFF section 12](docs/HANDOFF.md#12-member-handover-and-remaining-gates-2-nov-2026)
+for per-member actions, the W1 audit runner, validation dry run, once-only final-test lock,
+private study-case export, W5 scoring/coding commands and the remaining live acceptance gates.
+Run `python scripts/reproduce_results.py` for tests and fixture-only checks; it never opens the
+final test. Real-model validation regeneration is an explicit, expensive option.
+
+The study uses W5's sealed assignment CSV throughout; form exports require explicit source
+variants to prevent same-group case-order mislabelling. No private seed/list, real test result,
+Google permission check or live acceptance sign-off is claimed by this implementation.

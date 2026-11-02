@@ -162,11 +162,14 @@ def main():
         return ["10/31/2026 12:00:00"] + vals
 
     head = {g: ["Timestamp"] + t for g, t in tr.group_titles(spec).items()}
-    file_a = [head["A"], fake_row("A1", main_code["A1"]), fake_row("A2", main_code["A2"]),
+    file_a = [head["A"], fake_row("A1", main_code["A1"]),
               fake_row("A1", "", consent="I do not agree"), fake_row("A1", "P-0000"), fake_row("A1", main_code["A1"])]
     file_b = [head["B"], fake_row("B2", main_code["B2"]), fake_row("B1", "PILOT-01"), fake_row("B1", main_code["A1"])]
     log = {main_code["A1"]: {"exclude_reason": "test exclusion"}}
-    long_rows, people, rep = tr.transform([("a.csv", file_a), ("b.csv", file_b)], assignment, spec, log)
+    file_a2 = [head["A"], fake_row("A2", main_code["A2"])]
+    long_rows, people, rep = tr.transform(
+        [("a.csv", file_a), ("a2.csv", file_a2), ("b.csv", file_b)], assignment, spec, log,
+        {"a.csv": "A1", "a2.csv": "A2", "b.csv": "B2"})
     if len(people) != 3 or len(long_rows) != 30:
         fails.append("transform kept %d participants / %d rows, expected 3 / 30" % (len(people), len(long_rows)))
     if (rep["declined"], rep["pilot"], rep["unknown_code"], rep["wrong_form"], rep["repeat"]) != \
@@ -193,7 +196,8 @@ def main():
         if it["id"] in tr.CHART_CHECK:
             wrong_practice[index] = "Cannot tell"
     wrong_rows, wrong_people, _ = tr.transform(
-        [("wrong_practice.csv", [head["B"], wrong_practice])], assignment, spec)
+        [("wrong_practice.csv", [head["B"], wrong_practice])], assignment, spec,
+        source_variants={"wrong_practice.csv": "B1"})
     if len(wrong_people) != 1 or len(wrong_rows) != 10:
         fails.append("wrong practice answers caused a participant to be dropped")
     elif (wrong_people[0]["chart_check_ok"] != 0
@@ -204,7 +208,8 @@ def main():
           or any(r["exclude_reason"] or not r["complete"] for r in wrong_rows)):
         fails.append("wrong practice answers were not recorded without automatic exclusion")
     try:
-        tr.transform([("bad.csv", [head["A"][:-1]])], assignment, spec)
+        tr.transform([("bad.csv", [head["A"][:-1]])], assignment, spec,
+                     source_variants={"bad.csv": "A1"})
         fails.append("transform accepted an export whose columns do not match a form")
     except ValueError:
         pass
@@ -221,9 +226,14 @@ def main():
         sp, pp = pathlib.Path(tmp, "pack.json"), pathlib.Path(tmp, "private.json")
         sp.write_text(json.dumps(study), encoding="utf-8")
         pp.write_text(json.dumps(private), encoding="utf-8")
+        try:
+            b.build_all(str(sp), str(pp))
+            fails.append("validation fixtures relabelled as study cases were not refused")
+        except SystemExit:
+            pass
+        sp.write_text(json.dumps(pack), encoding="utf-8")
+        pp.write_text(json.dumps(lookup), encoding="utf-8")
         _, _, spec_s, assignment_s = b.build_all(str(sp), str(pp))
-        if not spec_s["spec_status"].startswith("STUDY") or spec_s["pack_kind"] != "study":
-            fails.append("study build is not marked as a study build")
         if [profile_texts(v) for v in spec_s["variants"]] != [profile_texts(v) for v in spec["variants"]]:
             fails.append("study build shows different profiles from the same cases")
         if assignment_s != assignment:

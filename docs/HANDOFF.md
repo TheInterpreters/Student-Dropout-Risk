@@ -133,7 +133,7 @@ reported separately. Explanations describe model associations, not causes.
 recall/precision, calibration (raw probabilities, no recalibration), runtime, and paired
 2,000-resample bootstrap intervals. No tuning after test access.
 
-## 5. Next actions (task list; none assigned yet)
+## 5. Next actions (ownership in TASK_SPLIT; implementation handover in section 12)
 
 Do not open or report final-test performance until the protocol is frozen and acceptance checks pass.
 
@@ -152,11 +152,11 @@ Do not open or report final-test performance until the protocol is frozen and ac
   course retention deadline, restricted raw-response access); recruit 50 (10 per team member; minimum 40, at least 18 per group); consent;
   run 1 practice + 10 scored cases; code responses (shared by all members, 20% double-coded);
   analyse accuracy and self-reported time descriptively.
-- [ ] **Model card and reproducibility**: complete §8 with final results; provide one clean-clone
-  command regenerating all tables and figures.
+- [ ] **Model card and reproducibility**: complete §8 with final results; verify the clean-clone
+  command for freely regenerable validation tables/figures and the manifest for once-only final results.
 - [ ] Optional sensitivity checks (Enrolled handling; admission-time window).
 - [ ] Hygiene: keep test set untouched; keep raw responses out of version control; verify the 26
-  tests in `.venv-core`; keep repo scope clean (no OfS/text-analysis material); keep DOCX, README
+  original core tests plus new study tests in `.venv-core`; keep repo scope clean (no OfS/text-analysis material); keep DOCX, README
   and this file in sync and re-export the PDF after every DOCX change.
 
 ## 6. Human-study protocol
@@ -441,3 +441,153 @@ exposed secrets or serious size problems, after coordinating a force-push with a
 The removed OfS ZIP remains recoverable from earlier commits and contains no secret.
 Ignored local text-branch material (`text_analysis/`, `data/text/`, `requirements-text.txt`,
 `EDA/`) is out of scope and must not be recommitted.
+
+## 12. Member handover and remaining gates (2 Nov 2026)
+
+**Status:** implementation and synthetic regression checks are not a signed operational acceptance.
+The test split has not been evaluated by this handover work. Do not invent review results, mark the
+blank W2.6 acceptance table passed, or run the final test early. A different reviewer must check new
+code and claims. Today only Python 3.13 is available on the handover machine; the documented pinned
+Python 3.12 environment still needs verification on a member's machine.
+The current handover interpreter also lacks `tabicl` and `xgboost`. Real-model fitting/audit jobs
+must run in the pinned environment; they have not been executed or certified here.
+Verification on this machine: **55 unit tests pass**, the separate form-spec checks pass, and
+the fixture build renders 11 charts plus 11 optional profile images. Synthetic tests cover scoring,
+coding, final-run locks, validation-output structure and source-form/provenance errors; they are
+not evidence of final model performance or successful live Google Forms configuration.
+
+### What each member takes next
+
+| Member | Code ready for review | Next real action |
+|---|---|---|
+| Noey (W1) | `scripts/run_explanation_audit.py` | Time one validation explanation, budget compute, run the full validation audit, review case-level uncertainty/stability/recourse and write W1.5 |
+| Han (W2) | Provenance, source-tab identity, duration and closed-form safeguards in `forms/` | Insert fixture charts, rebuild all forms with the sealed assignment, check routing/login/permissions, run fake exports, record all seven W2.6 checks |
+| Yolanda (W3) | `scripts/run_final_test.py`, `scripts/export_study_cases.py`, `scripts/reproduce_results.py` | Validate dry-run outputs and lock tests, obtain independent approval, verify participant plan/proposal parity, then freeze/tag; only afterwards perform the one real test |
+| Harry (W4) | Private scoring/coding interfaces below | Restrict Drive/Sheet to designated users, confirm retention/deletion plan, complete send-out kit and codebook/training, recruit and track counts without names beside codes |
+| Lucas (W5) | `scripts/analyze_human_study.py`, `scripts/assign_human_coding.py`; existing images/assignment | Independently review and dry-run scoring/coding, privately seal W5 list with Harry; inspect real charts after W3.9; deliver static demo card and clean-clone verification |
+
+### Safe checks and validation work (before freeze)
+
+From the repository root in the verified environment:
+
+```powershell
+python scripts/reproduce_results.py
+python scripts/run_explanation_audit.py --timing-only
+python scripts/run_explanation_audit.py
+python scripts/run_final_test.py --split validation
+```
+
+The first command runs all unit tests, fixture builds, form checks and fixture images. Add
+`--validation-results` only when prepared for lengthy model fits/SHAP. TabICL may download its
+weights on first use and needs internet then. The full audit outputs `tables/faithfulness_validation.csv`,
+case-level bootstrap uncertainty, deletion curves, separate seed/background/perturbation stability
+tables and explicit recourse/no-recourse rows. Figures go under `figures/`; timing/selected validation
+IDs go to `artifacts/audit_runtime_validation.json`. No audit result is claimed until this real run
+and review finish. Perturbation stability reports how many accepted runs exist, including insufficient
+samples; the runtime estimate is not a guarantee.
+
+The final runner defaults to validation. It refits the existing frozen TabICL and four baseline
+configurations on train only, evaluates the selected split, and writes metrics, 2,000 paired
+bootstrap comparisons, reliability curves, runtime, subgroup suppression and proxy tables under
+`tables/final_test_dry_run/`. Check these before freeze; do not report them as final-test results.
+
+### Freeze and once-only final test (do not run now)
+
+After W1.5, all seven W2.6 checks, the validation dry run, and W4.12 pass, the W3 owner and a
+different reviewer create and commit `config/freeze_approval.json`:
+
+```json
+{
+  "owner": "<W3 owner>",
+  "reviewer": "<different reviewer>",
+  "validation_audit_passed": true,
+  "form_acceptance_passed": true,
+  "final_runner_dry_run_passed": true,
+  "participant_plan_verified": true,
+  "protocol_sha256": "<SHA-256 of config/evaluation_protocol.json>"
+}
+```
+
+This is a schema example, **not an approval**. Replace all placeholders only after actual checks.
+Use `(Get-FileHash config\evaluation_protocol.json -Algorithm SHA256).Hash.ToLower()` for the digest.
+Commit the approved code/protocol/approval, create and push `protocol-1.3-frozen`, and start from that
+clean tagged revision. Do not change any model, split or setting after it.
+
+```powershell
+python scripts/run_final_test.py --split test --approval config/freeze_approval.json --confirm-final-test
+```
+
+The runner requires a clean checkout at the pushed freeze tag and matching tracked approval. It
+also rejects Python versions other than 3.12 and any installed version that differs from a pin
+in `requirements.txt`; resolve environment problems before attempting a final run. It
+creates `artifacts/final_test.lock` exclusively **before loading/evaluating the test split**.
+Any failure leaves the lock in place. Deleting result tables never permits another run; clearing a
+lock requires a recorded team decision, not an automatic retry. Commit the lock immediately after
+the run, including failed runs, and record any failure honestly.
+
+Final tables/figures and their SHA-256 manifest go to `tables/final_test/`. The selected fitted
+model and ordered test predictions stay private in ignored `data/final_evaluation/selected_model.joblib`.
+W3.9 uses those predictions without refitting or re-running test metrics:
+
+```powershell
+python scripts/export_study_cases.py --out data/study_cases
+python forms/case_pack.py data/study_cases/case_pack_study.json data/study_cases/private_lookup_study.json
+python forms/render_images.py data/study_cases/case_pack_study.json
+python forms/build_spec.py --case-pack data/study_cases/case_pack_study.json --private data/study_cases/private_lookup_study.json --assignment data/human_study/assignment_list.csv
+```
+
+The practice case is the lowest source-row-ID validation case; scored cases use the existing
+prediction-only balanced selection, numbered by ascending original source row. Practice is never
+scored. Review this deterministic practice rule before freeze. Private outputs are not in Git.
+Export refuses existing study filenames to avoid silently replacing released material.
+
+### One assignment, actual source forms, private analysis
+
+The study handoff uses W5's block-randomised assignment, with A1/A2/B1/B2 main counts **13/12/12/13**.
+The seed, CSV and hash are privately agreed/sealed by the coordinator and reviewer; no real list was
+generated by this handover. The W2 allocation seed 2026 is fixture-only. The case-order seed 11 is
+the current fixture value and still needs final recording before freeze.
+
+Pass `--assignment data/human_study/assignment_list.csv` when rebuilding test forms too. Upload
+that same CSV for the Apps Script links and use it for all later response exports. Do not switch
+lists after links are distributed. See `forms/README.md` for chart/settings preflight and cleanup.
+
+Each response Sheet tab must be identified from its actual form, **not the participant code**.
+Required `--variants` entries correspond one-for-one to export paths:
+
+```powershell
+python forms/transform_responses.py A1.csv A2.csv B1.csv B2.csv --variants A1 A2 B1 B2 --assignment data/human_study/assignment_list.csv --spec forms/out/form_spec.json --label dummy
+python scripts/analyze_human_study.py forms/out/responses_long_dummy.csv --participants forms/out/responses_participants_dummy.csv --private data/study_cases/private_lookup_study.json --label dummy
+python scripts/assign_human_coding.py assign forms/out/responses_long_dummy.csv --send-log data/human_study/send_log.csv --members M1 M2 M3 M4 M5 --label dummy
+python scripts/assign_human_coding.py agreement --assignments data/human_study/coding/assignments_dummy.csv --coded data/human_study/coding/completed_dummy.csv --label dummy
+```
+
+For **pre-freeze dummy scoring**, supply a made-up private lookup with unique nonnegative source
+IDs, five flagged and five unflagged scored cases; do not access the real study/test data to create
+dummy answers. The study lookup in the example exists only after the final test; before then replace
+that path with the synthetic lookup. Use `--label study` only for real consented post-pilot data.
+
+The send log needs `participant_code,recruiter` (M1-M5, never names/contact details). Coding worksheets
+omit group and recruiter; distribute only each coder's own file, through restricted storage.
+Combine completed worksheets privately into `completed_<label>.csv`; preserve each row's coder,
+participant, case and field. One agreed code per text item is compared exactly for raw agreement.
+The primary/secondary coders cannot be the recruiter or each other. Train coders on W4's codebook first.
+
+Scoring excludes consent withdrawals, incomplete cases and logged exclusions, retains wrong practice
+answers, and computes accuracy per participant before group means. `chart_checks_<label>.csv`
+reports correct counts and denominators. Private scored rows, participant summaries, coding text and
+exclusion logs remain under ignored `data/human_study/`. Only reviewed aggregate summaries may be
+copied into report tables; no participant codes/free text or fake results in Git.
+
+### Remaining non-code and independent-review gates
+
+- Verify the exact pinned Python 3.12 environment; current-machine tests do not certify its versions.
+- Record real-model validation audit/dry-run results and independent code reviews; synthetic tests alone
+  do not demonstrate final statistical values or actual TabICL/SHAP runtime.
+- Finish unchecked form-spec decisions, retention plan, proposal participant-number parity and recruitment.
+- Verify real Drive/Sheet sharing, anonymous-access settings, Google draft saving, all routing paths and
+  actual exports. Rebuild forms with the updated script. Acceptance table stays blank until checked.
+- Freeze only after those gates; real study forms/charts and a one-person pilot follow the final run.
+- Finish W5's static demo card, report/slide drafts, qualitative theme summaries and clean-clone
+  verification. The reproducibility helper intentionally never reruns the final test; final outputs
+  can be checked against their manifest, while only validation outputs may be regenerated freely.

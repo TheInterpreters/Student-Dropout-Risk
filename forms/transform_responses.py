@@ -18,7 +18,7 @@ each case row: sessions are online and Google Forms cannot time single cases.
 
 Dry run (W2.5):
   python3 forms/transform_responses.py form1.csv form2.csv form3.csv form4.csv \\
-      --assignment forms/out/assignment_fixture.csv --spec forms/out/form_spec.json --label dummy
+      --variants A1 A2 B1 B2 --assignment forms/out/assignment_fixture.csv --spec forms/out/form_spec.json --label dummy
 
 Send log (optional, from W4): a CSV with participant_code and exclude_reason, for exclusions W4
 recorded (e.g. the person reported seeing the answer). Other columns are ignored.
@@ -26,6 +26,7 @@ recorded (e.g. the person reported seeing the answer). Other columns are ignored
 import argparse
 import csv
 import json
+import math
 import pathlib
 import sys
 
@@ -61,11 +62,15 @@ def group_titles(spec):
 
 
 def minutes_to_seconds(text):
+    if not str(text).strip():
+        return ""
     try:
         minutes = float(text)
     except (TypeError, ValueError):
-        return ""
-    return int(round(minutes * 60)) if minutes > 0 else ""
+        raise ValueError("duration must be a number from 1 to 300 minutes") from None
+    if not math.isfinite(minutes) or not 1 <= minutes <= 300:
+        raise ValueError("duration must be finite and between 1 and 300 minutes")
+    return int(round(minutes * 60))
 
 
 def load_send_log(path):
@@ -84,10 +89,16 @@ def read_export(path):
         return list(csv.reader(f))
 
 
-def transform(exports, assignment, spec, send_log=None):
+def transform(exports, assignment, spec, send_log=None, source_variants=None):
     """exports: list of (name, rows) where rows[0] is the Sheet header. Returns (long_rows, people, report)."""
     send_log = send_log or {}
     variants = {v["variant_id"]: v for v in spec["variants"]}
+    codes = [r["participant_code"] for r in assignment]
+    if any(not code for code in codes) or len(codes) != len(set(codes)):
+        raise ValueError("assignment codes must be nonempty and unique")
+    for row in assignment:
+        if row.get("variant_id") not in variants or row.get("group") != variants[row["variant_id"]]["group"]:
+            raise ValueError("assignment has an unknown variant or inconsistent group")
     titles = group_titles(spec)
     first_ids = {g: [it["id"] for it in answer_items(next(v for v in spec["variants"] if v["group"] == g))]
                  for g in titles}
@@ -95,6 +106,10 @@ def transform(exports, assignment, spec, send_log=None):
     report = {"files": [], "declined": 0, "pilot": 0, "unknown_code": [], "wrong_form": [], "repeat": []}
     seen, long_rows, people = set(), [], []
     for name, rows in exports:
+        variant_id = (source_variants or {}).get(name)
+        if variant_id not in variants:
+            raise ValueError("%s: specify the actual source form variant (A1, A2, B1 or B2)" % name)
+        source_variant = variants[variant_id]
         if not rows:
             raise ValueError("%s is empty" % name)
         header = [h.strip() for h in rows[0][1:]]
@@ -106,6 +121,8 @@ def transform(exports, assignment, spec, send_log=None):
             raise ValueError("%s does not match any form: column %d is %r, expected %r (%d vs %d question columns)"
                              % (name, at + 2, header[at] if at < len(header) else None,
                                 want[at] if at < len(want) else None, len(header), len(want)))
+        if source_variant["group"] != group:
+            raise ValueError("%s: header does not match declared source variant %s" % (name, variant_id))
         pos = {iid: i for i, iid in enumerate(first_ids[group])}  # consent, age and code sit at the same place in every form
         report["files"].append((name, group, len(rows) - 1))
         for row in rows[1:]:
@@ -124,7 +141,7 @@ def transform(exports, assignment, spec, send_log=None):
                 report["unknown_code"].append(code or "(blank)")
                 continue
             v = variants[slot["variant_id"]]
-            if v["group"] != group:
+            if v["variant_id"] != variant_id:
                 report["wrong_form"].append(code)
                 continue
             if code in seen:
@@ -168,12 +185,17 @@ def write_csv(path, columns, rows):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="W2.8: Google Forms export -> long CSV for analysis.")
     ap.add_argument("exports", nargs="+", help="one CSV per form tab of the response Sheet")
+    ap.add_argument("--variants", nargs="+", required=True,
+                    choices=["A1", "A2", "B1", "B2"],
+                    help="actual source variant for each export, in the same order (from the form/tab, not the code)")
     ap.add_argument("--assignment", required=True, help="assignment_<fixture|study>.csv from the same build")
     ap.add_argument("--spec", required=True, help="form_spec.json from the same build")
     ap.add_argument("--send-log", help="W4 send log CSV with participant_code and exclude_reason (optional)")
     ap.add_argument("--label", required=True, choices=LABELS, help="dummy for tests, pilot, or study")
     ap.add_argument("--out-dir", default=str(HERE / "out"))
     args = ap.parse_args(argv)
+    if len(args.variants) != len(args.exports) or len(set(args.exports)) != len(args.exports):
+        ap.error("provide one --variants entry per unique export path")
 
     with open(args.spec, encoding="utf-8") as f:
         spec = json.load(f)
@@ -181,7 +203,9 @@ def main(argv=None):
         assignment = list(csv.DictReader(f))
     log = load_send_log(args.send_log) if args.send_log else {}
     try:
-        long_rows, people, report = transform([(p, read_export(p)) for p in args.exports], assignment, spec, log)
+        long_rows, people, report = transform(
+            [(p, read_export(p)) for p in args.exports], assignment, spec, log,
+            dict(zip(args.exports, args.variants)))
     except ValueError as e:
         print("ERROR:", e)
         return 1
@@ -203,7 +227,7 @@ def main(argv=None):
     print("Kept %d participants (A %d, B %d), %d complete; %d case rows -> %s"
           % (len(people), groups["A"], groups["B"], sum(p["complete"] for p in people), len(long_rows), long_path.name))
     print("Dropped: %d declined, %d pilot" % (report["declined"], report["pilot"]))
-    for key, text in (("unknown_code", "codes not on the assignment list"), ("wrong_form", "codes on the other group's form"),
+    for key, text in (("unknown_code", "codes not on the assignment list"), ("wrong_form", "codes on a different form variant"),
                       ("repeat", "repeat submissions (first kept)")):
         if report[key]:
             print("WARN %s: %s" % (text, ", ".join(report[key])))

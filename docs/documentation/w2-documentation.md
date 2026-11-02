@@ -38,8 +38,11 @@ two case orders so position effects balance within the group.
 |---|---|---|---|---|
 | Form 1 | A | Profile only | Seeded order | 13 |
 | Form 2 | A | Profile only | Exact reverse of Form 1 | 12 |
-| Form 3 | B | Profile + contribution chart | Seeded order | 13 |
-| Form 4 | B | Profile + contribution chart | Exact reverse of Form 3 | 12 |
+| Form 3 | B | Profile + contribution chart | Seeded order | 12 |
+| Form 4 | B | Profile + contribution chart | Exact reverse of Form 3 | 13 |
+
+Counts reflect the W5 study assignment (13/12/12/13). The older W2 default fixture assignment
+has 13/12/13/12; it remains test-only. Seal the W5 CSV privately and use it throughout the handoff.
 
 **Page flow (19 sections, identical in all forms):** Welcome → Research information and consent → Age check (18+)
 → Participant code (pre-filled from the link) → Instructions → Practice profile (not scored) → Student profile
@@ -56,7 +59,7 @@ to know about this student?". All required. No answers or feedback are ever show
 bigger effect; no numbers, score or final answer), the chart explanation in the instructions, and two practice
 chart questions (P.B1 direction, P.B2 bar length) recorded as a manipulation check.
 
-**Links and assignment:** a seeded list gives each slot a random code (P-xxxx) and a form: 50 main slots (25 per
+**Links and assignment:** a seeded list gives each slot a random code (W5: P plus four readable characters) and a form: 50 main slots (25 per
 group), 4 spares (one per form) and 1 pilot link (`PILOT-01`, Form 3, not counted). The link pre-fills only the
 code. Nobody chooses a group; Harry (W4) hands out the next unused link.
 
@@ -212,6 +215,8 @@ the study has no additional survey and the human study is the only instrument. T
 
 - 2026-11-02: Yolanda's authorised review recorded; practice-check reporting and cohort-policy instructions agreed;
   grade-label proposal checked against UCI and left unconfirmed. Live forms and Sheet permissions remain unchecked.
+- 2026-11-02: Handover safeguards added: explicit response-tab variants, case-row/provenance checks, duration
+  validation, fail-closed study rendering and canonical W5 assignment handoff. See HANDOFF section 12.
 - 2026-10-27: Survey 1 drafted (now §9).
 - 2026-10-28: Survey 1 dropped.
 - 2026-10-31: File repurposed as the W2 record; sections 1–12 written.

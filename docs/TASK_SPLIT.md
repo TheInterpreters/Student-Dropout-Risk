@@ -13,6 +13,12 @@ consent and privacy rules. §8 lists the few deviations to disclose.
 making the slides is shared by all five** (§5). §7 shows the estimated hours per person; they are
 within about ±1% of each other. Hours are estimates, so adjust at the meeting if someone knows better.
 
+**Implementation handover (2 Nov):** see `docs/HANDOFF.md` section 12 for runnable commands and
+remaining gates. W1 audit, W3 guarded evaluation/export/reproduction and W5 scoring/coding
+implementations are available for independent review. This does not mark the real audit, dry run,
+freeze, live acceptance, seed sealing or pilot complete. W5 is the canonical study assignment;
+W2's default assignment is fixture-only.
+
 > **Deadline (settled):** "3rd week of November" = **Mon 16 – Fri 20 Nov 2026**. The plan finishes
 > everything by **Thu 19 Nov**; **Fri 20 Nov is buffer** and the hard stop.
 

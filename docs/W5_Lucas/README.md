@@ -9,10 +9,10 @@ Owner: Lucas. Reviewer: see `docs/TASK_SPLIT.md` section 10. Task definitions an
 |---|---|---|---|
 | W5.8 | Seeded assignment list (50 main + 4 spares + 1 pilot, 25/25 main groups) | `scripts/make_assignment_list.py`, `tests/test_assignment_list.py` | Implemented in PR #2; CLI/schema/pilot fixes and 8 passing tests verified by Yolanda on 2 Nov. Private seed/list sealing remains |
 | W5.3 | Image renderer (Group B charts, optional profile cards) | `forms/render_images.py`, `tests/test_render_images.py` | Implemented in PR #3; 6 tests pass and sample charts/profile inspected by Yolanda on 2 Nov. Live form insertion/checks remain |
-| W5.6 | Scoring and analysis script | not started | Due Fri 6 Nov |
-| W5.9 | Coding assignment and agreement script | not started | Due Fri 6 Nov |
+| W5.6 | Scoring and analysis script | `scripts/analyze_human_study.py` | Implemented; synthetic scoring/exclusion tests; Lucas reviews and runs the dummy export before sign-off |
+| W5.9 | Coding assignment and agreement script | `scripts/assign_human_coding.py` | Implemented; synthetic 50-person assignment/agreement tests; codebook/training and operational review still required |
 | W5.1 | Static demo card (from a validation fixture) | not started | Due Wed 11 Nov |
-| W5.5 | Audit figures (deletion curves, stability plots) | not started | Due Wed 11 Nov |
+| W5.5 | Audit figures (deletion curves, stability plots) | `scripts/run_explanation_audit.py` | Figure generation implemented; waits for real validation audit run/review |
 | W3.8 | Clean-clone verification | not started | Due Wed 18 Nov |
 
 Update this table when a task changes.
@@ -53,3 +53,22 @@ Update this table when a task changes.
   descriptively; nobody is excluded because of them.
 - Fixture bars are placeholders, not results. Images go to `forms/out/images_<kind>/` (git-ignored).
   Study images show real test cases and are never committed.
+
+  ## W5.6 and W5.9 handover
+
+  Commands and input shapes are in `docs/HANDOFF.md` section 12. Use `--label dummy` for fake tests,
+  never publish them as study findings. Analysis produces participant accuracy across exactly ten cases
+  and descriptive group means, not 500 independent observations or significance tests. Exclusions are
+  logged; practice mistakes do not cause automatic exclusion. Group B practice-check counts include denominators.
+
+  Coding uses five pseudonymous member IDs (M1-M5), a private send log with `participant_code,recruiter`,
+  one primary coder who is not the recruiter and a random 20% second coder who is neither recruiter nor
+  primary. Counts are greedily balanced among eligible coders; recruitment constraints can prevent exact
+  balance. Worksheets omit group/recruiter columns, but free text is still sensitive and may reveal group.
+  Distribute only each coder's own worksheet through restricted storage. Fill one agreed code per text item
+  according to the pre-agreed codebook; do not mix differing multi-code conventions. The agreement command
+  requires every double-coded case/field pair and reports exact raw agreement, not chance-corrected agreement.
+
+  Synthetic checks are not an independent review of these new scripts. Keep a different reviewer in the
+  loop before using their outputs in the report. Static demo card W5.1 and clean-clone verification W3.8
+  remain operational deliverables; they are not claimed complete.

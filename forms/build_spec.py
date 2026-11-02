@@ -11,8 +11,11 @@ Anything marked [TBD] or 'placeholder' must be replaced before a real run.
 """
 import csv
 import json
-import case_pack
-import labels
+if __package__:
+    from . import case_pack, labels
+else:
+    import case_pack
+    import labels
 import pathlib
 import random
 
@@ -269,6 +272,8 @@ def load_pack(pack_path, private_path):
     with open(private_path, encoding="utf-8") as f:
         lookup = json.load(f)
     problems = case_pack.validate_pack(pack) + case_pack.validate_private(lookup, pack.get("pack_kind"))
+    if not problems:
+        problems += case_pack.validate_provenance(pack, lookup)
     if problems:
         raise SystemExit("Case pack failed the W2.2 check (python3 forms/case_pack.py):\n  " + "\n  ".join(problems))
     return pack, lookup
@@ -316,14 +321,26 @@ def write_outputs(pack, lookup, spec, assignment):
 
 def main():
     import argparse
+    import sys
     ap = argparse.ArgumentParser(description="Build the form spec and assignment list. "
                                  "Without options: the fixture (test) build.")
     ap.add_argument("--case-pack", help="study case pack from W3.9 (case_pack_study.json)")
     ap.add_argument("--private", help="the private lookup that goes with --case-pack")
+    ap.add_argument("--assignment", help="sealed W5 CSV; required for a real study build")
     args = ap.parse_args()
     if bool(args.case_pack) != bool(args.private):
         ap.error("--case-pack and --private must be given together")
     pack, lookup, spec, assignment = build_all(args.case_pack, args.private)
+    if pack["pack_kind"] == "study" and not args.assignment:
+        ap.error("study builds require --assignment with the sealed W5 CSV")
+    if args.assignment:
+        sys.path.insert(0, str(ROOT))
+        from scripts.make_assignment_list import validate
+        with open(args.assignment, newline="", encoding="utf-8-sig") as f:
+            assignment = list(csv.DictReader(f))
+        for row in assignment:
+            row["slot"] = int(row["slot"])
+        validate(assignment)
     write_outputs(pack, lookup, spec, assignment)
     print("Build:", pack["pack_kind"])
     print("Wrote outputs to", OUT)

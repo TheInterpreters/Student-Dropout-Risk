@@ -10,9 +10,14 @@ Check files before handing them over:
 """
 import json
 import math
+import csv
+from pathlib import Path
 import sys
 
-import labels
+if __package__:
+    from . import labels
+else:
+    import labels
 
 CONTRACT_VERSION = "1.0"
 PRACTICE_ID = "PR"
@@ -158,16 +163,59 @@ def validate_private(private, kind):
     if sorted(private) != sorted(CASE_IDS):
         p.append("the private file must have exactly the 11 case ids")
     for cid, meta in private.items():
-        if not isinstance(meta.get("source_row_id"), int):
+        if not isinstance(meta, dict):
+            p.append("%s: private metadata must be an object" % cid)
+            continue
+        if type(meta.get("source_row_id")) is not int or meta["source_row_id"] < 0:
             p.append("%s: source_row_id must be a whole number" % cid)
         flag = meta.get("model_flag")
-        if flag not in ((0, 1) if kind == "study" else (0, 1, None)):
+        if (flag is not None and type(flag) is not int) or flag not in ((0, 1) if kind == "study" else (0, 1, None)):
             p.append("%s: model_flag must be 0 or 1%s" % (cid, "" if kind == "study" else " (or null in a fixture)"))
     if kind == "study":
-        flagged = sum(1 for c in SCORED_IDS if private.get(c, {}).get("model_flag") == 1)
+        flagged = sum(1 for c in SCORED_IDS if isinstance(private.get(c), dict)
+                      and private[c].get("model_flag") == 1)
         if flagged != 5:
             p.append("the 10 scored cases must be 5 flagged and 5 not flagged; found %d flagged" % flagged)
+    ids = [meta.get("source_row_id") for meta in private.values() if isinstance(meta, dict)]
+    if all(type(row) is int for row in ids):
+        if len(set(ids)) != len(ids):
+            p.append("source_row_id must be unique across practice and scored cases")
+        if kind == "study" and all(isinstance(private.get(cid), dict) for cid in SCORED_IDS):
+            scored = [private[cid].get("source_row_id") for cid in SCORED_IDS
+                      if isinstance(private[cid], dict)]
+            if scored != sorted(scored):
+                p.append("scored source_row_ids must be ascending from C01 to C10")
     return p
+
+
+def validate_provenance(pack, private, split_path=None, data_path=None):
+    """Check row identity, profile parity and split membership without using outcome labels."""
+    root = Path(__file__).resolve().parents[1]
+    split_path = split_path or root / "artifacts" / "split_ids.csv"
+    data_path = data_path or root / "eda_uci_data" / "data" / "dropout_data.csv"
+    with open(split_path, newline="", encoding="utf-8") as f:
+        splits = {int(r["source_row_id"]): r["split"] for r in csv.DictReader(f)}
+    with open(data_path, newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    problems = []
+    for case in pack["cases"]:
+        cid = case["case_id"]
+        row_id = private[cid]["source_row_id"]
+        expected = "test" if pack["pack_kind"] == "study" and cid != PRACTICE_ID else "validation"
+        if splits.get(row_id) != expected:
+            problems.append("%s: source row must belong to %s split" % (cid, expected))
+        if not 0 <= row_id < len(rows):
+            problems.append("%s: source row is outside the dataset" % cid)
+            continue
+        raw = {key.strip(): value.strip() for key, value in rows[row_id].items()}
+        for field in case["profile"]:
+            try:
+                equal = float(field["value"]) == float(raw[field["field"]])
+            except (TypeError, ValueError, KeyError):
+                equal = False
+            if not equal:
+                problems.append("%s: profile value differs from source row for %s" % (cid, field["field"]))
+    return problems
 
 
 def main(argv):
@@ -179,7 +227,10 @@ def main(argv):
     problems = validate_pack(pack)
     if len(argv) > 2:
         with open(argv[2], encoding="utf-8") as f:
-            problems += validate_private(json.load(f), pack.get("pack_kind"))
+            private = json.load(f)
+        problems += validate_private(private, pack.get("pack_kind"))
+        if not problems:
+            problems += validate_provenance(pack, private)
     for x in problems:
         print("FAIL:", x)
     print("PASS: follows case-pack format %s" % CONTRACT_VERSION if not problems else "%d problem(s)" % len(problems))
