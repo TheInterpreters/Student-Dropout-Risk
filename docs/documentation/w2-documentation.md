@@ -3,6 +3,8 @@
 **Owner:** Han (W2). **Reviewer:** Yolanda (W3, suggested in TASK_SPLIT §10).
 **Status:** Test forms built and checked on 11 dummy validation cases. Real forms are built on Thu 12 Nov (W2.7).
 **Last updated:** 2026-10-31
+**Review update:** 2026-11-02, Yolanda on behalf of the owners with their authorisation; contract-format review
+and the decisions below only, not live-form acceptance or response-Sheet permission verification.
 **Related:** `docs/form_spec.md` (W2.1, what the forms contain), `docs/case_pack_contract.md` (W2.2, case file format),
 `forms/README.md` (how to build, run and dry-run), `docs/TASK_SPLIT.md` (W2 tasks, D3, D8, §8), `docs/HANDOFF.md` §6–§7.
 
@@ -18,8 +20,8 @@ Team: W1 Noey · W2 Han · W3 Yolanda · W4 Harry · W5 Lucas.
 
 | Task | Due | Status (31 Oct) |
 |---|---|---|
-| W2.1 Form spec | 29 Oct | Done: `docs/form_spec.md`. Waiting for OK from Harry (W4) and Lucas (W5) on its §8 |
-| W2.2 Case-pack format | 29 Oct | Done: `docs/case_pack_contract.md` and the checker `forms/case_pack.py`. Waiting for OK from Noey, Yolanda and Lucas |
+| W2.1 Form spec | 29 Oct | Built: `docs/form_spec.md`. Yolanda's authorised review recorded on 2 Nov; unchecked §8 items and live verification remain |
+| W2.2 Case-pack format | 29 Oct | Built: `docs/case_pack_contract.md` and `forms/case_pack.py`. Yolanda's authorised format review recorded on 2 Nov; real-data verification remains |
 | W2.3 Form generator | 4 Nov | Done: four forms from one command. Chart-image insertion and real-pack loading are built; test charts arrive from Lucas (W5.3) |
 | W2.4 Privacy settings and response sheet | 4 Nov | Settings are set by the script. Still to do: the real restricted response sheet (Harry and the reviewer only) |
 | W2.8 Response transform script | 4 Nov | Done and tested on fake exports: `forms/transform_responses.py` |
@@ -88,6 +90,9 @@ the deadline. Total time is self-reported in the last question.
 | 31 Oct | Total time is self-reported ("About how many minutes…", number 1–300); consent says so | Nobody observes online sessions; Google records only the submission time |
 | 31 Oct | Consent adds "If you close the page before pressing Submit, nothing is sent"; instructions ask for one sitting, alone, without looking anything up | Online participants need this said explicitly |
 | 31 Oct | No "re-read the chart" page after a wrong practice answer | Google Forms routes on only one question per page, and the Back button would let people change their answers after seeing the explanation |
+| 2 Nov | Yolanda's authorised review: record and report wrong practice chart answers without correction or automatic exclusion | Preserve the manipulation check; report correct counts and denominators per item and for both together |
+| 2 Nov | State the at-most-top-20% full-cohort policy in both groups' instructions, explicitly distinguishing it from the selected sample | Clarify the operating policy without revealing the sample's actual flag mix; Han must rebuild the live forms |
+| 2 Nov | Keep the current grade label pending stronger evidence | The official UCI definition does not specify that the average covers passed units only |
 
 ## 4. Evidence behind the label choices
 
@@ -95,8 +100,10 @@ the deadline. Total time is self-reported in the last question.
   national figures; for example GDP −4.06 = 2012 and 3.51 = 2017 real GDP growth (World Bank, via StatisticsTimes),
   unemployment 7.6–16.2 and inflation −0.8–3.7. So GDP is annual growth in %, and unemployment is national.
 - **Average grade.** The first-semester grade is 0 for exactly the 718 students who passed no units, and never
-  otherwise; the lowest non-zero average is 9.8. This suggests the average covers passed units only (team to
-  decide the label; §10).
+  otherwise; the lowest non-zero average is 9.8. This pattern alone does not establish that the average covers
+  passed units only. The [official UCI definition](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success),
+  checked on 2 Nov, says "Grade average in the 1st semester (between 0 and 20)" and does not resolve that question.
+  Keep the current label pending stronger evidence.
 - **Units credited.** Non-zero for 577 of 4,424 students (13%).
 - **Codebook coverage.** Every code in all 4,424 rows has a plain label (test 11).
 
@@ -171,11 +178,11 @@ the study has no additional survey and the human study is the only instrument. T
 - Final order and allocation seeds recorded, sealed list to Harry (with Lucas, W5.8, Mon 2 Nov).
 - Real restricted response sheet (W2.4).
 - Lucas's test charts inserted; dry run (W2.5); acceptance checks by Yolanda (W2.6).
-- Team decisions: how to report wrong practice chart answers; whether very short times lead to exclusion;
-  whether the instructions mention that only the top 20% are flagged (acceptance check 6); grade label
-  "(passed units only)".
-- OKs on `docs/form_spec.md` (Harry, Lucas) and `docs/case_pack_contract.md` (Noey, Yolanda, Lucas); Harry's OK on
-  the two online consent changes.
+- Han rebuilds the forms with the agreed cohort-policy wording, then acceptance check 6 verifies the live text.
+- Very short times: any proposed exclusion rule needs a recorded decision before the freeze.
+- Grade label "(passed units only)": not supported by the official definition; retain current wording pending evidence.
+- Remaining unchecked items in `docs/form_spec.md` §8; live consent/submission behaviour and Sheet permissions.
+  Yolanda's authorised contract-format review is recorded in `docs/case_pack_contract.md` §8.
 
 ## 11. Acceptance results (W2.6), to fill in
 
@@ -203,6 +210,8 @@ the study has no additional survey and the human study is the only instrument. T
 
 ## 13. Change log
 
+- 2026-11-02: Yolanda's authorised review recorded; practice-check reporting and cohort-policy instructions agreed;
+  grade-label proposal checked against UCI and left unconfirmed. Live forms and Sheet permissions remain unchecked.
 - 2026-10-27: Survey 1 drafted (now §9).
 - 2026-10-28: Survey 1 dropped.
 - 2026-10-31: File repurposed as the W2 record; sections 1–12 written.

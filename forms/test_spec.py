@@ -75,6 +75,17 @@ def main():
         if comp_b != 2:
             fails.append("B%d has %d comprehension items, expected 2" % (i, comp_b))
 
+    for v in variants:
+        policy = [it["text"] for s in v["sections"] if s["id"] == "S3"
+                  for it in s["items"] if it["title"] == "How students are flagged"]
+        expected_policy = (
+            "For outreach, the model flags at most the top 20% of students ranked by estimated risk in a full cohort. "
+            "The 10 scored profiles are a selected sample, not a representative cohort: "
+            "do not assume that 20% of these profiles are flagged."
+        )
+        if policy != [expected_policy]:
+            fails.append("%s lacks the agreed cohort-policy/sample distinction" % v["variant_id"])
+
     # 6. profile texts match the case pack; 11 cards per variant
     pack_text = {c["case_id"]: b.profile_text(c) for c in pack["cases"]}
     for v in variants:
@@ -177,6 +188,21 @@ def main():
         fails.append("transform did not turn the self-reported 25 minutes into 1500 seconds")
     if {r["exclude_reason"] for r in long_rows if r["participant_id"] == main_code["A1"]} != {"test exclusion"}:
         fails.append("transform did not carry the exclusion from the send log")
+    wrong_practice = fake_row("B1", main_code["B1"])
+    for index, it in enumerate(tr.answer_items(by_vid["B1"]), 1):
+        if it["id"] in tr.CHART_CHECK:
+            wrong_practice[index] = "Cannot tell"
+    wrong_rows, wrong_people, _ = tr.transform(
+        [("wrong_practice.csv", [head["B"], wrong_practice])], assignment, spec)
+    if len(wrong_people) != 1 or len(wrong_rows) != 10:
+        fails.append("wrong practice answers caused a participant to be dropped")
+    elif (wrong_people[0]["chart_check_ok"] != 0
+          or wrong_people[0]["chart_check_b1"] != "Cannot tell"
+          or wrong_people[0]["chart_check_b2"] != "Cannot tell"
+          or not wrong_people[0]["complete"]
+          or wrong_people[0]["exclude_reason"]
+          or any(r["exclude_reason"] or not r["complete"] for r in wrong_rows)):
+        fails.append("wrong practice answers were not recorded without automatic exclusion")
     try:
         tr.transform([("bad.csv", [head["A"][:-1]])], assignment, spec)
         fails.append("transform accepted an export whose columns do not match a form")
