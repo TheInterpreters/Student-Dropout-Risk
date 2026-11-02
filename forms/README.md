@@ -50,3 +50,30 @@ the study case pack (W2.7). Nothing is open to participants before the pilot.
 
 ## Still open
 Final seeds (W5.8, recorded before Mon 2 Nov) and `decisions_pending` in `out/form_spec.json`.
+
+## W5 block-randomised assignment option
+
+Lucas's generator is available as `scripts/make_assignment_list.py`:
+
+```
+python scripts/make_assignment_list.py --seed <privately-agreed-seed>
+python -m unittest tests.test_assignment_list -v
+```
+
+It writes `data/human_study/assignment_list.csv` and a private rules/hash file (git-ignored).
+The CSV uses the W2 columns `slot,participant_code,variant_id,group,role`, with 50 main slots,
+4 spares and `PILOT-01` on B1. Main slots use permuted blocks of four; codes use Lucas's
+easy-to-read alphabet. W2's existing default assignment generation is unchanged.
+
+**Choose and seal one assignment before distributing links.** The W5 algorithm produces different
+codes and allocations from `build_spec.py`, even with the same seed. If adopting W5, upload this
+CSV instead of `assignment_fixture.csv`/`assignment_study.csv` as `ASSIGNMENT_FILE_ID` for
+`render_forms.gs`, and use this exact CSV with `transform_responses.py --assignment` in both the
+dry run and study. Do not mix lists, regenerate with another seed or switch lists after links
+have been sent. Rebuilds of the W2 form spec do not replace the chosen W5 assignment.
+
+The integration test writes a dummy assignment, submits synthetic CSV exports for all four
+form layouts (including spares and pilot), and checks response transformation and case order.
+When Node.js is available, it also runs the actual `writeLinks_` Apps Script function with
+mock Google services to verify that all 55 codes are routed to their assigned forms.
+It does not replace the live Google Forms/Sheet acceptance checks.
