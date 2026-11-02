@@ -1,18 +1,20 @@
 # Case-pack format (W2.2), version 1.0
 
-**Status:** format reviewed on 2 Nov by Yolanda on behalf of W1, W3 and W5 with their authorisation (§8); W2 integration and delivered-data checks remain. The machine check is `forms/case_pack.py`;
+**Status (2 Nov, evening):** format review, real export, local data/provenance checks and 11 chart
+files completed by Yolanda (§8). In-memory builder compatibility passes; restricted handover,
+independent review, all-chart visual parity and live form insertion remain. The machine check is `forms/case_pack.py`;
 if this page and that file ever differ, the file wins.
 
 The case pack carries the 11 cases (practice `PR`, scored `C01` to `C10`) from the people who make them to the
-people who use them. Agreeing the format now means the study export on Wed 11 Nov drops straight into the chart
-renderer and the form builder.
+people who use them. The real pack now exists locally and is compatible with the chart renderer
+and form builder. Original November deadlines below have been superseded by completed local work.
 
 | Who | Does what with it | When |
 |---|---|---|
-| W2 (builder) | Makes the **fixture** pack now; builds the forms from a pack | now; real forms Thu 12 Nov (W2.7) |
-| W1 | Confirms the contributions are computed as in section 4 | this week |
-| W3 | Exports the **study** pack and private file after the final test | Wed 11 Nov (W3.9) |
-| W5 | Draws one chart per case from `contributions`; scoring reads the private file | test charts by Thu 5 Nov (W5.3); scoring W5.6 |
+| W2 (builder) | Uses genuine pack/charts and canonical assignment to build real forms | Ready to build; not yet deployed/accepted (W2.7) |
+| W1 | Reviews explanation methods and explicitly omitted audit limitations | Independent review pending; no full-audit certification |
+| W3 | Real **study** pack and private lookup exported after once-only final evaluation | Completed locally by Yolanda on 2 Nov; restricted handover pending |
+| W5 | Renderer integrated/verified; genuine chart generation completed by Yolanda; scorer uses private lookup | 11 charts exist; live parity and independent scoring review pending |
 
 ## 1. Two files
 
@@ -21,7 +23,7 @@ renderer and the form builder.
 | `case_pack_<kind>.json` | Profiles, chart file names, top-5 contributions. **No model output.** | Restricted Drive folder (never git) |
 | `private_lookup_<kind>.json` | Per case: dataset row and the model's flag | Restricted; scoring and W3 only. Never in the forms or git |
 
-`<kind>` is `fixture` (dummy validation cases, now) or `study` (the real cases, 11 Nov).
+`<kind>` is `fixture` (dummy validation cases) or `study` (real cases exported on 2 Nov).
 The fixture pack is rebuilt with `python3 forms/build_spec.py` (output in `forms/out/`, ignored by git).
 
 ## 2. Case pack: top level
@@ -32,7 +34,7 @@ The fixture pack is rebuilt with `python3 forms/build_spec.py` (output in `forms
 | `pack_kind` | `"fixture"` or `"study"` |
 | `protocol_version` | `"1.3"` |
 | `source` | One line: where the cases came from (split, selection rule, date) |
-| `model_ref` | Git tag or commit of the frozen model, e.g. `protocol-1.3-frozen` (`"none (fixture)"` for fixtures) |
+| `model_ref` | Current study: `"local-sha256:<manifest SHA-256>"`, bound to the local freeze. Original tagged mode: frozen Git tag/commit. Fixtures: `"none (fixture)"` |
 | `contributions_placeholder` | `true` only in fixtures with made-up bars; must be `false` in a study pack |
 | `cases` | Exactly 11 cases in the order `PR, C01, ..., C10` |
 
@@ -81,7 +83,15 @@ Scoring (W5.6): a guess is correct when (Q1 is "Yes") equals (`model_flag` is 1)
    The checker now also enforces unique source rows, ascending C01-C10 source IDs, split membership
    (PR = validation, scored study cases = test) and profile parity with the public source row.
    The fixture mode requires all 11 rows to be validation rows. Row IDs are zero-based in the original UCI CSV.
-3. Put both files in the restricted Drive folder and tell W2 and W5.
+3. Share the case pack and chart PNGs with the form builder through restricted storage.
+   Keep the private lookup in a separate restricted scoring location available only to W3 and
+   the designated scorer/coordinator; do not upload it as a participant-facing or Apps Script
+   input. Local build validation may use it, but only public form outputs/charts are uploaded.
+
+The checker verifies structure, row/split/profile parity, ID ordering and the 5/5 flag count.
+It does **not** authenticate `model_ref`, recompute SHAP or prove flags match the fitted model.
+The export runner binds model/freeze hashes; the saved-prediction selection/flag cross-check
+is separate local evidence recorded in HANDOFF §12, not an independent review.
 
 ## 7. Example (fixture case `C01`, shortened; contribution values are placeholders)
 
@@ -172,10 +182,16 @@ Private file:
 Contract review, 2 Nov 2026: Yolanda approves the following format requirements on behalf of the owners with
 their authorisation. The SHAP settings match `config/evaluation_protocol.json`; the two semantic groups and
 signed aggregation match `src/explanations.py`, and the form tests cross-check the group members and bar IDs.
-This is not verification of real SHAP computation, delivered charts or the future study export.
+That format review alone was not verification of real SHAP computation or delivery.
+Subsequent execution on 2 Nov completed the genuine case export, local chart-file generation
+and contract checks by Yolanda using the existing contract and renderer. This is local creation,
+not confirmation that restricted teammate handover or live insertion has occurred.
+The final model bundle/snapshot hashes, deterministic selection/flags and exact profile/source
+provenance verify; no independent recomputation of SHAP or full-audit certification is claimed.
+Live insertion and complete visual parity review remain pending.
 
 - [x] **W3:** practice case from the validation split, not a test case. Screenshots remain subject to the restricted-data rules.
 - [x] **W3:** the ID rule in section 6 (ascending `source_row_id`).
-- [x] **W1:** section 4 is consistent with the frozen settings and signed-group aggregation; actual audit/export computations still need verification.
+- [x] **W1:** section 4 matches frozen settings/signed-group aggregation; real export complete, full explanation audits omitted rather than passed.
 - [x] **W5:** the two group bar names, and charts named `chart_<case_id>.png`.
-- [x] **W5:** fixture charts use `forms/out/case_pack_fixture.json`; placeholder bars are for testing only, not real study collection. Chart delivery and visual acceptance remain outstanding.
+- [x] **W5:** fixtures remain testing-only. Real chart-file generation completed by Yolanda using Lucas's renderer, integrated and verified by Yolanda; restricted handover and all-chart visual/live acceptance remain outstanding.

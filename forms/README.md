@@ -4,8 +4,10 @@ Builds the four Google Forms for the human study from one spec. Python makes all
 checks; Apps Script only renders. What the forms contain: `docs/form_spec.md` (W2.1). Case file format:
 `docs/case_pack_contract.md` (W2.2).
 
-Status: test build on 11 dummy validation cases (fixture). The real forms are built on Thu 12 Nov from
-the study case pack (W2.7). Nothing is open to participants before the pilot.
+Status (2 Nov): the real case pack and 11 genuine charts have been exported privately; the existing
+live forms are still test builds, not accepted real study forms. The real-form build remains
+outstanding (originally scheduled for Thu 12 Nov). Do not distribute participant links before
+restricted response storage, live acceptance and the pilot pass.
 
 ## Files
 - `build_spec.py`: builds the fixture case pack, the four form specs (A1, A2 = Group A; B1, B2 = Group B)
@@ -46,16 +48,24 @@ the study case pack (W2.7). Nothing is open to participants before the pilot.
    dropped counts. Then delete the test responses in each form and in the Sheet, and turn responses off.
 
 ## Real forms (W2.7, Thu 12 Nov)
-1. Check W3's export: `python3 forms/case_pack.py case_pack_study.json private_lookup_study.json` (must print PASS).
-2. `python3 forms/build_spec.py --case-pack case_pack_study.json --private private_lookup_study.json --assignment data/human_study/assignment_list.csv`
+1. Check W3's export from the repository root:
+   `python forms/case_pack.py data/study_cases/case_pack_study.json data/study_cases/private_lookup_study.json` (must print PASS).
+2. `python forms/build_spec.py --case-pack data/study_cases/case_pack_study.json --private data/study_cases/private_lookup_study.json --assignment data/human_study/assignment_list.csv`
    (refuses invalid provenance or assignment; the sealed W5 codes are reused, not regenerated).
-3. Put W5.3's `chart_<case>.png` files in one restricted Drive folder and set `CHART_FOLDER_ID`.
+3. Put the 11 genuine `chart_<case>.png` files from `forms/out/images_study/` in one restricted
+   Drive folder and set `CHART_FOLDER_ID`. Do not reuse fixture charts.
 4. Set `RESPONSE_SHEET_ID` to the real restricted sheet (W4 owner and reviewer only), upload
    `out/form_spec.json` and `out/assignment_study.csv`, run `renderAll()`. Never upload the private file.
-5. Repeat the A/B parity check and open each form once.
+5. Keep `ACCEPTING_RESPONSES` false during setup. In each newly built form manually disable
+   respondent autosave as described above; the setting on old forms does not transfer.
+6. Repeat all live acceptance checks, including A/B parity, consent/decline routing, hidden-output
+   checks, signed-out access, chart readability on phones and restricted response storage.
+   Run one pilot before distributing the individual study links.
 
 ## Still open
-Final order seed, privately sealed W5 assignment (W5.8), and `decisions_pending` in `out/form_spec.json`.
+Final order recording, Harry/Lucas acknowledgement of the locally sealed W5 assignment, and
+`decisions_pending` in `out/form_spec.json`. The canonical CSV, seed/rules and local seal now
+exist in ignored `data/human_study/` under owner authorization; do not regenerate them.
 The pinned-environment validation-only model dry run now passes; live acceptance does not.
 The 2 Nov live check disabled autosave on the four existing forms and verified "Saving disabled",
 but Form 4 still has chart placeholders/missing cohort-policy wording and the response Sheet is
@@ -63,6 +73,12 @@ institution-wide link-editable. Permissions were left unchanged at Yolanda's req
 Rebuild with the current renderer, repeat the manual autosave setting and all seven acceptance checks.
 
 ## W5 block-randomised assignment option
+
+**W5.8 canonical assignment completed by Yolanda using Lucas's generator:** it already exists in
+ignored `data/human_study/` with private seed/rules and `assignment_seal.json`. Exact reproduction,
+allocations and hash verification pass; Harry/Lucas independent acknowledgement is not claimed.
+Do not run the generation command below on the existing canonical output: the generator overwrites
+files. It is retained as historical one-time setup documentation, not a remaining step.
 
 Lucas's generator is available as `scripts/make_assignment_list.py`:
 
@@ -76,7 +92,7 @@ The CSV uses the W2 columns `slot,participant_code,variant_id,group,role`, with 
 4 spares and `PILOT-01` on B1. Main slots use permuted blocks of four; codes use Lucas's
 easy-to-read alphabet. W2's existing default assignment generation is unchanged.
 
-**The study handoff uses W5; privately seal its assignment before distributing links.** The W5 algorithm produces different
+**The study handoff uses the already locally sealed W5 assignment; hand it over privately.** The W5 algorithm produces different
 codes and allocations from `build_spec.py`, even with the same seed. If adopting W5, upload this
 CSV instead of `assignment_fixture.csv`/`assignment_study.csv` as `ASSIGNMENT_FILE_ID` for
 `render_forms.gs`, and use this exact CSV with `transform_responses.py --assignment` in both the

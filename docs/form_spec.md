@@ -5,6 +5,16 @@ Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy va
 Review update, 2 Nov 2026: Yolanda is reviewing on behalf of the other owners with their authorisation.
 The decisions below are reflected in the builder; the live forms must be rebuilt by Han and checked.
 This review does not certify live Google Forms settings or response-Sheet permissions.
+W2.1/W2.2 review completed by Yolanda; original Han implementation integrated and verified by
+Yolanda. Unchecked owner confirmations and real-build acceptance remain pending.
+
+**Current readiness (2 Nov, evening):** the final evaluation, real 11-case pack and 11 genuine
+charts are complete. The canonical W5 assignment is now generated and locally hash-sealed
+under owner authorization; independent Harry/Lucas acknowledgement is not claimed.
+Real-form preparation can proceed using that exact CSV. The existing live forms remain test builds. Restrict
+response storage, rebuild closed, disable autosave anew, complete all live checks and run one
+pilot before distributing links. Full explanation audits were omitted under the accelerated
+amendment, not passed; they are not a remaining mandatory build step.
 
 ## 1. Four forms
 
@@ -18,9 +28,10 @@ This review does not certify live Google Forms settings or response-Sheet permis
 - Forms 2 and 4 use the exact reverse of the seeded order in Forms 1 and 3. The practice case (`PR`) always comes first and is not scored.
 - Counts above use the W5 block-randomised assignment, the study handoff implementation. The W2
   builder's default fixture assignment instead has B1/B2 counts 13/12; do not use that default for real links.
-- Order seed 11 is the current fixture value, not certified final. The W5 allocation seed is privately
-  agreed and sealed with the CSV/hash; 2026 is only the W2 fixture allocation seed. Record the final order
-  seed before the freeze. Real study case IDs and the frozen case order stay the same.
+- Case-order seed 11 is the existing frozen builder value; record/review its resulting order in
+  real-build acceptance, without modifying frozen code/config. The separate W5 allocation seed is
+  privately recorded with the canonical CSV/hash and local seal; 2026 is fixture allocation only.
+  Study case IDs and frozen case order stay the same. No independent live-order sign-off is claimed.
 
 ## 2. Page flow (same in all four forms)
 

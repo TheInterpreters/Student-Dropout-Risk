@@ -13,6 +13,12 @@ the authorized local hashed freeze; preserve `artifacts/final_test.lock` and nev
 Final metrics/intervals/reliability/subgroup outputs are in `tables/final_test/`.
 TabICL ROC-AUC is 0.9566 and Brier 0.0740; paired intervals do not establish superiority
 over XGBoost or EBM. Real study cases and 11 genuine charts have been exported privately.
+The canonical private assignment is now generated and locally hash-sealed: 50 main slots,
+4 spares and 1 pilot. This is owner-authorized completion, not Harry/Lucas independent approval.
+Build the real forms next using the exact CSV; do not regenerate it. Yolanda's completed
+cross-workstream contributions are recorded in TASK_SPLIT as "Completed by Yolanda" for work she
+performed and "Integrated and verified by Yolanda" for teammates' existing implementations;
+original teammate authorship is retained and pending checks remain pending.
 See HANDOFF sections 8 and 12 for results, deviations and handover. Earlier unopened-test
 statements below describe the pre-final workflow, not current status. Live privacy acceptance,
 real-form build and pilot remain incomplete; no human responses have been collected by this work.
@@ -32,8 +38,8 @@ cohort-capacity outreach policy, grouped perturbations, and model-agnostic permu
 SHAP with 25 training-background rows and 67 evaluations. The real TabICL/SHAP check and
 synthetic white-box check pass. Protocol 1.3 fixes signed semantic-group aggregation,
 label-free risk-stratified validation audit cases, capacity-consistent recourse, suppression/proxy rules,
-and paired final-test uncertainty. The untouched test split remains unopened until every
-validation audit and study-form acceptance check is complete.
+and paired final-test uncertainty. The single final evaluation is now complete under the
+documented accelerated amendment; do not rerun it. Full explanation-quality auditing was omitted.
 
 ## Project Scope
 
@@ -45,6 +51,11 @@ data and a tabular foundation model (TFM), compared with conventional baselines
 Explainable Boosting Machine (EBM). The project evaluates whether the
 model's explanations are faithful, stable, actionable, fair, and useful to a university
 student-support officer.
+
+That is the original research scope, not a claim that every property has been established.
+The accelerated workflow provides model-performance diagnostics and limited explanation
+execution evidence; full faithfulness/stability/recourse audits were omitted and the human
+study remains pending.
 
 The primary task is **Dropout (1) versus Graduate (0)**. Students labelled Enrolled are
 excluded because their final outcome is unresolved; retaining Enrolled as a separate
@@ -102,8 +113,9 @@ python scripts/run_validation_audits.py
 python scripts/run_temporal_sensitivity.py
 ```
 
-These commands use validation data only. Do not evaluate on the test split until the
-frozen protocol's remaining explanation and study-form acceptance checks pass.
+These commands use validation data only. For the complete current unit suite, run
+`python -m unittest discover -s tests`, then `python forms/test_spec.py`.
+The final test has already run: verify its saved evidence rather than evaluating it again.
 
 ## Team handover (2 Nov 2026)
 
