@@ -57,7 +57,7 @@ Asked on the practice case and on each of the 10 cases (all required):
 | Q1 | Do you think the model flagged this student? | Choose one: Yes / No |
 | Q2 | How sure are you? | Scale 1 (Not sure at all) to 5 (Very sure) |
 | Q3 | What made you think so? | Long text |
-| Q4 | If you were the support officer, what would you say or suggest to this student? | Long text (note under it: "Please do not type any names.") |
+| Q4 | If you were the support officer, what would you say or suggest to this student? | Long text (note under it: "A short answer is fine; one suggestion is enough. Please do not type any names.") |
 | Q5 | What else would you want to know about this student? | Long text |
 
 Group B practice case only (checks the chart was read correctly; not scored as a case):

@@ -50,7 +50,7 @@ DECISIONS_PENDING = [
 ]
 
 CONSENT_TEXT = "\n\n".join([
-    "What this is\nYou are invited to take part in a short class research activity about how people understand the predictions of an AI model. It takes about 30 minutes.",
+    "What this is\nYou are invited to take part in a short class research activity about how people understand the predictions of an AI model. It takes about 30–40 minutes.",
     "What you will do\n• Look at 11 student profiles (1 practice and 10 scored).\n• For each one, guess whether the model flagged the student as at risk (yes or no).\n• Rate how confident you are.\n• Write three short answers.",
     "What we record\n• Your answers, your confidence ratings and how long you say the activity took.\n• They are stored under a random participant code.\n• We do not ask for your name or any identifying information. Please do not type any such information into your answers.",
     "Your choice\n• Taking part is voluntary, and you must be 18 or older.\n• You can stop at any time without penalty. If you close the page before pressing Submit, nothing is sent.\n• Taking part, or not, will not affect your grades, standing, employment or any services.",
@@ -81,7 +81,7 @@ HELPER_TEXT = ("Please do not type names or any information that could identify 
 DEBRIEF = ("Thank you for taking part. Your answers will be stored under your participant code only. The study compares "
            "two groups that saw different material. The chart describes model behaviour, not causes. "
            "To withdraw, send your participant code to the person who sent you this form.")
-Q4_HELP = "Please do not type any names."
+Q4_HELP = "A short answer is fine; one suggestion is enough. Please do not type any names."
 DECLINE_TEXT = "Thank you. You chose not to take part, so your answers will not be used. You can close this page now."
 FINISH_TEXT = "Please press Submit below to send your answers. They are not sent until you do."
 # Shown by Google after Submit on either path, so it must suit completers and decliners alike.

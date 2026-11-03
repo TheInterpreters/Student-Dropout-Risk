@@ -166,7 +166,7 @@ amendment explicitly with owner approval; never silently change scientific setti
   recruited participant **inherits that empty slot's group and variant**; a spare is used only when a
   slot is empty, choosing the group that keeps the totals closest to balanced. Incomplete responses are
   logged and excluded. The older documents said "8–10, minimum 4" (see §8).
-- **Time:** about 30 minutes per person on their own device; the form's last question asks how many
+- **Time:** 30–40 minutes per person on their own device (pilot, 3 Nov: about 40 by the clock, 35 self-reported); the form's last question asks how many
   minutes it took (self-reported, §8 item 3).
 
 ## 3. Timeline at a glance (2026)

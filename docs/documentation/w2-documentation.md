@@ -107,6 +107,9 @@ the deadline. Total time is self-reported in the last question.
 | 2 Nov | Yolanda's authorised review: record and report wrong practice chart answers without correction or automatic exclusion | Preserve the manipulation check; report correct counts and denominators per item and for both together |
 | 2 Nov | State the at-most-top-20% full-cohort policy in both groups' instructions, explicitly distinguishing it from the selected sample | Clarify the operating policy without revealing the sample's actual flag mix; Han must rebuild the live forms |
 | 2 Nov | Keep the current grade label pending stronger evidence | The official UCI definition does not specify that the average covers passed units only |
+| 3 Nov | Time stated as "30–40 minutes" in the consent and the invitation | The pilot took about 40 minutes by the clock (35 self-reported) and felt a little long |
+| 3 Nov | Note under the support officer question (Q4): "A short answer is fine; one suggestion is enough. Please do not type any names." | In the pilot, thinking of reasons from the officer's point of view felt long |
+| 3 Nov | Cases not changed after the pilot | They were fixed after the one-time final test; changing them now would mean choosing cases after seeing results |
 
 ## 4. Evidence behind the label choices
 
@@ -155,6 +158,15 @@ links, responses. These live only in the restricted Drive folder.
   across docs, consent, instructions and the time question; commit 14:48.
 - 31 Oct 15:14: forms rebuilt, log clean. The links sheet lacked the pilot row because Drive still held an older
   assignment file; the pilot link was added by hand and the file re-uploaded.
+- 3 Nov, about 00:20–01:10 Bangkok time (the response sheet shows UTC, 2 Nov 18:08): **pilot** (W4.6) on Form 3
+  with `PILOT-01`, run by Harry. One adult outside the 50 and not a team member, alone, on their own Android phone.
+  Result: all 62 questions answered; both practice chart checks correct; charts readable on the phone and rated well;
+  no typos; 35 minutes self-reported, about 40 by the clock. The first 2–3 cases were slower while they learned
+  the format (no wording problem). The real export matched the spec column for column and the transform dropped the
+  pilot row. Local copies of the pilot response were deleted; the response itself goes with the old forms and response tab.
+- 3 Nov: two wording changes from the pilot (time 30–40 minutes; Q4 note) made in the builder and patched into the
+  real `form_spec.json` (only those texts; proof by diff; original kept as `form_spec_original_2nov.json`, hashes in
+  `CHANGES_after_pilot.txt`). All four forms rebuilt with the same cases, charts and assignment.
 
 ## 7. Problems and fixes
 
@@ -179,6 +191,12 @@ links, responses. These live only in the restricted Drive folder.
 5. The consent text gives no withdrawal deadline, retention date or named contact (team decision for
    flexibility); W4 records the retention date privately.
 6. Practice chart answers are recorded but not corrected.
+7. Self-reported time runs short: the pilot reported 35 minutes for about 40 by the clock.
+8. Some profiles make the flag easy to guess from the profile alone (for example many failed units or overdue fees),
+   and in Group B the chart can make it easier still. Academic record and tuition status are strong signals for the
+   model too, so both groups answer such cases correctly and any group difference can only show on harder cases.
+   The study measures agreement with the model's hidden flag on a fixed, selected panel; the cases were not changed
+   after the pilot.
 
 ## 9. Survey 1 (dropped, for the record)
 
@@ -237,6 +255,7 @@ after rebuilding; do not mark the table passed from these partial observations.
 
 ## 13. Change log
 
+- 2026-11-03: Pilot recorded (§6); time wording 30–40 minutes and the Q4 note added; limitations 7–8 added (§8); forms rebuilt.
 - 2026-11-02, evening: task-by-task completion and contribution-specific attribution recorded;
   final evaluation/real cases/charts and local assignment seal completed; real build/privacy/acceptance/
   pilot remain pending. Removed prospective-study wording that incorrectly sounded completed.

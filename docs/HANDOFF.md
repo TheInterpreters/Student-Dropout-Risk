@@ -228,7 +228,7 @@ flexible; participants contact the person who sent them the form. W4 still recor
 privately for deletion (W4.10).
 
 > You are invited to take part in a short class research activity about understanding an AI
-> model's predictions. It takes about 30 minutes. You will look at 11 student
+> model's predictions. It takes about 30–40 minutes. You will look at 11 student
 > profiles (one practice and ten scored), guess whether the model flags each student as at-risk, rate
 > your confidence, and write three short answers per profile. We record your answers, confidence and
 > how long you say it took, under a random participant code. We do not ask for your name or any identifying
