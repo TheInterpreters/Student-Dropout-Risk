@@ -12,13 +12,13 @@ Lucas's independent approval. Operational review remains separate from implement
 
 | ID | Task | Where | Status |
 |---|---|---|---|
-| W5.8 | Seeded assignment list (50 main + 4 spares + 1 pilot, 25/25 main groups) | `scripts/make_assignment_list.py`, `tests/test_assignment_list.py` | **Canonical assignment completed by Yolanda.** Lucas's PR #2 generator integrated and verified by Yolanda, with CLI/schema/pilot fixes; CSV generated once, exact seed/hash reproduced, 8 tests pass. Local seal records owner authorization, not independent review; Harry/Lucas acknowledgement pending |
+| W5.8 | Seeded assignment list (50 main + 4 spares + 1 pilot, 25/25 main groups) | `scripts/make_assignment_list.py`, `tests/test_assignment_list.py` | **Canonical assignment completed by Yolanda.** Lucas's PR #2 generator integrated and verified by Yolanda, with CLI/schema/pilot fixes; CSV generated once, exact seed/hash reproduced, 8 tests pass. Local seal records owner authorization, not independent review; team reports restricted handover acknowledged (4 Nov) |
 | W5.3 | Renderer and 11 genuine Group B charts | `forms/render_images.py`, `tests/test_render_images.py` | **Lucas's PR #3 renderer integrated and verified by Yolanda; genuine chart generation completed by Yolanda.** Text checks pass; one real chart inspected. Remaining: full visual/profile/order parity and live insertion |
 | W5.6 | Scoring and analysis script | `scripts/analyze_human_study.py` | **Implementation and synthetic scoring/exclusion/practice-check tests completed by Yolanda.** Remaining: Lucas's independent review and actual study-data analysis after collection |
 | W5.9 | Coding assignment and agreement script | `scripts/assign_human_coding.py` | **Implementation and synthetic assignment/agreement tests completed by Yolanda.** Remaining: codebook/training, independent review and actual coding |
 | W5.1 | Static demo card (validation fixture only) | not verified complete | **Pending**; original due Wed 11 Nov |
 | W5.5 | Full-audit deletion/stability figures | `scripts/run_explanation_audit.py` | **Omitted** with full audit; no completed empirical figures claimed; disclose reduced evidence |
-| W3.8 | Independent clean-clone verification | not verified complete | **Pending**; original due Wed 18 Nov; verify saved final evidence, never repeat final evaluation |
+| W3.8 | Clean-clone/evidence verification | **Completed 4 Nov (scheduled deadline 14 Nov):** all 62 unit tests, four form variants and 22 saved final-evidence hashes passed; protocol hash matched the manifest and lock. Final evaluation was not rerun. |
 
 Update this table when a task changes.
 
@@ -80,5 +80,5 @@ Update this table when a task changes.
   requires every double-coded case/field pair and reports exact raw agreement, not chance-corrected agreement.
 
   Synthetic checks are not an independent review of these new scripts. Keep a different reviewer in the
-  loop before using their outputs in the report. Static demo card W5.1 and clean-clone verification W3.8
-  remain operational deliverables; they are not claimed complete.
+  loop before using their outputs in the report. Static demo card W5.1 remains an operational
+  deliverable; clean-clone/evidence verification W3.8 is complete.

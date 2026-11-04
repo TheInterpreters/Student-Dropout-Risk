@@ -2,19 +2,17 @@
 
 Generated on 31 Oct 2026 from `forms/out/form_spec.json` (test build on dummy validation cases). The builder (`forms/build_spec.py`) is the source of truth: if this page and the forms ever differ, the builder wins. For agreement by **W2 (Han)**, **W4 (Harry)** and **W5 (Lucas)**. The questions in section 8 need an answer.
 
-Review update, 2 Nov 2026: Yolanda is reviewing on behalf of the other owners with their authorisation.
-The decisions below are reflected in the builder; the live forms must be rebuilt by Han and checked.
-This review does not certify live Google Forms settings or response-Sheet permissions.
-W2.1/W2.2 review completed by Yolanda; original Han implementation integrated and verified by
-Yolanda. Unchecked owner confirmations and real-build acceptance remain pending.
+Review update, 2 Nov 2026: Yolanda reviewed on behalf of the other owners with their authorisation.
+W2.1/W2.2 review was completed and Han's implementation integrated and checked. That earlier
+review did not certify live Google Forms settings or response-Sheet permissions.
 
-**Current readiness (2 Nov, evening):** the final evaluation, real 11-case pack and 11 genuine
-charts are complete. The canonical W5 assignment is now generated and locally hash-sealed
-under owner authorization; independent Harry/Lucas acknowledgement is not claimed.
-Real-form preparation can proceed using that exact CSV. The existing live forms remain test builds. Restrict
-response storage, rebuild closed, disable autosave anew, complete all live checks and run one
-pilot before distributing links. Full explanation audits were omitted under the accelerated
-amendment, not passed; they are not a remaining mandatory build step.
+**Current status (team-reported 4 Nov):** the real forms, privacy/consent checks, live
+acceptance/export checks and pilot are reported complete. This status summary does not provide
+individual check results; retain the team's acceptance records with the study materials. The
+canonical W5 assignment remains sealed; do not regenerate it. The build instructions below are
+specification/runbook material, not a claim that the real build is still pending. Full explanation
+audits were omitted under the accelerated amendment, not passed and not required to proceed with
+the human study.
 
 ## 1. Four forms
 
@@ -105,6 +103,10 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 
 ## 8. Please confirm (W4 and W5)
 
+The unchecked items below are confirmation fields not resolved in this document. Their status
+does not override the team's 4 Nov report that live form/privacy/acceptance gates and the pilot
+are complete; retain any associated live-check results separately.
+
 - [ ] The role question stays at the end (section 2, step 8).
 - [ ] Q3 to Q5 (written answers) are required.
 - [x] Yolanda, on behalf of the owners (2 Nov): record and report wrong practice chart answers, without correction or automatic exclusion. The participant export retains both answers and `chart_check_ok`; report the number of Group B participants who answered each item correctly and both correctly, with denominators.
@@ -113,12 +115,12 @@ Codes are shown as plain words from the UCI codebook (`forms/labels.py`). The mo
 - [ ] Keep "Average grade" unchanged pending stronger evidence for "(passed units only)". The [official UCI definition](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success), checked on 2 Nov, says "Grade average in the 1st semester (between 0 and 20)"; it does not specify passed units only. The observed data pattern alone does not establish that definition.
 - [x] Yolanda, on behalf of W5 (2 Nov): approve the naming contract `chart_<case ID>.png` (e.g. `chart_C07.png`), 11 in total, using W2.2. This approves the format, not delivery or visual acceptance of the charts.
 
-The two online consent changes (self-reported duration and closing before Submit) have been reviewed in the
-builder. Submission/decline behaviour and any Google draft-saving behaviour still need checking in the live
-forms; this is not a completed W2.4 privacy or W2.6 acceptance sign-off.
-Follow-up on 2 Nov found Google draft saving enabled. Yolanda chose to disable it; the setting was
-saved in all four existing forms and "Saving disabled" verified on their respondent pages.
-Other live acceptance requirements remain open (HANDOFF section 12); fresh builds need the setting again.
+The two online consent changes (self-reported duration and closing before Submit) were reviewed in
+the builder. A 2 Nov inspection found Google draft saving enabled; it was disabled on the then-
+existing forms and "Saving disabled" was seen on their respondent pages. The team reports the
+subsequent real-form privacy and acceptance checks complete on 4 Nov. This historical inspection
+is not a record of each later acceptance result; refer to the team's live acceptance evidence.
+If forms are rebuilt, repeat the applicable manual settings and checks.
 
 ## 9. Implementation safeguards and handover (2 Nov)
 
@@ -130,4 +132,4 @@ Other live acceptance requirements remain open (HANDOFF section 12); fresh build
   practice, test-only scored study cases, and exact profile/source-row parity. These checks do not
   prove that supplied SHAP values were computed correctly; the export runner and reviewer must do that.
 - Follow `forms/README.md` for commands and `docs/HANDOFF.md` section 12 for workstream handover.
-  No live acceptance check is marked passed by these code changes.
+  This code/document review did not independently repeat the live acceptance checks.

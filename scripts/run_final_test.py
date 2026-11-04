@@ -188,7 +188,8 @@ def main(argv=None):
             bundle = joblib.load(bundle_path)
             bundle["local_freeze_sha256"] = metadata["local_freeze_sha256"]
             joblib.dump(bundle, bundle_path)
-            result["model_bundle_sha256"] = file_hash(bundle_path)
+        bundle_path = ROOT / "data" / "final_evaluation" / "selected_model.joblib"
+        result["model_bundle_sha256"] = file_hash(bundle_path)
         LOCK.write_text(json.dumps({**metadata, **result, "status": "completed"}, indent=2), encoding="utf-8")
         print("Final test complete. Preserve artifacts/final_test.lock and freeze evidence; never rerun.")
     else:

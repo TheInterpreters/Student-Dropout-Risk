@@ -8,27 +8,33 @@ Aye Khin Khin Hpone (Yolanda) - 125970, Nguyen Liem Son (Lucas) - 126729, Witcha
 
 ## Current Development
 
-**Latest W3 result (2 Nov):** the single final evaluation is complete on 545 held-out cases under
-the authorized local hashed freeze; preserve `artifacts/final_test.lock` and never rerun it.
-Final metrics/intervals/reliability/subgroup outputs are in `tables/final_test/`.
-TabICL ROC-AUC is 0.9566 and Brier 0.0740; paired intervals do not establish superiority
-over XGBoost or EBM. Real study cases and 11 genuine charts have been exported privately.
-The canonical private assignment is now generated and locally hash-sealed: 50 main slots,
-4 spares and 1 pilot. This is owner-authorized completion, not Harry/Lucas independent approval.
-Build the real forms next using the exact CSV; do not regenerate it. Yolanda's completed
-cross-workstream contributions are recorded in TASK_SPLIT as "Completed by Yolanda" for work she
-performed and "Integrated and verified by Yolanda" for teammates' existing implementations;
-original teammate authorship is retained and pending checks remain pending.
-See HANDOFF sections 8 and 12 for results, deviations and handover. Earlier unopened-test
-statements below describe the pre-final workflow, not current status. Live privacy acceptance,
-real-form build and pilot remain incomplete; no human responses have been collected by this work.
+**Model evaluation:** the single final evaluation is complete on 545 held-out cases under the
+authorized local hashed freeze; preserve `artifacts/final_test.lock` and never rerun it.
+Final metrics/intervals/reliability/subgroup outputs are in `tables/final_test/`. TabICL
+ROC-AUC is 0.9566 and Brier 0.0740; paired intervals do not establish superiority over XGBoost
+or EBM. At the 20% flag limit, test recall was 0.507 and precision was 0.991; this does not mean
+all dropouts are identified or that outreach benefits flagged students.
+
+**Validation eligibility sensitivity (exploratory, 4 Nov; distinct from the locked final test):**
+of 108 flagged validation records, 25 had no first-semester evaluations and 83 had at least one.
+Within the 495-record at-least-one-evaluation proxy subset, recomputing the 20% capacity flagged
+99 records (all with Dropout labels; recall 0.559, ROC-AUC 0.9486). Evaluation presence does not
+prove enrollment or reachability at the decision point; Enrolled outcomes remain excluded. See
+`docs/HANDOFF.md` for the full counts and limitations.
+
+Real study cases, 11 charts, and the canonical private assignment (50 main slots, 4 spares,
+1 pilot) are prepared. The team reports that real-form build, privacy/export checks and pilot
+are complete (4 Nov); **human-response collection and analysis remain pending**. The final-test
+lock must not be rerun. See HANDOFF sections 8 and 12 and TASK_SPLIT for evidence, deviations,
+pending independent review and next steps. Earlier unopened-test statements below describe the
+pre-final workflow, not current status.
 
 **2 Nov accelerated amendment:** the full explanation audit was stopped at the owner's request.
 The default `python scripts/run_explanation_audit.py` now runs a one-case/two-seed validation
 smoke check (47.37 seconds in the recorded run, single-case top-five overlap 0.8). It checks
 execution, not explanation quality; faithfulness, background/perturbation stability and recourse
 auditing are omitted and must be disclosed. `--full-audit` explicitly opts into the old workload.
-The local hashed-freeze alternative and incomplete live checks are documented in HANDOFF section 12.
+The local hashed-freeze alternative and live-study status are documented in HANDOFF section 12.
 These amendments supersede the original full-audit/tag prerequisites described below; genuine
 study charts, consent/privacy, consistent assignments and the once-only test lock are retained.
 
@@ -85,7 +91,7 @@ No external review corpus and no second predictive dataset are part of the curre
 
 - `docs/HANDOFF.md` — the single internal document (start here): status, methodology,
   task list, human-study protocol, study instrument (Google Forms), model card, criteria alignment, audit
-- `docs/TASK_SPLIT.md` — dated plan to Thu 19 Nov: five workstreams, shared report/slides track, dependencies, fair-share hours, recruitment
+- `docs/TASK_SPLIT.md` — current report plan to 16 Nov: five workstreams, shared report/slides track, dependencies, fair-share hours, recruitment
 - `eda_uci_data/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env)
 - `notebooks/uci_tfm_baseline.ipynb` — executable modeling/split overview
 - `scripts/run_core.py` — regenerate validation-only baseline metrics
@@ -121,11 +127,12 @@ The final test has already run: verify its saved evidence rather than evaluating
 
 See [HANDOFF section 12](docs/HANDOFF.md#12-member-handover-and-remaining-gates-2-nov-2026)
 for per-member actions, the W1 audit runner, validation dry run, once-only final-test lock,
-private study-case export, W5 scoring/coding commands and the remaining live acceptance gates.
+private study-case export, W5 scoring/coding commands and the remaining human-study steps.
 Run `python scripts/reproduce_results.py` for tests and fixture-only checks; it never opens the
 final test. Real-model validation regeneration is an explicit, expensive option.
 
 The study uses W5's sealed assignment CSV throughout; form exports require explicit source
-variants to prevent same-group case-order mislabelling. Real test aggregates are now available;
-no private seed/list sealing or live acceptance sign-off is claimed. Private fitted models,
-study lookups, case packs and chart handover files are intentionally excluded from Git.
+variants to prevent same-group case-order mislabelling. The team reports live form/privacy/pilot
+acceptance complete; record the human-study findings only after actual collection and analysis.
+Private fitted models, study lookups, case packs and chart handover files are intentionally
+excluded from Git.

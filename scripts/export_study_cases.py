@@ -33,13 +33,16 @@ def main(argv=None):
     if hashlib.sha256((ROOT / "config" / "evaluation_protocol.json").read_bytes()).hexdigest() != lock["protocol_sha256"]:
         raise ValueError("protocol changed after the final test")
     bundle_path = ROOT / "data" / "final_evaluation" / "selected_model.joblib"
+    expected_bundle_hash = lock.get("model_bundle_sha256")
+    if not isinstance(expected_bundle_hash, str):
+        raise ValueError("final-test lock has no saved model-bundle SHA-256")
+    if file_hash(bundle_path) != expected_bundle_hash:
+        raise ValueError("saved model bundle changed after final evaluation")
     if lock.get("freeze_mode") == "local_snapshot":
         manifest_path = Path(lock["local_freeze"])
         if file_hash(manifest_path) != lock["local_freeze_sha256"]:
             raise ValueError("local-freeze manifest changed after final evaluation")
         verify_snapshot(ROOT, manifest_path)
-        if file_hash(bundle_path) != lock["model_bundle_sha256"]:
-            raise ValueError("saved model bundle changed after final evaluation")
         bundle = joblib.load(bundle_path)
         if bundle.get("local_freeze_sha256") != lock["local_freeze_sha256"]:
             raise ValueError("saved model does not match local freeze")

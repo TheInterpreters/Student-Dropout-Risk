@@ -1,12 +1,15 @@
 # Task Split and Timeline — Five Workstreams plus a Shared Report/Slides Track
 
-**Latest W3 status (2 Nov, evening):** local hashed freeze and once-only five-model final evaluation
+**Latest W3 status (updated 4 Nov):** local hashed freeze and once-only five-model final evaluation
 completed (545 test cases); real case pack and 11 genuine charts exported and validated. Final
 aggregates/plots and completed lock are retained; model, snapshot and case lookup stay private.
 Model card/results and member handover are in HANDOFF sections 8/12. W3's implementation and
 local execution are complete. The canonical assignment is now locally sealed under owner
-authorization; Harry/Lucas acknowledgement is not claimed. Independent W5 clean-clone verification,
-real-form build, restricted response storage, live acceptance, pilot and actual study are not.
+authorization; private assignment handover and pre-collection coordination are reported complete
+by the team (4 Nov). Independent W5 clean-clone verification is complete; actual study and analysis
+are not. The team reports the real-form build, restricted response
+storage, live acceptance/export checks and pilot complete (4 Nov); clean-clone/evidence verification
+was completed on 4 Nov.
 Earlier "test not run" notes below are historical and superseded; never rerun the final evaluation.
 
 Updated 2 Nov 2026 from the original 27 Oct team plan. Workstream owners are recorded in §10;
@@ -24,9 +27,9 @@ mandatory committed/tagged publication when selected; record incomplete gates wi
 Consent/privacy, genuine chart values, consistent assignment and the once-only final-test lock remain.
 See HANDOFF section 12 and `config/evaluation_protocol.json`; historical requirements below do not
 override this amendment. No real collection or full-audit completion is claimed.
-The current full unit suite contains **62 passing tests**, with separate form checks passing.
+The current full unit suite contains **63 passing tests**, with separate form checks passing.
 
-## Current task status and launch order (2 Nov, evening)
+## Current task status and launch order (updated 4 Nov)
 
 This table is the current operational tracker. Detailed task descriptions and dates below are
 the original plan unless explicitly amended here. "Implemented" does not mean independently
@@ -38,30 +41,30 @@ approval. Mixed tasks name completed and remaining components; omitted analyses 
 | Workstream / task IDs | Completed or available | Still needed |
 |---|---|---|
 | W1 Noey: W1.1–W1.5 | Completed by Yolanda: accelerated runner, real smoke check (47.37 seconds, overlap 0.8) and limitation note in HANDOFF §8/§12 | Independently review the note; integrate into final report. Full deletion, multi-case stability and recourse audits are **omitted**, not passed |
-| W2 Han: W2.1–W2.3, W2.8 | Han's implementation integrated and verified by Yolanda; authorized spec/contract review, generator safeguards and synthetic transform integration completed by Yolanda | Resolve remaining spec confirmations; build real forms and complete independent/live checks |
-| W2 Han: W2.4–W2.7 | Partial old-form inspection and autosave disabling completed by Yolanda only | Restrict response storage; repeat all seven live checks on the real build; verify real exports/transform and closure outside testing. Tasks as a whole remain pending |
-| W3 Yolanda: W3.1, W3.2, W3.4–W3.6, W3.9 | Pinned Python 3.12 verified; validation dry run; local hashed freeze; once-only final evaluation on 545 cases; final model card; real 11-case pack and 11 charts | Private handover to form builder/scorer; support review. No repeat evaluation, refitting or mandatory tag |
-| W3.3 / W3.8, Lucas reviewer | Reproduction tooling and hash manifests implemented; local checks pass | Independent clean-clone verification of tests/validation reproduction and saved final evidence; never regenerate final-test results |
-| W4 Harry | Existing consent/instructions integrated and verified by Yolanda; cohort-policy clarification completed by Yolanda | Confirm applicable course requirements, retention/access/withdrawal arrangements, remaining send-out kit, codebook and recruitment plan; pilot, collection, coding and deletion remain pending |
-| W5 Lucas: assignment, images, analysis | Lucas's generator/renderer integrated and verified by Yolanda; canonical assignment (50 main, 4 spares, 1 pilot), 11 genuine charts and tested scoring/coding implementation completed by Yolanda | Harry/Lucas acknowledge private handover; complete visual/live parity and independent scoring/coding reviews; static demo and verification sign-off pending |
+| W2 Han: W2.1–W2.3, W2.8 | Han's implementation integrated and verified by Yolanda; authorized spec/contract review, generator safeguards and synthetic transform integration completed by Yolanda | Address any remaining spec confirmation separately; individual live-check outcomes are not documented here |
+| W2 Han: W2.4–W2.7 | **Reported complete by the team (4 Nov):** real forms, restricted response storage, live acceptance checks, exports/transform and pilot | Individual check outcomes are not recorded here; live gates are not independent W3.8 verification |
+| W3 Yolanda: W3.1, W3.2, W3.4–W3.6, W3.9 | Pinned Python 3.12 verified; validation dry run; local hashed freeze; once-only final evaluation on 545 cases; final model card; real 11-case pack and 11 charts | Private handover reported complete by team (4 Nov); continue support/review. No repeat evaluation, refitting or mandatory tag |
+| W3.3 / W3.8 | Reproduction tooling and hash manifests implemented; clean-clone verification completed 4 Nov | The clean-clone run passed 62 tests, four form variants and 22 saved final-evidence hashes; protocol hash matched the manifest and lock. After the later tag-mode bundle-hash regression test, the current local suite passes 63 tests. The final test was not rerun. |
+| W4 Harry | Existing consent/instructions integrated and verified by Yolanda; cohort-policy clarification completed by Yolanda; pilot reported complete by team | Pre-collection operational/privacy/retention arrangements and coordination reported agreed by team (4 Nov); recruitment, collection, coding and later deletion remain |
+| W5 Lucas: assignment, images, analysis | Lucas's generator/renderer integrated and verified by Yolanda; canonical assignment (50 main, 4 spares, 1 pilot), 11 genuine charts and tested scoring/coding implementation completed by Yolanda; clean-clone review completed 4 Nov | Complete independent scoring/coding review and static demo; collection-dependent analysis remains |
 | Everyone: report/slides | Model results and handover text available | Report final methods/deviations, then actual human results after collection; cross-review, slides and rehearsal remain unverified |
 
-**Ready to build the real forms: yes, the canonical assignment is now available. Ready to send to real
-participants: no.** Shortest remaining sequence:
+**Live-form/privacy/export gates and pilot: reported complete by the team on 4 Nov.** Participant
+response collection and analysis remain pending. The canonical assignment remains sealed; do not
+regenerate it. Shortest remaining sequence:
 
-1. Yolanda privately hands over `data/study_cases/case_pack_study.json` and the 11 images in
-   `forms/out/images_study/`; the private lookup goes only to the designated scorer.
+1. **Reported complete by team (4 Nov):** the genuine case pack/charts and canonical assignment
+   were handed over through restricted storage; the private lookup is limited to the designated scorer.
 2. **Completed locally:** `data/human_study/assignment_list.csv`, private seed/rules and
-   `assignment_seal.json` now exist under owner authorization. Harry/Lucas acknowledge the
-   private handover; no independent approval is claimed. Use that exact list for form links
-   and transformation; do not regenerate or switch lists after distribution.
-3. Han builds four real forms from the genuine pack/charts and canonical assignment, initially
-   closed. Disable autosave manually on every newly built form.
-4. Sheet/Drive owner restricts raw-response access. Han/reviewer check consent/decline routing,
-   hidden outputs, wording, profile/chart/order parity, signed-out access and export transformation.
-5. Harry runs one pilot, checks duration and phone readability, fixes/logs issues and removes pilot
-   data from study analysis. Confirm operational/ethics arrangements before real recruitment.
-6. Only then send individual study links. Target 50; minimum 40 with at least 18 per group.
+   `assignment_seal.json` now exist under owner authorization. The team reports the private
+   handover/acknowledgement complete (4 Nov); this does not constitute independent approval.
+   Use that exact list for form links and transformation; do not regenerate or switch lists.
+3. **Reported complete:** four real forms, restricted response storage, consent/routing, live
+   acceptance/export checks and one pilot. Keep the team's acceptance evidence with the study materials.
+4. Follow the operational/ethics, withdrawal/deletion, recruitment and codebook arrangements
+   agreed by the team before sending individual study links.
+5. Collect and analyse responses only if the schedule allows; target 50, minimum 40 with at least
+   18 per group. Otherwise report the study as pending without claiming findings.
 
 W3 completion is recorded on `main` as `a7fbbb5`; this documentation update follows it.
 No push is claimed. Private model/snapshot/pack/lookup/charts/assignment files are ignored and
@@ -75,16 +78,18 @@ consent and privacy rules. §8 lists the few deviations to disclose.
 near-equal hour estimates in §7 are historical, not remaining workloads: the audit was reduced
 and W3 execution is complete. Rebalance outstanding form/recruitment/review work with the team.
 
-**Implementation handover (2 Nov):** see `docs/HANDOFF.md` section 12 for runnable commands and
+**implementation handover (2 Nov; status updated 4 Nov):** see `docs/HANDOFF.md` section 12 for runnable commands and
 remaining gates. W1 audit, W3 guarded evaluation/export/reproduction and W5 scoring/coding
 implementations are available for independent review. The validation dry run, local freeze and
 final evaluation and local assignment sealing are now complete; the full audit was omitted.
-Independent assignment acknowledgement, live acceptance and pilot remain incomplete.
+The team reports pre-collection coordination, live acceptance and pilot complete. Clean-clone/
+evidence verification is complete; no final-test rerun occurred.
 W5 is the canonical study assignment;
 W2's default assignment is fixture-only.
 
-> **Deadline (settled):** "3rd week of November" = **Mon 16 – Fri 20 Nov 2026**. The plan finishes
-> everything by **Thu 19 Nov**; **Fri 20 Nov is buffer** and the hard stop.
+> **Current report deadline (announced 4 Nov): Mon 16 Nov 2026.** This supersedes the earlier
+> Thu 19/Fri 20 Nov finish dates for report work. Include human-study results only if collection
+> and analysis are safely complete by 15 Nov; otherwise report the study as pending.
 
 **How to read a task:** `[I]` = **independent** (can start now). `[D: W1.2]` = **depends on** that
 task finishing first. **Deadline** is the latest day the task may finish; a dependent task can start
@@ -120,8 +125,10 @@ only after what it depends on is done. **Done when** is the check the reviewer u
    `figures/`, so results reproduce from one command.
 7. After any DOCX change, the report editor re-exports the PDF. For the proposal, re-check the page
    count (body 4 pages, references on page 5).
-8. **Weekends are buffer, not plan.** If a deadline slips, tell the group the same day. (Participants
-   may also answer on Sat 14 / Sun 15 Nov.)
+8. **Schedule update:** the original weekend-buffer rule is superseded for the final-report week:
+   cross-review and assembly are scheduled for Sat 14–Sun 15 Nov to meet the announced Mon 16 Nov
+   deadline. If any report milestone slips, tell the group the same day. Participant safeguards
+   remain mandatory.
 9. **Git workflow.** Work on your own branch (`w1-audit`, `w2-forms`, ...), commit small, `git pull
    --rebase origin main` before pushing, merge to `main` only after your reviewer has looked at it, and
    never force-push. Review time is part of the plan (§7).
@@ -130,15 +137,17 @@ only after what it depends on is done. **Done when** is the check the reviewer u
 
 ## 1. Settled decisions (D1–D8)
 
-Decided on 27 Oct 2026 to protect the Thu 19 Nov finish; apply the documented 2 Nov amendment.
+Initial decisions were made on 27 Oct 2026 for the then-planned Thu 19 Nov finish. The current
+report deadline is Mon 16 Nov 2026 (announced 4 Nov) and supersedes those schedule assumptions;
+apply the documented 2 Nov amendment.
 Scientific inputs are now frozen and the final evaluation completed. Record any later operational
 amendment explicitly with owner approval; never silently change scientific settings or rerun the test.
 
 | # | Decision | Settled as | Why |
 |---|---|---|---|
-| D1 | Final deadline and extra deliverables | **Fri 20 Nov 2026** hard stop (3rd week of November), team finish Thu 19 Nov. Deliverables: final report (DOCX and PDF) and the slide deck; if the instructor asks for more, tell the report editor at once and it uses the buffer day | Fixed date for every task deadline |
+| D1 | Final deadline and extra deliverables | **Final project report due Mon 16 Nov 2026** (announced 4 Nov): final report DOCX/PDF and slide deck if required. Earlier Thu 19/Fri 20 Nov dates are superseded for report planning. Human-study results are included only if safely collected and analysed by 15 Nov; otherwise state that they are pending. | The newly announced deadline overrides the old project schedule; participant safeguards are not waived |
 | D2 | Optional narrative condition (B2) | **Dropped.** Not built; removed from the DOCX, HANDOFF and protocol (ID W5.4 unused) | Adds build and checking time to a 24-day plan; the core study is unaffected |
-| D3 | How sessions run | **Online and unsupervised** (changed 31 Oct, team decision): each participant opens their own pre-filled Google Form link on their own device, in their own time, between Fri 13 and Tue 17 Nov. No room, laptops or session runner. Disclosed in the report as a deviation and a limitation (§8) | We do not have the people or room time to supervise 50 sessions; the cases, questions, groups and privacy rules are unchanged |
+| D3 | How sessions run | **Online and unsupervised** (changed 31 Oct, team decision): if the study proceeds after all safeguards and the pilot pass, each participant opens their own pre-filled Google Form link. The original 13–17 Nov window is superseded because it extends past the report deadline; use results only if collection and analysis finish by 15 Nov. Disclose the mode as a deviation and limitation (§8) | Online format avoids requiring a room/session runner; deadline does not waive safeguards |
 | D4 | Subgroup and proxy diagnostics on the test split too | **Yes**, descriptive, same code, run once inside the final-test script | One extra call; recorded in the protocol before the freeze |
 | D5 | Decision-support demonstration (formerly "Mode A") | **Static example case card** (screenshots from validation fixtures) in the report and slides; no software | The form replaces the app; the example still shows what an officer would see |
 | D6 | Pilot participants count toward the 50 | **No.** The pilot is one extra person | Keeps the 50 clean and the groups balanced (25/25) |
@@ -148,9 +157,10 @@ amendment explicitly with owner approval; never silently change scientific setti
 ## 2. Participants — everyone recruits and sends their own links (W4 coordinates)
 
 - **Target: 50 participants in total. Every team member recruits 10** voluntary adults from the
-  AIT community (students are fine; a few staff or advisers are a bonus) and **sends each one their own
-  link** from W4 between Fri 13 and Tue 17 Nov, with one reminder after two days. Each recruiter has
-  **10 people who agreed to take part by Fri 6 Nov**.
+  AIT community (students are fine; a few staff or advisers are a bonus) and sends each their own
+  link only after the required gates pass. The original 13–17 Nov collection window is superseded:
+  responses used in the report must be collected and analysed by 15 Nov; if that is not feasible,
+  report the human study as pending. Do not rush or bypass safeguards to meet the deadline.
 - **Recruiters do not choose groups.** Each participant gets the **next unused pre-filled link** from a
   seeded assignment list (task W5.8), held by the W4 coordinator. The link carries the participant code
   and the form variant; a recruiter cannot pick or swap it. 50 splits evenly, so groups will be 25 and 25.
@@ -158,9 +168,10 @@ amendment explicitly with owner approval; never silently change scientific setti
   person's name (rule 4). W4's send log holds codes only, never names.
 - W4 keeps a count per recruiter only (no names or IDs in the repo). People consent only inside the
   form, before the first question.
-- **Minimum: 40 completed responses with at least 18 in each group** (so 18/22 is acceptable, 17/23 is
-  not). If fewer than 50 submit by Tue 17 Nov, proceed once the minimum is met and report the achieved
-  sample honestly; below the minimum, describe the study as pilot-scale.
+- **Study target remains 50; minimum remains 40 completed responses with at least 18 in each group**
+  (18/22 is acceptable, 17/23 is not). These are study targets, not a reason to include incomplete
+  results: report achieved counts only if collection and analysis finish by 15 Nov; otherwise state
+  the study was not completed for this report.
 - **Replacements keep the groups balanced.** The seeded list holds 4 spare slots (two Group A, two
   Group B). If a participant does not complete (no submission by the deadline, withdrawal, incomplete), the next
   recruited participant **inherits that empty slot's group and variant**; a spare is used only when a
@@ -171,9 +182,10 @@ amendment explicitly with owner approval; never silently change scientific setti
 
 ## 3. Timeline at a glance (2026)
 
-Historical baseline schedule: the accelerated 2 Nov work completed the freeze, final evaluation
-and case/chart export ahead of the P2/P3 dates. Use the current tracker above for completion and
-launch gates; dates below do not require waiting to build the real forms.
+Historical baseline schedule (superseded): the accelerated 2 Nov work completed the freeze, final
+evaluation and case/chart export ahead of the P2/P3 dates. The original 13–18 Nov study window and
+19/20 Nov finish no longer fit the announced report deadline. Use the current tracker above; do not
+assume human-study results will be available for this report.
 
 | Phase | Dates | What | Who |
 |---|---|---|---|
@@ -181,9 +193,8 @@ launch gates; dates below do not require waiting to build the real forms.
 | **P1** Build (validation only) | Thu 29 Oct – Fri 6 Nov | Audit, form generator, images, final-test script, send-out kit, assignment lists, report methods drafts | W1–W5 + everyone (R) |
 | **P2** Gate | Mon 9 Nov | Freeze and tag; go/no-go for the test run | W1, W2, W3 |
 | **P3** Final test and study cases | Tue 10 – Thu 12 Nov | One test run, export cases, build real forms, model card | W3, W2, W5 |
-| **P4** Study | Fri 13 – Wed 18 Nov | Pilot, 50 online responses, scoring, shared coding | W4 coordinates; everyone sends their own links |
-| **P5** Wrap-up | Mon 16 – Thu 19 Nov | Report sections, cross-review, slides, merge, final check | **everyone** |
-| **Buffer** | Fri 20 Nov | Final export and submission | all |
+| **P4** Study | Original 13–18 Nov window, superseded | Pilot, responses, scoring and coding only if safeguards pass; include results only if analysed by 15 Nov | W4 coordinates; otherwise report pending status |
+| **P5** Wrap-up | By Mon 16 Nov | Report sections, cross-review, slides if required, merge and final check | **everyone** |
 
 **Checkpoints (everyone reports status at each):**
 
@@ -192,15 +203,14 @@ launch gates; dates below do not require waiting to build the real forms.
 | Fri 30 Oct | Foundations | Form spec and case-pack contract agreed, ethics note done, 20-case script selects cases, report/slide outline and Google Docs created |
 | Fri 6 Nov | Build complete | Audit tables done, form acceptance passed on validation fixtures, final-test script dry-run OK, 50 participants agreed, every section has a methods draft |
 | **Mon 9 Nov** | **Gate / go-no-go** | Freeze tag created; if not ready, escalate the same day |
-| Fri 13 Nov | Study start | Real forms built, pilot passed, links sent |
-| Tue 17 Nov | Responses close (23:59) | 50 responses complete (minimum 40, at least 18 per group); slide drafts in |
-| Thu 19 Nov | Finish line | Report, slides, PDF, model card, README and HANDOFF final |
+| By 15 Nov | Human-study report cutoff | Include only data collected, checked and analysed by this date; otherwise report pending status |
+| Mon 16 Nov | Final report deadline | Final report submitted; slide deck included if required |
 
-**Final deliverables checklist (all done by Thu 19 Nov):**
+**Final deliverables checklist (report submission by Mon 16 Nov):**
 - [ ] Final report DOCX and PDF, in the repo root next to the proposal
-- [ ] Slide deck (PPTX or Google Slides export), rehearsed once, timed
+- [ ] Slide deck (PPTX or Google Slides export), if required by the 16 Nov submission; rehearsed once, timed
 - [ ] Repo on `main`: publish reviewed work when authorized; retain local hashed-freeze evidence
-  and completed final-test lock (tag not mandatory under the amendment); all 62 tests and separate
+  and completed final-test lock (tag not mandatory under the amendment); all 63 tests and separate
   form checks passing; final outputs already under `tables/final_test/`
 - [x] Model card (`docs/HANDOFF.md` §8) and README/HANDOFF updated with model results/deviations
 - [ ] Add actual human-study results and limitations after collection; do not invent pending results
@@ -233,20 +243,21 @@ ID W1.6 moved to W2.2. The original full audit remains optional via `--full-audi
 |---|---|---|---|
 | W2.1 | Four-form spec: consent, 18+, code, instructions, practice, ten scored cases, confidence and three written prompts | **Han's implementation integrated and verified by Yolanda;** authorized review/cohort wording completed by Yolanda in `docs/form_spec.md` | Resolve unchecked confirmations; verify built live wording |
 | W2.2 | Public pack/private lookup contract | **Existing contract integrated and verified by Yolanda;** contract review and genuine pack format/provenance checks completed by Yolanda | Independent review; never upload the private lookup to Forms |
-| W2.3 | Generator for A1/A2/B1/B2 | **Han's generator integrated and verified by Yolanda;** fail-closed safeguards and synthetic checks completed by Yolanda | Run real build W2.7; local tests are not live acceptance |
-| W2.4 | Privacy/settings and restricted response Sheet | **Partial:** old-form autosave disabling completed by Yolanda | Sheet last observed institution-wide link-editable; restrict access and verify all settings, signed-out access and new-form autosave |
-| W2.8 | Wide-to-long response transform with actual source variants | **Han's transform integrated and verified by Yolanda;** source-identity/duration safeguards and synthetic CSV checks completed by Yolanda | Review actual real-build exports; use exact canonical assignment |
-| W2.5 | Live export/transform/cleanup check | **Pending live;** synthetic integration checks completed by Yolanda | Verify actual form submissions/exports transform correctly; delete pilot/test rows in Forms and Sheet |
-| W2.6 | Seven live checks in HANDOFF §7 | **Pending/not passed.** Partial inspection completed by Yolanda, not a full pass | Check values, hidden outputs, A/B parity, assignment/order, privacy, wording and exports on real build; record reviewer results |
-| W2.7 | Four real forms and individual prefilled links | **Ready to build, not built.** Dependencies W3.9 and local W5.8 generation complete | Use genuine pack/charts and canonical CSV; start closed, repeat manual autosave and parity checks. Never distribute links before acceptance/pilot |
+| W2.3 | Generator for A1/A2/B1/B2 | **Han's generator integrated and verified by Yolanda;** fail-closed safeguards and synthetic checks completed by Yolanda | Preserve the completed real build and live acceptance evidence |
+| W2.4 | Privacy/settings and restricted response Sheet | **Reported complete by the team (4 Nov):** response-sheet access/privacy settings and new-form checks | Individual outcomes are not recorded here; no independent W3.8 verification is implied |
+| W2.8 | Wide-to-long response transform with actual source variants | **Han's transform integrated and verified by Yolanda;** source-identity/duration safeguards and synthetic CSV checks completed by Yolanda | Use the exact canonical assignment; live export/transform checks are reported complete under W2.5 |
+| W2.5 | Live export/transform/cleanup check | **Reported complete by the team (4 Nov):** real-form exports and transformation checked | Detailed export results are not recorded here; keep pilot/test data out of study analysis |
+| W2.6 | Seven live checks in HANDOFF §7 | **Reported complete by the team (4 Nov):** live checks and consent wording verified | Individual outcomes are not recorded here; no independent W3.8 verification is implied |
+| W2.7 | Four real forms and individual prefilled links | **Reported complete by the team (4 Nov):** built from the genuine pack/charts and canonical assignment | Preserve the exact assignment for links/transformation; do not regenerate |
 
 ### W3 Yolanda — Final evaluation, study cases and reproducibility
 
 Current W3 execution status: **completed locally** under the authorized accelerated amendment.
-The pinned Python 3.12 environment, 62 tests and separate form checks pass. The local snapshot,
+The pinned Python 3.12 environment, 63 tests and separate form checks pass. The local snapshot,
 single final evaluation, final tables/model card, real case pack and 11 charts are complete.
 The full audit was stopped/replaced by the smoke check, not left running. No independent approval
-is claimed. W3.8 verification and live W2 acceptance remain outstanding.
+of the scientific study is claimed. W3.8 clean-clone/evidence verification was completed 4 Nov;
+live W2 acceptance is reported complete by the team.
 The rows below record current execution and remaining review explicitly.
 
 | ID | Task | Depends | Deadline | Done when |
@@ -259,18 +270,18 @@ The rows below record current execution and remaining review explicitly.
 | W3.9 | **Completed:** ten prediction-only selected test cases (5 flagged/5 unflagged), one validation practice, genuine grouped SHAP export and 11 charts. | [D: W3.5] | Completed 2 Nov | Pack provenance, deterministic selection/flags and private lookup verified; restricted handover remains. |
 | W3.6 | **Completed:** HANDOFF §8 model card, final tables/figures and limitations. | [D: W3.5] | Completed 2 Nov | Final numbers agree with saved aggregates; human results not claimed. |
 | W3.7 | *Optional:* sensitivity checks (Enrolled as third class or grouped). | [I] | Fri 13 Nov (drop if behind) | Labelled as sensitivity; not used for model selection. |
-| W3.8 | **Independent clean-clone verification** by the W5 owner: run tests/fixture checks, verify validation reproduction as applicable and saved final hashes; transfer private assets separately if needed. | [D: W3.3, W3.5, W3.6] | Wed 18 Nov | Reviewer records checks and discrepancies; final evaluation is never repeated. |
+| W3.8 | **Completed 4 Nov:** clean-clone tests/fixture checks and saved-evidence verification. All 62 unit tests, four form variants and 22 final-evidence hashes passed; the protocol hash matched the manifest and lock. | [D: W3.3, W3.5, W3.6] | Completed 4 Nov | Final evaluation was not rerun. Further teammate review may be recorded if required; preserve the lock and saved evidence. |
 
 ### W4 Harry — Human-study operations and analysis
 
 | ID | Current task | Status / evidence | Still needed / prerequisites |
 |---|---|---|---|
-| W4.1 | Consent, information sheet, withdrawal/access/retention arrangements | **Partial:** existing consent integrated and verified by Yolanda | Harry confirms applicable course requirements, actual deletion date and raw-access roles; restrict Drive/Sheet and verify live consent. Participants contact their recruiter with their code; the current consent omits a named contact/withdrawal deadline/retention date |
-| W4.5 | Recruitment plan and counts; original window 13–17 Nov, one reminder after two days | **Pending/unverified** | Confirm schedule and ten recruits/member; no links until acceptance/pilot; target 50, minimum 40 with 18/group |
-| W4.2 | Standard instructions, invitation/reminder/troubleshooting kit and debrief | **Partial:** existing instructions/debrief integrated and verified by Yolanda; cohort-policy clarification completed by Yolanda | Confirm remaining invitation/reminder/support messages and pilot-based duration; prerequisite W4.1 |
-| W4.3 | Codebook: comprehension, actionability, missing information, `other/unclear`; paraphrased examples | **Pending/unverified** | Write/train before any group comparison; agree one-code-per-item convention used by tooling |
+| W4.1 | Consent, information sheet, withdrawal/access/retention arrangements | **Operational arrangements reported agreed by the team (4 Nov); live consent/privacy checks reported complete** | Preserve the agreed consent/access/retention procedures in the study record; collection must follow them |
+| W4.5 | Recruitment plan and counts; any collection used in the report must finish in time for analysis by 15 Nov | **Recruitment preparation/coordination reported complete by team (4 Nov); participant counts and send/exclusion log remain collection-dependent** | Target 50, minimum 40 with 18/group. If data cannot be collected and analysed by the report deadline, report study status as pending rather than extending the report schedule or claiming results |
+| W4.2 | Standard instructions, invitation/reminder/troubleshooting kit and debrief | **Preparation confirmed by team (4 Nov);** existing instructions/debrief integrated and cohort-policy clarification completed | Use agreed materials for recruitment; record actual invitations/support without storing contact details beside participant codes |
+| W4.3 | Codebook: comprehension, actionability, missing information, `other/unclear`; paraphrased examples | **Pre-collection coding plan/training reported agreed by the team (4 Nov)** | Apply the agreed codebook and record coding decisions; actual coding waits for responses |
 | W4.12 | Participant-number and replacement-rule parity across protocol/HANDOFF/proposal | **Partial:** current CSV allocation checks completed by Yolanda | Complete independent proposal DOCX/PDF parity check; no claim of completed three-document sign-off |
-| W4.6 | One-person real-form pilot | **Pending** | After W2.7 and live/privacy checks; test code/link/row receipt/no answer leakage, duration and phone readability; log fixes, remove pilot rows from Forms/Sheet and study analysis |
+| W4.6 | One-person real-form pilot | **Reported complete by the team (4 Nov)** | Retain pilot outcome; ensure pilot/test data are excluded from study analysis and removed per the retention plan |
 | W4.7 | Individual links, code-only send/exclusion log, daily response checks and restricted backup | **Pending** | After W4.5/W4.6; log recruiter/date sent/submission/exclusion, no contact details beside codes; use canonical slots/spares and report achieved counts |
 | W4.8 | Shared qualitative coding and 20% double-coding | **Pending** | W4.3/W5.9 plus incoming responses; all five code non-own recruits, blinded where practical; Harry trains/resolves disagreements; finish after W4.7, report raw agreement/themes |
 | W4.11 | Real response transformation/scoring and descriptive analysis | **Pending** | W4.7 plus reviewed W2.8/W5.6; participant-level accuracy, confidence, self-reported time, counts and practice checks; no significance claims |
@@ -282,7 +293,7 @@ ID W4.9 moved to W5.8.
 
 | ID | Current task | Status / evidence | Still needed |
 |---|---|---|---|
-| W5.8 | Canonical seeded assignment: 50 main, 4 spares, 1 B1 pilot; private seed/rules/hash | **Assignment completed by Yolanda using Lucas's generator, integrated and verified by Yolanda:** generated once, exact reproduction/hash verified; 8 tests pass; local seal records owner authorization | Harry/Lucas acknowledge restricted handover, not a second generation or invented approval. Same CSV drives build, links and transform; no codes/seed in Git |
+| W5.8 | Canonical seeded assignment: 50 main, 4 spares, 1 B1 pilot; private seed/rules/hash | **Assignment completed by Yolanda using Lucas's generator, integrated and verified by Yolanda:** generated once, exact reproduction/hash verified; 8 tests pass; local seal records owner authorization; team reports restricted handover acknowledged (4 Nov) | Same CSV drives build, links and transform; no codes/seed in Git |
 | W5.9 | Coding assignment/agreement tooling: non-recruiter primary, random 20% second coder, group omitted where practical | **Implementation and synthetic assignment/agreement checks completed by Yolanda** | Independent review and W4 codebook/training; real coding remains W4.8 |
 | W5.3 | Renderer and 11 genuine Group B charts, shared pack scale and neutral legend | **Lucas's renderer integrated and verified by Yolanda; chart generation completed by Yolanda.** Text checks pass and one real chart visually inspected | Complete all-chart visual/live profile/order parity; no comprehensive visual acceptance claimed |
 | W5.6 | Participant-level scoring, group summaries, confidence/time and practice-check reporting | **Implementation and synthetic scoring/exclusion/practice-check regressions completed by Yolanda** | Lucas independently reviews; real analysis awaits consented post-pilot data (W4.11) |
@@ -297,6 +308,72 @@ IDs W5.2, W5.4 and W5.7 are unused: those tasks moved to W3.9, dropped (D2) and 
 All R1–R9 final-report/deck tasks remain pending or unverified. Completed HANDOFF/model-card
 source text is available for drafting; it does not prove that the shared final documents or
 slides exist, have been reviewed or rehearsed.
+
+**TA feedback response plan (4 Nov; final project report deadline: Mon 16 Nov 2026).**
+The proposal stays unchanged; address the feedback in the final report and presentation. Treat
+the checklist below as required report work. The existing final-test results and lock are frozen:
+never rerun, retune, or replace the one-time final test. Any new eligibility check must use the
+validation split and be labelled exploratory/post-hoc; it cannot establish real-world eligibility
+or performance for the excluded Enrolled group.
+
+- [x] **Eligibility and the 108 validation flags (exploratory check, 4 Nov):** the saved fitted
+  model bundle's SHA-256 matches `artifacts/final_test.lock`; its model was applied to validation
+  rows only, without rerunning training or the final-test evaluation. The 544 validation rows
+  yielded 108 flags, reproducing the saved validation confusion matrix. Of 49 records with no
+  first-semester evaluations (36 Dropout, 13 Graduate), 25 were flagged; all 25 were Dropout.
+  Thus 25/108 flags (23.1%) had no evaluations, and 83 flags had at least one. In the
+  at-least-one-evaluation proxy subset (495 records, 177 Dropout), recalculating the top-20%
+  capacity flagged 99; confusion matrix TN=318, FP=0, FN=78, TP=99 (recall 0.559, precision
+  1.000, ROC-AUC 0.9486). This is a post-hoc validation sensitivity, not confirmatory evidence.
+  Evaluation presence is only a proxy: it does not prove enrollment, eligibility, or reachability
+  at the decision point, and this analysis says nothing about the excluded Enrolled outcome group.
+- [ ] Explain that “all 108 were dropouts” is a validation-set, capacity-limited observation,
+  not perfect general performance or evidence that these students would benefit from outreach.
+  Discuss what the model adds beyond observable first-semester non-participation and what its
+  explanations can and cannot tell an officer. Report that Enrolled outcomes were excluded and
+  performance on Enrolled students is unknown; do not imply the optional sensitivity analysis
+  or current model establishes their performance.
+- [ ] **SHAP budget and explanation reliability:** state that the model has 33 input features
+  and `max_evals=67` is the permutation explainer budget (`2 × 33 + 1`), not 67 cases. Explain
+  that the full multi-case/seed/background/perturbation stability and faithfulness audits were
+  omitted. The one-case, two-seed overlap of 0.8 is an execution smoke check, not stability
+  evidence. If further checks are feasible, keep them validation-only, justify any larger budget,
+  and report them as exploratory; otherwise make the uncertainty explicit.
+- [ ] **Human-study interpretation:** state plainly that participants are asked to infer the
+  model's flag, so the study tests output comprehension/inference from profiles, with or without
+  contribution charts. Discuss whether contribution directions and sizes could let participants
+  reconstruct the flag, despite hiding numeric scores, base value, and output. Do not claim the
+  study demonstrates better support-officer decisions, improved interventions, or student outcomes.
+- [ ] **Protected attributes:** explain that protected attributes are present in the research
+  model and why they were retained for this analysis; discuss the observed subgroup differences
+  as descriptive, not proof of fairness or a reason to allocate real outreach by protected status.
+  State a clear operational position: these results do not authorize deployment/use of protected
+  attributes for prioritisation; any such use would require a separately justified, governed
+  decision and appropriate sensitivity analysis.
+- [ ] **Fee-status recourse:** explain the direction of the observed model association without
+  implying that paying fees or changing fee status prevents dropout. Fee/debtor status can reflect
+  underlying financial circumstances and may be associated with risk in either direction; a
+  model-score change is not a causal effect, a student-controlled action, or a recommendation.
+  Disclose that the full recourse audit was omitted.
+- [ ] **Reader-first report:** make page one understandable to a student-support officer: the
+  decision being studied, which records the model covers, what the evidence says, and the main
+  eligibility/uncertainty limitation. Define “top-20% outreach capacity” in plain language and
+  avoid unexplained protocol/version jargon. Align proposed methods with what was actually done:
+  disclose the accelerated local freeze, omitted audits, team-reported completed live acceptance, and the
+  Google Forms study design; do not describe the proposal's planned interface/audits as completed.
+- [ ] **Evidence and final review:** verify every new count against saved validation evidence,
+  clearly label validation vs. locked final-test results, avoid reporting individual case details,
+  and have a teammate check that each TA concern above is answered in the report. If the human
+  study is incomplete by the deadline, report its status and limitation rather than inventing results.
+
+**Updated delivery schedule overriding older milestone dates in this document:**
+- By **Mon 9 Nov**: complete the validation-only eligibility check or record why the saved
+  evidence does not support it; agree the protected-attribute and human-study interpretations.
+- By **Thu 12 Nov**: all report sections address the checklist and are assembled in a readable draft.
+- By **Sat 14 Nov**: independent cross-review; resolve evidence, eligibility, and plain-language gaps.
+- By **Sun 15 Nov**: final report, references, figures, and PDF checked for consistency.
+- By **Mon 16 Nov**: submit the final project report. Human-study results are included only if
+  actually collected and analysed by then; otherwise report that work as pending.
 
 **One appointed report editor** assembles the Word report and the slide deck. They do **not** write
 everyone's text. Each workstream owner writes the section and slides for their own part, and each
@@ -316,46 +393,36 @@ section is cross-reviewed by a different workstream.
 |---|---|---|---|---|
 | R1 | Report and slide setup: outline, section and slide owners, shared Google Doc and Slides in the team Drive (drafts only, no raw data), template, and the **report editor appointed** (§10). | [I] | Fri 30 Oct | Outline and owner list shared; empty Doc and Slides exist. |
 | R2 | **Methods drafts:** each owner writes what their part built and how (no results yet), matching HANDOFF. | [D: R1] | Fri 6 Nov | Every section has a methods draft; each owner's reviewer has read it. |
-| R3 | **Pending results drafts** (all but human study): use completed model results/smoke note and disclose omitted audits/figures; each owner adds limitations and 3 discussion bullets. Public screenshots/demo use validation fixtures, not hidden study-case answers, until collection ends. | [D: W1.5 note review, W2.6, W3.6, W5.1, R2] | Mon 16 Nov | Drafts reviewed; every number matches saved evidence; omitted W5.5 is not a dependency. |
-| R4 | **Cross-review:** each owner reads and comments on a different workstream's section (W1→W2, W2→W3, W3→W4, W4→W5, W5→W1), checking numbers against tables and claims against HANDOFF. | [D: R3] | Wed 18 Nov | Comments resolved by the writers; no claim beyond the evidence. |
-| R5 | **Slides:** each owner makes 2–3 slides for their own part (W4's human-results slide is filled in at R6). One shared look, one message per slide. | [D: R1, R3] | Tue 17 Nov | Draft deck complete with placeholders only for human results. |
-| R6 | **Human-study results section and slide** by the W4 owner (using the W4.11 analysis), including limitations and sample size. | [D: W4.8, W4.11, R4] | Thu 19 Nov (12:00) | Section and slide in the shared files; sample size, group counts, accuracy, self-reported time and themes match the analysis. |
-| R7 | **Review of the human-results section:** the **W3 owner** (not the author) checks it against the analysis outputs: sample size and group counts, accuracy, self-reported time, themes, deviations disclosed, and that no significance or causal claim is made. | [D: R6] | Thu 19 Nov (15:00) | Comments resolved by the W4 owner before the merge. |
-| R8 | **Merge and export:** the report editor assembles the final report DOCX, adds references and figures, exports the PDF, and merges the deck. | [D: R4, R5, R7, W3.8] | Thu 19 Nov (17:00) | Report DOCX and PDF and the deck are complete and consistent. |
-| R9 | **Final read and rehearsal:** two members who are not the editor read the PDF and deck end to end; one timed rehearsal; README and HANDOFF updated with results. | [D: R8] | Thu 19 Nov (evening); Fri 20 Nov = buffer | No inconsistency left; rehearsal done; PDF is current. |
+| R3 | **Pending results drafts** (all but human study): use completed model results/smoke note, TA response notes and disclose omitted audits/figures; each owner adds limitations and 3 discussion bullets. Public screenshots/demo use validation fixtures, not hidden study-case answers, until collection ends. Report live acceptance as team-reported complete; do not infer undocumented per-check outcomes. | [D: W1.5 note review, W3.6, R2] | Thu 12 Nov | Drafts reviewed; every number matches saved evidence; omitted W5.5 and pending human-study collection/analysis do not block honest report drafting. |
+| R4 | **Cross-review:** each owner reads and comments on a different workstream's section (W1→W2, W2→W3, W3→W4, W4→W5, W5→W1), checking numbers against tables and claims against HANDOFF and the TA-response checklist above. | [D: R3] | Sat 14 Nov | Comments resolved by the writers; no claim beyond the evidence. |
+| R5 | **Slides:** each owner makes 2–3 slides for their own part (W4's human-results slide only if results exist by the deadline). One shared look, one message per slide. | [D: R1, R3] | Sat 14 Nov | Draft deck complete; pending human results are identified, not fabricated. |
+| R6 | **Human-study results section and slide** by the W4 owner (using the W4.11 analysis), including limitations and sample size; if data are not ready, write a factual status/limitation instead. | [D: W4.8, W4.11, R4] | Sun 15 Nov | Any reported results match completed analysis; otherwise status is explicitly pending. |
+| R7 | **Review of the human-results section/status:** the **W3 owner** (not the author) checks any results against analysis outputs and verifies deviations, sample size, and absence of significance or causal claims. | [D: R6] | Sun 15 Nov | Comments resolved by the W4 owner before the merge. |
+| R8 | **Merge and export:** the report editor assembles the final report DOCX, adds references and figures, exports the PDF, and merges the deck. | [D: R4, R5, R7] | Sun 15 Nov | Report DOCX and PDF and the deck are complete and consistent. W3.8 clean-clone/evidence prerequisite was completed 4 Nov. |
+| R9 | **Final read:** two members who are not the editor read the PDF and deck end to end; README and HANDOFF updated if needed. | [D: R8] | Mon 16 Nov | No inconsistency left; final report is ready to submit by the announced deadline. |
 
 ## 6. Critical path
 
 ```
-Tue 27-Wed 28 Oct   P0   owners + report editor (D1-D8 settled) · env/tests (W3.1) · Drive lock (W4.1)
-Thu 29-Fri 30 Oct   W2.1 form spec · W2.2 case-pack contract · W1.1 case script · W4.1/W4.5 · R1 report+slides setup
-Mon 2 Nov           W5.8 seeded assignment list ─> W2.3
-Mon 2-Wed 4 Nov     W1.2/1.3/1.4 audit ─> W1.5 (Thu 5)  |  W2.3 generator · W2.4 privacy · W2.8 transform (Wed 4)
-Tue 3 Nov           W4.2 instruction text ─> W2.3
-Thu 5 Nov           W1.5 audit note · W2.5 dry run · W5.3 image renderer
-Fri 6 Nov           W2.6 acceptance ✔ · W3.2 dry-run ✔ · W4.12 numbers verified · W4.3 · W5.6 · W5.9 · R2 · 50 slots
-Mon 9 Nov           W3.4 FREEZE + TAG   (needs W1.5 + W2.6 + W3.2 + W4.12)
-Tue 10 Nov          W3.5 FINAL TEST (once)
-Wed 11 Nov          W3.9 export 10 study cases · W5.5 audit figures · W5.1 demo card
-Thu 12 Nov          W2.7 build real forms · W3.6 model card + final-test figures
-Fri 13 Nov          W4.6 pilot (morning, online) ─> links sent (afternoon)  [each member sends own 10]
-Fri 13-Tue 17 Nov   W4.7 responses come in  ·  W4.8 coding starts as they arrive
-Mon 16 Nov          R3 results sections written by every owner
-Tue 17 Nov          R5 slide drafts
-Wed 18 Nov          W4.8 coding done (rolling since Fri 13) · W4.11 transform + analysis · W3.8 clean-clone check · R4 cross-review
-After R7            W4.10 delete raw data on the confirmed retention date (not automatic on 19 Nov)
-Thu 19 Nov          R6 human results (12:00) ─> R7 review (15:00) ─> R8 merge + PDF (17:00) ─> R9 final read + rehearsal
-Fri 20 Nov          buffer / submission
+By Thu 12 Nov       R3 report sections; validation eligibility sensitivity/status included
+Completed 4 Nov     W3.8 clean-clone/evidence verification (saved final hashes; no rerun)
+By Sat 14 Nov       R4 cross-review · R5 slide drafts
+By Sun 15 Nov       R6 human-study results only if collected/analysed, otherwise pending status
+                    · R7 review · R8 merge and PDF export
+Mon 16 Nov          R9 final read · submit final project report
 ```
 
-The dated chain above is the **original plan**, not a record that the checkmarks passed.
-The current chain is: completed evaluation/cases/charts/local assignment -> restricted handover
-and real-form build -> privacy and all seven acceptance checks -> pilot -> individual links ->
-responses/coding -> analysis/report/review/deletion. W1.2–W1.4 and W5.5 are omitted.
+Dates before the current report milestones are historical, not evidence that a gate passed. The
+team reports the form, privacy, consent and pilot gates complete (4 Nov); individual check outcomes
+are not documented here. Follow the agreed safeguards. Any human-study data included in the report must be
+collected and analysed by 15 Nov; if that is not feasible, keep the study results pending and report
+that limitation. The 16 Nov deadline does not authorize skipping participant safeguards.
+The final evaluation remains complete and locked; do not rerun it. W1.2–W1.4 and W5.5 were omitted.
 
-**Current blocking rules.** No participant link is sent until real W2.7, W2.4/W2.6 and W4.6 pass
-and applicable operational/ethics arrangements are confirmed. The final evaluation is already
-completed: preserve the lock, do not refit/repeat/tune or select another model after test access.
+**Current safeguards.** The team reports real W2.7, W2.4/W2.6, W4.6 and applicable pre-collection
+arrangements complete (4 Nov). Send/collect only under those agreed safeguards. The final
+evaluation is already completed: preserve the lock, do not refit/repeat/tune or select another
+model after test access.
 
 ## 7. Fair-share check (estimated hours per person)
 
@@ -416,9 +483,9 @@ states achieved numbers, not assumed targets.
 | Form generator not ready by Fri 6 Nov | W2.3 slips past Wed 4 Nov | W2 escalates immediately; build the four forms by hand from the spec (copy-paste) as a fallback; the W5 owner helps |
 | Fewer than 50 recruited | Fewer than 50 agreed on Fri 6 Nov | Everyone recruits more that week; the minimum is 40 with at least 18 per group |
 | Online answers are rushed or careless | Very short self-reported times or near-empty written answers in the daily Sheet check (W4.7) | Use the documented exclusions; do not invent post-hoc time cutoffs. Report duration and response-quality limitations |
-| Coding is too heavy in the same week as sessions and the report | Coding less than half done on Tue 17 Nov | Everyone codes about 9 h in total; code rationale and intervention fields first; the W4 owner reassigns the remainder |
+| Coding is too heavy in the same week as sessions and the report | Coding less than half done by Sat 14 Nov | Everyone codes about 9 h in total; code rationale and intervention fields first; the W4 owner reassigns the remainder. Do not delay the report or invent incomplete human-study findings |
 | Test run reveals a problem | Odd numbers on Tue 10 Nov | Report honestly; **no tuning and no re-run**; document as a limitation |
-| Retention date earlier than Thu 19 Nov, or later than submission | Found in W4.1 | Earlier: move the verification chain (R6, R7, W4.8) earlier. Later: keep the data in the restricted store until that date; never delete before R7 |
+| Retention date earlier than report submission, or later than submission | Found in W4.1 | Earlier: move the verification chain (R6, R7, W4.8) earlier. Later: keep the data in the restricted store until that date; never delete before R7 |
 | Someone deletes the final-test output and re-runs the test | Missing output tables | The committed `final_test.lock` blocks the second run; report honestly if it happened (W3.2) |
 | A participant does not complete | No submission in W4's send log by the deadline | The next recruit inherits that slot's group and variant (§2); log the exclusion |
 | No response after the link is sent | No submission two days after sending | Recruiter sends one reminder; after the deadline the spare for that form goes to a new person (§2) |
@@ -437,9 +504,9 @@ states achieved numbers, not assumed targets.
 | Workstream | Owner | Reviewer | First deadline | Status |
 |---|---|---|---|---|
 | W1 Explanation audit | Noey | suggested: W2 owner; acceptance not confirmed | Fri 30 Oct | Smoke/note completed by Yolanda; full audits omitted; independent review pending |
-| W2 Study instrument: Google Forms | Han | suggested: W3 owner; acceptance not confirmed | Thu 29 Oct | Han's implementation integrated and verified by Yolanda; review/safeguards/checks completed by Yolanda; real build/privacy/live checks pending |
-| W3 Final evaluation, study cases, reproducibility | Yolanda | suggested: W4 owner; approval not claimed | Wed 28 Oct | Local execution/model card/cases/charts complete; independent W3.8 remains |
-| W4 Human-study operations and analysis | Harry | suggested: W5 owner; acceptance not confirmed | Fri 30 Oct | Existing consent/instructions integrated and verified by Yolanda; operational confirmations/pilot/recruitment/analysis pending |
+| W2 Study instrument: Google Forms | Han | W3 owner for implementation; independent live evidence not yet reviewed | Thu 29 Oct | Team reports real build, privacy/export checks and pilot complete (4 Nov); preserve acceptance evidence |
+| W3 Final evaluation, study cases, reproducibility | Yolanda | Lucas (W5) | Wed 28 Oct | Local execution/model card/cases/charts complete; clean-clone/evidence verification completed 4 Nov without rerunning the final test |
+| W4 Human-study operations and analysis | Harry | suggested: W5 owner | Fri 30 Oct | Consent/privacy/pilot gates reported complete; operational confirmations, recruitment, collection and analysis remain |
 | W5 Images, assignment lists, demo card, scoring script | Lucas | suggested: W1 owner; acceptance not confirmed | Mon 2 Nov | Lucas's generator/renderer integrated and verified by Yolanda; assignment/charts/scoring-coding implementation completed by Yolanda; handover/reviews/demo pending |
 | **Report and slides editor** (assembles only; suggested: W1 owner) | Team to confirm | — | Fri 30 Oct (R1) | Appointment and report/slides completion not verified |
 
@@ -447,8 +514,9 @@ states achieved numbers, not assumed targets.
 one other person's work (3 h, already counted in §7). Change it if a pair works poorly together.
 
 **Open items only the team can fill in:** confirm reviewer assignments above and the report editor; the
-real course deadline and any required deliverable beyond the report and deck (for example a presentation
-date); the course retention deadline (task W4.1); each person's real availability on Fri 13 – Tue 17 Nov.
+real course deadline and any required deliverable beyond the report (for example a presentation date);
+the course retention deadline (task W4.1); whether safeguarded participant collection and analysis can
+be completed by 15 Nov (otherwise the human-study results remain pending).
 
 | Recruiter | Participants recruited (target 10 each) | Agreed by Fri 6 Nov |
 |---|---|---|

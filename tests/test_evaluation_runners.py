@@ -115,6 +115,47 @@ class EvaluationRunnerTests(unittest.TestCase):
                     export.main([])
                 frames.assert_not_called()
 
+    def test_tag_test_binds_bundle_and_export_rejects_tampering(self):
+        import joblib
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            protocol = root / "config" / "evaluation_protocol.json"
+            protocol.parent.mkdir()
+            protocol.write_text("{}")
+            bundle_path = root / "data" / "final_evaluation" / "selected_model.joblib"
+            bundle_path.parent.mkdir(parents=True)
+            lock_path = root / "artifacts" / "final_test.lock"
+
+            def fake_execute(*args, **kwargs):
+                joblib.dump({"model": "synthetic"}, bundle_path)
+                return {"split": "test"}
+
+            metadata = {
+                "freeze_mode": "tag",
+                "frozen_commit": "frozen-commit",
+                "protocol_sha256": hashlib.sha256(protocol.read_bytes()).hexdigest(),
+            }
+            with patch.object(final, "ROOT", root), patch.object(final, "LOCK", lock_path), \
+                 patch.object(final, "check_gate", return_value=metadata), \
+                 patch.object(final, "execute", side_effect=fake_execute) as execute:
+                self.assertEqual(final.main([
+                    "--split", "test", "--approval", "approval.json", "--confirm-final-test",
+                ]), 0)
+                execute.assert_called_once()
+
+            lock = json.loads(lock_path.read_text())
+            self.assertEqual(lock["model_bundle_sha256"], file_hash(bundle_path))
+            self.assertEqual(lock["status"], "completed")
+
+            bundle_path.write_bytes(b"tampered model")
+            with patch.object(export, "ROOT", root), \
+                 patch.object(export, "development_frames") as frames, \
+                 patch("joblib.load") as load:
+                with self.assertRaisesRegex(ValueError, "bundle changed"):
+                    export.main([])
+                frames.assert_not_called()
+                load.assert_not_called()
+
     def test_lock_survives_deleted_outputs_and_refuses_repeat(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "final_test.lock"

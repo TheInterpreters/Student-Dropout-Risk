@@ -1,9 +1,10 @@
 # Case-pack format (W2.2), version 1.0
 
-**Status (2 Nov, evening):** format review, real export, local data/provenance checks and 11 chart
-files completed by Yolanda (§8). In-memory builder compatibility passes; restricted handover,
-independent review, all-chart visual parity and live form insertion remain. The machine check is `forms/case_pack.py`;
-if this page and that file ever differ, the file wins.
+**Status (updated 4 Nov):** format review, real export, local data/provenance checks and 11 chart
+files are complete. The team reports the real-form build, live acceptance/export checks and pilot
+complete; this document does not record per-check results or independently verify the live forms.
+Restricted data handling remains required. The machine check is `forms/case_pack.py`; if this page
+and that file ever differ, the file wins.
 
 The case pack carries the 11 cases (practice `PR`, scored `C01` to `C10`) from the people who make them to the
 people who use them. The real pack now exists locally and is compatible with the chart renderer
@@ -11,10 +12,10 @@ and form builder. Original November deadlines below have been superseded by comp
 
 | Who | Does what with it | When |
 |---|---|---|
-| W2 (builder) | Uses genuine pack/charts and canonical assignment to build real forms | Ready to build; not yet deployed/accepted (W2.7) |
+| W2 (builder) | Uses genuine pack/charts and canonical assignment to build real forms | Real-form build and live acceptance reported complete by the team (4 Nov); this document does not contain individual check outcomes |
 | W1 | Reviews explanation methods and explicitly omitted audit limitations | Independent review pending; no full-audit certification |
-| W3 | Real **study** pack and private lookup exported after once-only final evaluation | Completed locally by Yolanda on 2 Nov; restricted handover pending |
-| W5 | Renderer integrated/verified; genuine chart generation completed by Yolanda; scorer uses private lookup | 11 charts exist; live parity and independent scoring review pending |
+| W3 | Real **study** pack and private lookup exported after once-only final evaluation | Export completed 2 Nov; team reports restricted study handover and live form insertion complete by 4 Nov |
+| W5 | Renderer integrated/verified; genuine chart generation completed by Yolanda; scorer uses private lookup | 11 charts exist; team reports live acceptance complete; detailed parity evidence and independent scoring review are not recorded here |
 
 ## 1. Two files
 
@@ -184,14 +185,16 @@ their authorisation. The SHAP settings match `config/evaluation_protocol.json`; 
 signed aggregation match `src/explanations.py`, and the form tests cross-check the group members and bar IDs.
 That format review alone was not verification of real SHAP computation or delivery.
 Subsequent execution on 2 Nov completed the genuine case export, local chart-file generation
-and contract checks by Yolanda using the existing contract and renderer. This is local creation,
-not confirmation that restricted teammate handover or live insertion has occurred.
+and contract checks by Yolanda using the existing contract and renderer. The team reports that
+the restricted study build/live insertion and acceptance checks were completed by 4 Nov; this
+document does not independently verify them or specify individual check outcomes.
 The final model bundle/snapshot hashes, deterministic selection/flags and exact profile/source
 provenance verify; no independent recomputation of SHAP or full-audit certification is claimed.
-Live insertion and complete visual parity review remain pending.
+The team reports live form acceptance complete. Detailed visual/parity evidence is not reproduced
+here and should not be inferred from that aggregate status.
 
 - [x] **W3:** practice case from the validation split, not a test case. Screenshots remain subject to the restricted-data rules.
 - [x] **W3:** the ID rule in section 6 (ascending `source_row_id`).
 - [x] **W1:** section 4 matches frozen settings/signed-group aggregation; real export complete, full explanation audits omitted rather than passed.
 - [x] **W5:** the two group bar names, and charts named `chart_<case_id>.png`.
-- [x] **W5:** fixtures remain testing-only. Real chart-file generation completed by Yolanda using Lucas's renderer, integrated and verified by Yolanda; restricted handover and all-chart visual/live acceptance remain outstanding.
+- [x] **W5:** fixtures remain testing-only. Real chart-file generation completed by Yolanda using Lucas's renderer, integrated and verified by Yolanda. The team reports the real-form/live acceptance process complete (4 Nov); retain any detailed chart/parity evidence separately.

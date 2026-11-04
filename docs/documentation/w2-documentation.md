@@ -1,14 +1,13 @@
 # W2: Study instrument (Google Forms)
 
 **Owner:** Han (W2). **Reviewer:** Yolanda (W3, suggested in TASK_SPLIT §10).
-**Status (2 Nov, evening):** real case pack and 11 genuine charts exported/validated; real forms
-not yet built. The canonical W5 assignment is locally sealed under owner authorization;
-Harry/Lucas acknowledgement is not claimed. Existing test forms are not accepted for real
-collection. Build the four real forms closed with that CSV, restrict response storage,
-repeat live checks and run one pilot.
-Full explanation audits were omitted under the accelerated amendment, not passed. They are
-not remaining form-build prerequisites; privacy, live acceptance and pilot requirements remain.
-**Last updated:** 2026-11-02
+**Status (team-reported 4 Nov):** the real forms, privacy/consent checks, live acceptance/export
+checks and pilot are complete. This page records that aggregate status but does not contain
+check-by-check results or independently verify the live environment. Keep the team's acceptance
+records with the study materials. The canonical assignment remains sealed; do not regenerate it.
+Full explanation audits were omitted under the accelerated amendment, not passed, and are not a
+remaining form-build prerequisite.
+**Last updated:** 2026-11-04
 **Review update:** 2026-11-02, Yolanda on behalf of the owners with their authorisation; contract-format review
 and the decisions below only, not live-form acceptance or response-Sheet permission verification.
 **Related:** `docs/form_spec.md` (W2.1, what the forms contain), `docs/case_pack_contract.md` (W2.2, case file format),
@@ -29,16 +28,16 @@ Remaining tasks are stated explicitly below.
 
 ## 1. W2 tasks and status
 
-| Task | Original due | Current status (2 Nov) |
+| Task | Original due | Current status (updated 4 Nov) |
 |---|---|---|
-| W2.1 Form spec | 29 Oct | Han's spec integrated and verified by Yolanda; authorized review/cohort wording completed by Yolanda; unchecked §8 confirmations and live verification remain |
-| W2.2 Case-pack format | 29 Oct | Existing contract integrated and verified by Yolanda; review and genuine 11-case format/profile/split provenance/selection checks completed by Yolanda; independent review remains |
-| W2.3 Form generator | 4 Nov | Han's generator integrated and verified by Yolanda; safeguards/integration checks completed by Yolanda; live real-form build remains |
-| W2.4 Privacy settings and response sheet | 4 Nov | Partial: old-form autosave disabling completed by Yolanda. New builds need manual setting. Last observed Sheet sharing was institution-wide link editing; restriction/live verification remain |
-| W2.8 Response transform script | 4 Nov | Han's transform integrated and verified by Yolanda; source-form/duration safeguards and fake-export checks completed by Yolanda; real exports still need checking |
-| W2.5 Dry run | 5 Nov | Synthetic integration checks completed by Yolanda; live export/transform/cleanup still pending |
-| W2.6 Acceptance checks | 6 Nov | Pending/not passed. Partial old-form inspection completed by Yolanda; all seven real-build checks remain required before collection |
-| W2.7 Real forms | 12 Nov | Final test/export/charts and locally sealed canonical assignment ready. Next: real build, chart/profile/order parity and individual-link checks; independent assignment acknowledgement remains |
+| W2.1 Form spec | 29 Oct | Han's spec integrated and reviewed; team reports live consent/wording checks complete (4 Nov); unmarked content-confirmation items below are not per-check acceptance evidence |
+| W2.2 Case-pack format | 29 Oct | Contract and genuine 11-case format/provenance checks completed; team reports real-form integration complete; detailed independent review is not recorded here |
+| W2.3 Form generator | 4 Nov | Han's generator integrated and checked; team reports the real-form build complete (4 Nov) |
+| W2.4 Privacy settings and response sheet | 4 Nov | Team reports privacy/access checks complete (4 Nov); earlier observations on draft forms/Sheet below are historical and do not describe the current build |
+| W2.8 Response transform script | 4 Nov | Transform safeguards and synthetic checks completed; team reports live exports/transform acceptance complete (4 Nov); detailed export results are not recorded here |
+| W2.5 Dry run | 5 Nov | Synthetic checks completed; team reports live export/transform checks complete (4 Nov) |
+| W2.6 Acceptance checks | 6 Nov | Team reports live acceptance checks complete (4 Nov); individual check outcomes are not documented in this page |
+| W2.7 Real forms | 12 Nov | Team reports four real forms built with the genuine pack/charts and canonical assignment (4 Nov); do not regenerate or replace the assignment |
 
 ## 2. How the forms work
 
@@ -205,29 +204,31 @@ on 27 Oct, to collect self-reported participant backgrounds aligned to the UCI c
 the study has no additional survey and the human study is the only instrument. The full draft is in git history
 (`git log --follow docs/documentation/w2-documentation.md`).
 
-## 10. Current completed prerequisites and open launch items
+## 10. Current status and remaining study work
 
 - **Completed by Yolanda:** final evaluation, genuine case export, 11 charts
-  and locally sealed canonical W5 assignment; private list/seed/hash acknowledgement remains.
-- Han builds real forms from that exact assignment and genuine pack/charts, not old fixtures.
-  Record/review the existing frozen case order before the build; do not change scientific inputs.
-- Restrict the real response Sheet (W2.4); disable autosave anew; check chart/profile/order parity,
-  cohort-policy wording, consent/decline routing, signed-out access and live exports (W2.5/W2.6).
+  and locally sealed canonical W5 assignment; the team reports private list/seed/hash handover
+  acknowledged (4 Nov).
+- The team reports the real forms, restricted response storage, privacy/consent checks, live
+  acceptance/export checks and pilot complete (4 Nov). Keep their detailed records separately;
+  no individual check outcome is inferred in this documentation.
+- Preserve the canonical assignment and do not regenerate or replace it. Do not change the frozen
+  scientific inputs. If an authorized rebuild is needed, follow the runbook and repeat applicable
+  manual settings/checks.
 - No new arbitrary time-based exclusions: retain the documented exclusion policy. Pilot duration
   can inform advertised time; changing questions or exclusions needs explicit approval and disclosure.
 - Grade label "(passed units only)": not supported by the official definition; retain current wording pending evidence.
-- Remaining unchecked items in `docs/form_spec.md` §8; live consent/submission behaviour and Sheet permissions.
-  Yolanda's authorised contract-format review is recorded in `docs/case_pack_contract.md` §8.
+- Remaining work is participant recruitment, response collection, coding and analysis, plus the
+  later retention/deletion actions. The unchecked items
+  in `docs/form_spec.md` §8 are content-confirmation records, not evidence that the team-reported
+  live acceptance gates failed.
 
-## 11. Acceptance results (W2.6), to fill in
+## 11. Acceptance results (W2.6; aggregate status updated 4 Nov)
 
-2 Nov partial live check (not acceptance): draft autosave was disabled in all four existing forms
-with Yolanda's approval and their respondent pages displayed "Saving disabled". One decline route
-was checked without submission and its synthetic draft cleared. Form 4 still has 11 chart
-placeholders and lacks the agreed full-cohort instruction; the response Sheet is institution-wide
-link-editable, not Restricted. Yolanda requested leaving permissions unchanged for now.
-The live script is older than the repository renderer. All seven checks require completion/review
-after rebuilding; do not mark the table passed from these partial observations.
+**Aggregate status (team-reported 4 Nov):** live acceptance checks are complete. Specific
+outcomes, dates, reviewers and notes for the seven checks are not recorded in this document; the
+cells are intentionally left blank rather than inferred. The 2 Nov observations were a
+partial inspection of earlier forms/Sheet, not results for the current accepted build.
 
 | # | Check | Result | Date | Reviewer | Notes |
 |---|---|---|---|---|---|
@@ -239,26 +240,28 @@ after rebuilding; do not mark the table passed from these partial observations.
 | 6 | Form text matches the model card and the consent text | | | | |
 | 7 | A dry-run export transforms into the right long CSV | | | | |
 
-## 12. Draft wording for the report (planned methods; not completed human results)
+## 12. Draft wording for the report (methods; human results not yet collected)
 
-> The study is planned as four Google Forms generated from one specification. The canonical seeded
+> The study uses four Google Forms generated from one specification. The canonical seeded
 > list allocates 50 main slots to Group A (profile only) or Group B (profile plus contribution chart),
 > 25 per group, with approximately half of each group assigned the seeded case order and half its
 > reverse. One unscored validation practice and ten scored test profiles have been exported, with
 > genuine contributions for Group B. Participants will consent, confirm age 18+, guess the hidden
 > model flag, rate confidence 1–5 and answer three written prompts per profile, without correctness
-> feedback. Sessions are planned online and unsupervised, with self-reported total time. The real-form
-> build, restricted response storage, live acceptance and pilot remain outstanding. No human-study
-> results are claimed; after collection, replace this prospective wording with verified achieved counts
+> feedback. Sessions are online and unsupervised, with self-reported total time. The team reports
+> the real-form build, restricted response storage, live acceptance and pilot complete (4 Nov).
+> No main human-study results are claimed yet; after collection, replace this status with verified achieved counts
 > and procedures. Task accuracy measures agreement with model flags on this fixed balanced panel,
 > not actual dropout outcomes or general explanation quality.
 
 ## 13. Change log
 
 - 2026-11-03: Pilot recorded (§6); time wording 30–40 minutes and the Q4 note added; limitations 7–8 added (§8); forms rebuilt.
+- 2026-11-04: status updated to record team-reported completion of the real forms, privacy/consent,
+  live acceptance/export checks and pilot; individual acceptance outcomes remain undocumented here.
 - 2026-11-02, evening: task-by-task completion and contribution-specific attribution recorded;
   final evaluation/real cases/charts and local assignment seal completed; real build/privacy/acceptance/
-  pilot remain pending. Removed prospective-study wording that incorrectly sounded completed.
+  pilot were then pending. Removed prospective-study wording that incorrectly sounded completed.
 - 2026-11-02: Yolanda's authorised review recorded; practice-check reporting and cohort-policy instructions agreed;
   grade-label proposal checked against UCI and left unconfirmed. Live forms and Sheet permissions remain unchecked.
 - 2026-11-02: Handover safeguards added: explicit response-tab variants, case-row/provenance checks, duration

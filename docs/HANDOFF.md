@@ -1,6 +1,6 @@
 # Project Handoff — Single Source of Truth
 
-Updated: 2026-11-02. This file replaces the former `MODEL_CARD.md`, `human_study_instrument.md`,
+Updated: 2026-11-04. This file replaces the former `MODEL_CARD.md`, `human_study_instrument.md`,
 `interface_spec.md`, `course_concept_alignment.md`, `proposal_final_audit.md` and `tasks.md`
 (all still recoverable from git history). `README.md` is the public overview;
 `docs/TASK_SPLIT.md` assigns the remaining work to five workstreams.
@@ -20,8 +20,8 @@ TASK_SPLIT §4.
 
 ## 1. Status — what to show the professor and team
 
-- Target finish: **Thu 19 Nov 2026** (hard stop Fri 20 Nov, 3rd week of November); dated plan
-  and owners in `docs/TASK_SPLIT.md`.
+- Final project report deadline: **Mon 16 Nov 2026**; the report schedule in
+  `docs/TASK_SPLIT.md` supersedes earlier project dates and lists task owners.
 - Final title: **Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and
   Interpretable Models**.
 - Submission files: `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx`
@@ -30,7 +30,7 @@ TASK_SPLIT §4.
   the PDF after any further DOCX change and re-check the page count.
 - The repository contains only the UCI predictive dataset. The unrelated OfS background-data
   branch has been removed from version control.
-- **62 unit tests pass** in the pinned Python 3.12 environment; separate form checks pass.
+- **63 unit tests pass** in the pinned Python 3.12 environment; separate form checks pass.
   Run `python -m unittest discover -s tests` and `python forms/test_spec.py`.
 - The **single final evaluation is completed** on 545 cases. Preserve the completed
   `artifacts/final_test.lock`; never rerun the final test. Results are in section 8.
@@ -38,12 +38,13 @@ TASK_SPLIT §4.
   execution check, not explanation-quality certification. The local hashed freeze and deviations
   are recorded in section 12; independent approval is not claimed.
 - The real 11-case pack, 11 charts and locally sealed canonical assignment exist privately.
-  Independent assignment acknowledgement, real-form building,
-  live privacy/acceptance, pilot and human-response collection remain outstanding.
+  The team reports real-form build, live privacy/acceptance checks, exports and pilot complete
+  (4 Nov); pre-collection coordination and private assignment handover are reported complete.
+  Main human-response collection remains outstanding.
 
-For an honest status update: model evaluation and private case/chart export are complete;
-the real human study is not yet ready to launch. Historical schedules and full-audit requirements
-below are superseded by the accelerated amendment in section 12.
+For an honest status update: model evaluation, private case/chart export and the team's live
+form/privacy/pilot gates are complete; human-response collection and analysis are not. Historical
+schedules and full-audit requirements below are superseded by the accelerated amendment in section 12.
 
 ## 2. Scope decision
 
@@ -90,6 +91,17 @@ course/institutional requirements before recruitment.
   grouped permutation importance, ALE, subgroup suppression and all-feature proxy tables built.
 - Admission-time sensitivity: TabICL ROC-AUC 0.874 vs 0.952 post-semester-one; capacity recall
   0.469 vs 0.507.
+- **Exploratory eligibility-proxy check (4 Nov; validation only):** applied the saved fitted model
+  to the existing 544 validation rows; its bundle hash matches `artifacts/final_test.lock`, and
+  the original validation confusion matrix was reproduced. The top-20% rule flagged 108 records;
+  all 108 had Dropout labels. Of the 49 validation records with zero first-semester evaluations
+  (36 Dropout, 13 Graduate), 25 were flagged (all Dropout); 83 flagged records had at least one
+  evaluation. Among the 495 records with at least one evaluation (177 Dropout), recomputing the
+  top-20% capacity within this subset flagged 99: TN=318, FP=0, FN=78, TP=99; recall 0.559,
+  precision 1.000, ROC-AUC 0.9486. This is post-hoc validation sensitivity analysis, not a new
+  confirmatory result. Evaluation presence is only a proxy and does not establish enrollment,
+  availability to support, or reachability at the decision point. Enrolled outcomes remain excluded;
+  this analysis provides no performance evidence for them. The final-test lock was not rerun or changed.
 
 ### Validation-only results (same cohort, top-20% capacity policy)
 
@@ -106,6 +118,18 @@ With 213 validation dropouts and 108 available flags (108/544 = 0.1985), maximum
 Admission-time ROC-AUC: EBM 0.8753, XGBoost 0.8752, TabICL 0.8739. TabICL's 0.006 margin over EBM
 is modest and does not establish operational superiority. The subsequent once-only final results
 are in section 8; the final evaluation is complete and must not be repeated.
+
+**Validation eligibility sensitivity (exploratory, 4 Nov).** Of 108 records flagged under the
+original validation-cohort ranking, 25 (23.1%) had no first-semester evaluations and 83 had at
+least one. There were 49 such zero-evaluation records in validation, of which 36 were Dropouts.
+Restricting to records with one or more evaluations (495 total; 177 Dropouts) and recalculating the
+same 20% within-subset capacity flagged 99; all 99 had Dropout labels (recall 0.559, precision
+1.000, ROC-AUC 0.9486; TN=318, FP=0, FN=78, TP=99). This post-hoc sensitivity does not replace
+the primary result, prove actual eligibility, or establish that a support officer could reach those
+students. It does not evaluate Enrolled students, which remain excluded. “100% precision” here means
+only that the selected top-20% flags in these particular validation subsets had Dropout labels; it
+does not mean all Dropouts were found, that the model generalises perfectly, or that outreach would
+benefit flagged students. On the full validation cohort, 105 of 213 Dropouts were not flagged.
 
 ## 4. Methodology (frozen in `config/evaluation_protocol.json`, v1.3.0)
 
@@ -160,20 +184,24 @@ Current checklist under the accelerated amendment (section 12):
   completed lock retained. No mandatory publication tag or independent approval is claimed.
 - [x] **Generate real cases/charts and final model card**: one practice plus ten scored cases,
   genuine contributions, 11 charts and aggregate final subgroup/calibration/comparison evidence.
-- [ ] **Private handover and assignment**: share the pack/charts through restricted storage,
-  limit lookup access to the scorer, and hand over the locally sealed canonical assignment.
-- [ ] **Real study form build and pilot** (§7): check chart/profile/order parity, cohort wording,
-  consent, autosave, routing and response-storage restrictions; verify no hidden answer is exposed.
-- [ ] **Human study** (§6): confirm applicable course/institutional requirements and ethics basics
-  (consent, withdrawal procedure, retention deadline, restricted raw-response access);
-  recruit 50 (10 per team member; minimum 40, at least 18 per group); consent;
-  run 1 practice + 10 scored cases; code responses (shared by all members, 20% double-coded);
-  analyse accuracy and self-reported time descriptively.
-- [ ] **Independent reproducibility review**: verify the clean-clone
-  command for freely regenerable validation tables/figures and the manifest for once-only final results.
+- [x] **Private handover and assignment (team-reported complete 4 Nov)**: the pack/charts and
+  sealed assignment were handed over through restricted storage; the private lookup is limited to
+  the designated scorer. Keep codes, seed and lookup out of Git.
+- [x] **Real study form build and pilot (team-reported complete 4 Nov)**: the team reports the
+  real forms, privacy/consent checks, live acceptance/export checks and pilot complete. Individual
+  acceptance outcomes are not recorded here; this is not an independent live audit.
+- [x] **Pre-collection arrangements (team-reported complete 4 Nov)**: the team reports the form,
+  consent/privacy, response-access/export and pilot gates complete.
+- [ ] **Main human study** (§6): recruit and consent participants; target 50 (10 per team member;
+  minimum 40, at least 18 per group); run 1 practice + 10 scored cases; log actual counts and
+  exclusions; code responses (20% double-coded); analyse accuracy and self-reported time descriptively.
+- [x] **Clean-clone/evidence verification (4 Nov)**: 62 unit tests, four form variants and all
+  22 saved final-evidence hashes passed; protocol hash matched the manifest and lock. The
+  once-only final evaluation was not rerun. This clean-clone run preceded the later tag-mode
+  bundle-hash regression test; the current local suite has 63 passing tests.
 - [ ] Optional sensitivity checks (Enrolled handling; admission-time window).
 - [ ] Hygiene: do not rerun or tune on the final test; keep raw responses out of version control;
-  verify all 62 unit tests and separate form checks in `.venv-core`;
+  verify all 63 unit tests and separate form checks in `.venv-core`;
   keep repo scope clean (no OfS/text-analysis material); keep DOCX, README
   and this file in sync and re-export the PDF after every DOCX change.
 
@@ -288,15 +316,14 @@ No subgroup comparisons with fewer than five participants.
 
 **Status.** Done: officer role and decision, response schema, local model freeze, once-only final
 evaluation, ten real scored cases plus practice, Group B chart images and locally sealed assignment.
-Open: private assignment acknowledgement,
-real Google Forms (§7), live privacy/consent/routing checks, send and exclusion log, codebook and
-two-coder subset, one-person pilot, recruitment and coding. Do not collect responses before the
-real forms, restricted response storage and pilot pass. Disclose the omitted explanation audits.
+Team-reported complete (4 Nov): real Google Forms (§7), live privacy/consent/routing and export
+checks, and one-person pilot. Open: send and exclusion log, actual recruitment, response collection and coding. Disclose the omitted
+explanation audits.
 
 ## 7. Study instrument — Google Forms (replaces the planned custom interface)
 
 **Decision (27 Oct 2026, D8).** Participants answer Google Forms instead of a custom browser
-interface, to protect the Thu 19 Nov finish. The study design, cases, questions, consent and privacy
+interface, to protect the project schedule. The study design, cases, questions, consent and privacy
 rules are unchanged. The decision-support demonstration (formerly "Mode A") becomes a static example
 card (screenshots from a validation fixture) in the report and slides. It accepts no real AIT student
 records. Deviations are listed in `docs/TASK_SPLIT.md` §8 and must be disclosed in the final report.
@@ -389,9 +416,12 @@ paired intervals, reliability plots and descriptive subgroup/proxy screens are i
 **Explanation evidence.** Permutation SHAP (25 background rows, 67 evaluations) reconstructed
 probabilities within 4.1e-8 on two validation cases (artifact max 3.2e-8); synthetic white-box
 rank Spearman 1.0. EBM intercept plus main effects reconstruct validation probabilities within
-3.3e-16 (intrinsic reference). The accelerated smoke check produced top-five overlap 0.8 on
-one validation case across two seeds; this is not a general stability estimate. Full deletion,
-background/perturbation stability and constrained-recourse auditing were omitted, not passed.
+3.3e-16 (intrinsic reference). There are 33 input features; the configured `max_evals=67` is
+`2 × 33 + 1`, the permutation explainer's evaluation budget per case, not 67 cases. This budget
+choice is not evidence that the attributions are stable or sufficiently precise. The accelerated
+smoke check produced top-five overlap 0.8 on one validation case across two seeds; this is an
+execution check, not a general stability estimate. Full deletion/faithfulness, multi-case,
+background/perturbation stability and constrained-recourse audits were omitted, not passed.
 Human-study results do not exist yet.
 
 **Fairness and limitations.** Retain subgroup counts, suppress metrics below n=30, report the
@@ -399,9 +429,37 @@ all-feature proxy screen. Single institution; may not transfer across countries 
 Associations are not causal diagnoses; a feasible counterfactual may not exist for every student.
 Final descriptive gender-group flag rates were 0.1224 and 0.3238, with recalls 0.4100 and
 0.5929 respectively (coded groups 0/1). These differences do not demonstrate fairness or causation.
-Small-group performance metrics are suppressed in the tables; cross-country/generalisation claims
-remain unsupported. Human study, live privacy acceptance and independent clean-clone verification
-remain outstanding.
+Protected attributes were retained in this research model to reflect the available dataset and
+permit descriptive subgroup/proxy audits, not because they are established as appropriate outreach
+criteria. These analyses do not authorize prioritising real students by protected status; that
+would require a separate, justified and governed decision and further evaluation. Small-group
+performance metrics are suppressed in the tables; cross-country/generalisation claims remain
+unsupported. Human-response collection/analysis remain outstanding. Clean-clone/evidence
+verification completed 4 Nov without rerunning the final test. The team reports the live
+form/privacy/export checks and pilot complete (4 Nov).
+
+**Recourse and human-study interpretation for reporting.** Fee/debtor status is an administrative feature that can reflect financial circumstances. The
+dataset's association between fee status and a later Dropout label does not establish causal
+direction: financial difficulty may affect fee status, fee status may be a marker of other
+circumstances, and the label records a later outcome. A change to a model score after changing this
+feature is not evidence that paying fees prevents dropout, is feasible for a student, or should be
+recommended. The full constrained-recourse audit was omitted. In the planned human study,
+participants guess the model's hidden flag; Group B additionally sees directions and relative sizes
+of contribution bars, while numeric probabilities, base values and output labels are hidden. The
+bars may still help participants infer the flag; whether they can reconstruct it is an empirical
+question, not an assumed finding. Thus the study tests participants' ability to anticipate model
+outputs from profiles with or without charts; it does not establish support-officer effectiveness,
+better interventions or student outcomes. The study is not yet complete; report findings only after
+actual data collection and analysis.
+
+**Final-report framing (notes, not the final report).** Start with the practical question in plain
+language: whether a model can help prioritise a limited number of voluntary support contacts after
+first-semester results. Define the cohort and outcome (Dropout versus Graduate; Enrolled excluded),
+explain that the 20% rule means selecting up to one fifth of a cohort for outreach, then state the
+central result and its eligibility/recall caveat. Separate completed model evaluation and smoke
+checks from omitted explanation audits, team-reported completed live acceptance, and any human
+study not yet completed. Avoid protocol jargon on page one; do not imply that retrospective metrics certify
+real-world use.
 
 ## 9. Course-criteria alignment
 
@@ -459,7 +517,7 @@ data confirmed every quoted figure.
 | Criterion | Proposal evidence | Status |
 |---|---|---|
 | Audience and decision | §2: one officer, one decision, timing, both error costs | Complete |
-| Model and baseline | §5.1: five models, one frozen split, one final same-test-set comparison | Complete; final test pending |
+| Model and baseline | §5.1: five models, one frozen split, one final same-test-set comparison | Complete; single final test completed and locked |
 | Faithfulness | §5.2: signed group SHAP, grouped deletion, 50 random orders, white-box check | Complete design; integration evidence |
 | Stability | §5.3: label-free five-stratum validation cases, 10 runs, 0.80 warning | Complete design |
 | Human evidence | §5.4, §5.7: blinded two-group study, practice case, 10 cases, coding | Complete design; recruitment pending |
@@ -525,26 +583,30 @@ No scientific code/configuration was changed after creating the snapshot.
   genuine signed grouped SHAP contributions, five flagged/five unflagged scored cases selected
   from saved predictions without using outcome labels. Format/provenance checks pass.
 - Chart handover: **11 genuine chart PNGs** under `forms/out/images_study/`; the renderer's
-  forbidden-text check passes. Visual/live parity review remains outstanding.
+  forbidden-text check passes. The team reports live insertion and acceptance complete (4 Nov);
+  detailed parity results are not reproduced here.
 - Validation dry-run tables were generated before the accelerated amendment. Their manifest
   deliberately records that earlier protocol hash; they are historical dry-run evidence, not the
   final frozen protocol. The smoke artifact records the reduced explanation evidence.
 
-**W3 deliverable handover:** send the real case pack and chart PNGs through restricted storage to
-Han/Lucas. Give the private lookup only to the designated scorer/coordinator; do not upload it
-to participant-facing Forms/Drive assets or Git. In a subsequent owner-authorized step, the canonical
-private assignment was generated and locally sealed; Harry/Lucas independent acknowledgement
-is not claimed. Its CSV, seed/rules and `assignment_seal.json` stay in ignored `data/human_study/`.
-Han must build the
-real forms using that same assignment, then check chart/profile/order parity and updated wording.
-The response Sheet is still institution-wide link-editable by the owner's earlier choice.
-Restrict it, repeat privacy/routing checks and perform the pilot before any real collection.
-No live form rebuild, recruitment, pilot or response collection is claimed complete here.
-Independent W5 clean-clone/hash verification remains a separate member task.
+**W3 deliverable handover:** use the real case pack and chart PNGs only through restricted study
+storage. Give the private lookup only to the designated scorer/coordinator; never upload it to
+participant-facing Forms/Drive assets or Git. The canonical private assignment is generated and
+locally sealed; its CSV, seed/rules and `assignment_seal.json` stay in ignored
+`data/human_study/`. The team reports the real forms, privacy/consent checks, acceptance/export
+checks and pilot complete (4 Nov). Keep their detailed records with the study materials; do not
+infer undocumented per-check results from this summary. Private assignment acknowledgement and
+main response collection remain outstanding. Clean-clone/evidence verification was completed
+4 Nov without rerunning the final test.
 
 ### Latest local consistency audit (2 Nov, after assignment sealing)
 
 **Local verification completed by Yolanda; not independent or live acceptance.**
+
+The live-form observations in the historical audit below describe the earlier forms and response
+Sheet as inspected on 2 Nov. They are superseded as a current status by the team's 4 Nov report
+that the real build, privacy/consent checks, acceptance/export checks and pilot are complete.
+Per-check evidence for the current build is retained with the study materials, not reproduced here.
 
 - All **62 unit tests** and separate four-variant form checks pass. The test runner's guard
   rejection messages and mocked "Final test complete" output are expected synthetic test paths,
@@ -555,7 +617,8 @@ Independent W5 clean-clone/hash verification remains a separate member task.
   arithmetic agree with saved tables; this does not independently recompute ROC-AUC/bootstrap draws.
 - Real pack/profile/split provenance, deterministic ten-case selection and hidden flags verify
   against saved predictions. Eleven PNGs validate; one genuine chart was visually inspected.
-  Complete all-chart and live profile/order parity review remains outstanding.
+  This local audit did not independently inspect all charts or verify live profile/order parity;
+  that is distinct from the team's reported completion of live acceptance checks.
 - Canonical assignment validates and reproduces byte-for-byte from its private seed: 50 main,
   25/group, A1/A2/B1/B2 counts 13/12/12/13; four spares, one B1 pilot. CSV matches its local seal.
   No codes or seed were put in public documentation.
@@ -569,14 +632,15 @@ audit disclosure, prospective rather than fabricated completed human methods, cu
 instructions, canonical-assignment overwrite warnings and explicit approval for instrument changes.
 The frozen builder still contains historical `DECISIONS_PENDING`/placeholder annotations; the
 fixture check reports 22 TBD markers and nine decision entries. These are not nine independently
-verified open decisions or a live-readiness pass. Resolve actual unchecked spec confirmations
-in the real-build record without silently editing the frozen scientific inputs.
+verified open decisions or a live-readiness pass. The team reports the real-form/privacy/export
+checks and pilot complete (4 Nov); retain the live acceptance evidence separately without silently
+editing the frozen scientific inputs.
 
-**Next:** restricted private handover, real-form build, access/settings/consent/routing/export
-acceptance, operational/retention confirmations and one pilot; then individual links. Check pilot
-duration and phone readability, and do not silently make questions optional. Independent review,
-static demo, actual collection/coding/analysis, final report/slides and retention-date deletion
-remain pending. Live sharing/settings have not been freshly reverified by this local audit.
+**Next:** recruitment, response collection and analysis if the schedule allows. The team reports
+pre-collection coordination, form/privacy/export gates and pilot complete; remaining independent
+scoring/coding review, static demo, actual collection/coding/analysis, final
+report/slides and retention-date deletion remain pending. This local audit did not independently
+reverify live sharing/settings.
 
 ### Historical execution notes (superseded by the completion record above)
 
@@ -725,27 +789,28 @@ generator, response transformer, scoring/coding tools, pinned environment and su
 validation dry-run outputs. Existing live forms have autosave disabled.
 
 Current material status (supersedes the earlier preparation check): the real pack, saved fitted
-model, completed final-test lock and 11 genuine charts now exist and verify. The canonical private
+model, completed final-test lock and 11 genuine charts now exist and verify. The team reports the
+real forms, privacy/export acceptance checks and one-person pilot complete (4 Nov). Clean-clone/
+evidence verification was completed separately on 4 Nov. Human-response collection remains pending.
+The canonical private
 `data/human_study/assignment_list.csv` now exists with private seed/rules and local seal.
 Do not rename fixtures as study
 material or repeat the final evaluation.
 
-**Ready for real-form preparation, not participant collection.** Use the locally sealed assignment to build
-the spec from the genuine pack using that same list. Upload only the form outputs/charts, never
-the private lookup, to the restricted build folder; run the current Apps Script with responses
-initially closed. Verify new links/forms, repeat manual autosave settings and restrict response
-storage. Complete live acceptance and one pilot before sending participant links. The full audit
-was omitted under the amendment, not deferred as a mandatory launch gate.
+**Live-form and pilot gates reported complete; participant collection remains pending.** Preserve
+the exact sealed assignment for links and transformation; do not regenerate or switch lists. Keep
+the private lookup restricted to the designated scorer and maintain the response-sheet access
+controls. The full audit was omitted under the amendment, not deferred as a mandatory launch gate.
 
 ### What each member takes next
 
 | Member | Code ready for review | Next real action |
 |---|---|---|
 | Noey (W1) | Accelerated runner, smoke check and limitation note completed by Yolanda | Review/incorporate W1.5 note into final report: full audits omitted, single-case overlap not general stability; no mandatory long rerun |
-| Han (W2) | Provenance, source-tab identity, duration and closed-form safeguards in `forms/` | Build real forms using genuine pack/charts and sealed assignment; check routing/login/permissions, export transformation and all seven W2.6 checks; disable autosave anew |
+| Han (W2) | Provenance, source-tab identity, duration and closed-form safeguards in `forms/` | Preserve the completed live acceptance evidence; coordinate any remaining wording/export corrections before distributing links |
 | Yolanda (W3) | Final evaluation, pack/charts, model card and local verification completed | Hand over pack/charts privately and lookup only to scorer; support independent review. Preserve freeze/model/lock; never repeat final evaluation |
-| Harry (W4) | Private scoring/coding interfaces below | Restrict Drive/Sheet to designated users, confirm retention/deletion plan, complete send-out kit and codebook/training, recruit and track counts without names beside codes |
-| Lucas (W5) | `scripts/analyze_human_study.py`, `scripts/assign_human_coding.py`; genuine charts and locally sealed canonical assignment | Acknowledge private list/seed/hash handover with Harry; independently review scoring/coding and chart/profile parity; deliver static demo card and clean-clone verification without a final-test rerun |
+| Harry (W4) | Private scoring/coding interfaces below | Maintain restricted Drive/Sheet access; confirm retention/deletion plan, complete send-out kit and codebook/training, recruit and track counts without names beside codes |
+| Lucas (W5) | `scripts/analyze_human_study.py`, `scripts/assign_human_coding.py`; genuine charts and locally sealed canonical assignment | Acknowledge private list/seed/hash handover with Harry; complete the remaining independent scoring/coding review and static demo; never rerun the final test |
 
 ### Safe checks and optional validation regeneration (not a new freeze)
 
@@ -837,8 +902,9 @@ Export refuses existing study filenames to avoid silently replacing released mat
 The study handoff uses W5's block-randomised assignment, with A1/A2/B1/B2 main counts **13/12/12/13**.
 The canonical CSV and private seed/rules were generated once and locally hash-sealed under the
 owner's authorization on 2 Nov; `data/human_study/assignment_seal.json` records the digest and
-honest review status. Harry/Lucas acknowledgement remains outstanding; no independent sign-off
-is claimed. Keep all three files private and use the exact CSV unchanged.
+honest review status. The team reports Harry/Lucas's restricted handover acknowledgement complete
+(4 Nov); this does not claim independent sign-off. Keep all three files private and use the exact
+CSV unchanged.
 The W2 allocation seed 2026 is fixture-only. The separate case-order seed 11 is already in the
 frozen builder; record/review the resulting real-build order during acceptance without changing
 scientific inputs or creating another freeze.
@@ -878,19 +944,21 @@ practice answers must be present, and the imported combined-correct flag must ma
 Invalid exports stop analysis before outputs are written; regenerate them with the transformer rather
 than hand-editing flags. Consistently wrong answers remain included and are reported as wrong.
 
-### Remaining non-code and independent-review work (current)
+### Remaining non-code and independent-review work (status updated 4 Nov)
 
-- Privately hand over the genuine pack/charts and locally sealed assignment; the lookup goes only
-  to the designated scorer. Harry/Lucas acknowledge the assignment; do not regenerate it.
-- Han builds the real forms closed. Finish unchecked spec confirmations, restrict Drive/Sheet,
-  disable autosave anew and verify signed-out access, consent/decline routing, wording, hidden
-  outputs, chart/profile/order parity and actual exports. No live acceptance pass is claimed.
-- Confirm course requirements, retention/deletion/withdrawal arrangements, proposal participant
-  parity, invitation/reminder kit, recruitment plan and pre-analysis codebook/training.
-- Run one real-form pilot; check duration and phone readability, log fixes and remove pilot data.
-  Only after acceptance/pilot send individual links, collect responses and perform real analysis/coding.
-- Complete independent environment/code/results/clean-clone review. Verify saved final hashes,
-  never repeat final evaluation. Full explanation audits remain omitted; review the limitation note
+- The team reports the pre-collection coordination and required private handover acknowledgements
+  complete (4 Nov). Keep the genuine pack/charts and locally sealed assignment in restricted
+  storage; the lookup goes only to the designated scorer. Do not regenerate the assignment.
+- The team reports the closed real-form build, privacy/access controls, consent/routing, live
+  acceptance checks, exports and one-person pilot complete (4 Nov). Keep their evidence with the
+  study materials.
+- The team reports applicable course/ethics arrangements, retention/deletion/withdrawal plan,
+  recruitment preparation and codebook/training agreed (4 Nov). Record actual recruitment and
+  exclusion events as they occur; do not infer participant counts before collection.
+- The pilot is reported complete; proceed with approved participant recruitment and response
+  collection only under the confirmed consent/retention/access arrangements, then perform analysis/coding.
+- Clean-clone tests and saved-result hash verification completed 4 Nov; preserve the saved evidence
+  and never repeat the final evaluation. Full explanation audits remain omitted; review the limitation note
   rather than treating those audits as a launch prerequisite.
 - Finish W5's validation-only static demo, final report/slides, reviewed human results after
   collection and rehearsal. Existing DOCX/PDF proposal/question-bank files are historical drafts,

@@ -4,10 +4,12 @@ Builds the four Google Forms for the human study from one spec. Python makes all
 checks; Apps Script only renders. What the forms contain: `docs/form_spec.md` (W2.1). Case file format:
 `docs/case_pack_contract.md` (W2.2).
 
-Status (2 Nov): the real case pack and 11 genuine charts have been exported privately; the existing
-live forms are still test builds, not accepted real study forms. The real-form build remains
-outstanding (originally scheduled for Thu 12 Nov). Do not distribute participant links before
-restricted response storage, live acceptance and the pilot pass.
+**Current status (team-reported 4 Nov):** the real-form build, response privacy/access checks,
+live acceptance/export checks and pilot are complete. This repository page does not contain
+individual acceptance results; retain those records with the study materials. The build and test
+commands below are runbook/reproduction instructions, not outstanding live tasks. Do not rebuild,
+replace the canonical assignment, or change live response settings as part of routine documentation
+work. Human-response collection and analysis remain separate, pending work.
 
 ## Files
 - `build_spec.py`: builds the fixture case pack, the four form specs (A1, A2 = Group A; B1, B2 = Group B)
@@ -21,7 +23,7 @@ restricted response storage, live acceptance and the pilot pass.
 - `render_forms.gs`: Apps Script renderer; makes the four forms and a links sheet.
 - `out/`: generated files. Ignored by git (private lookup and participant codes).
 
-## Test build (now)
+## Fixture/test-build runbook (not the live study build)
 1. `python3 forms/build_spec.py`
 2. `python3 forms/test_spec.py` (must print PASS)
 3. Upload `out/form_spec.json` and `out/assignment_fixture.csv` to the restricted Drive folder,
@@ -38,7 +40,7 @@ restricted response storage, live acceptance and the pilot pass.
    does not set it. Open each respondent page and verify **Saving disabled**, then test without
    a Google sign-in. Keep `ACCEPTING_RESPONSES` false except during tests.
 
-## Dry run (W2.5, Thu 5 Nov)
+## Synthetic/export dry-run instructions
 1. Turn responses on for the test only. Submit fake answers (write "fake" in the text boxes) through a
    few links from the links sheet, as a participant would online: at least one per form, one
    "I do not agree" and the pilot link.
@@ -47,7 +49,9 @@ restricted response storage, live acceptance and the pilot pass.
 4. Check `forms/out/responses_long_dummy.csv` (10 rows per kept participant, right case order) and the
    dropped counts. Then delete the test responses in each form and in the Sheet, and turn responses off.
 
-## Real forms (W2.7, Thu 12 Nov)
+## Real-form build runbook (team reports build complete 4 Nov)
+The following steps document how the real build was produced and how it can be checked if an
+authorized rebuild is required. They are not a direction to rebuild currently accepted forms.
 1. Check W3's export from the repository root:
    `python forms/case_pack.py data/study_cases/case_pack_study.json data/study_cases/private_lookup_study.json` (must print PASS).
 2. `python forms/build_spec.py --case-pack data/study_cases/case_pack_study.json --private data/study_cases/private_lookup_study.json --assignment data/human_study/assignment_list.csv`
@@ -62,21 +66,21 @@ restricted response storage, live acceptance and the pilot pass.
    checks, signed-out access, chart readability on phones and restricted response storage.
    Run one pilot before distributing the individual study links.
 
-## Still open
-Final order recording, Harry/Lucas acknowledgement of the locally sealed W5 assignment, and
-`decisions_pending` in `out/form_spec.json`. The canonical CSV, seed/rules and local seal now
-exist in ignored `data/human_study/` under owner authorization; do not regenerate them.
-The pinned-environment validation-only model dry run now passes; live acceptance does not.
-The 2 Nov live check disabled autosave on the four existing forms and verified "Saving disabled",
-but Form 4 still has chart placeholders/missing cohort-policy wording and the response Sheet is
-institution-wide link-editable. Permissions were left unchanged at Yolanda's request.
-Rebuild with the current renderer, repeat the manual autosave setting and all seven acceptance checks.
+## Current follow-up
+The team reports the real forms, privacy/access controls, live acceptance/export checks and pilot
+complete (4 Nov); per-check evidence is not reproduced on this page. The canonical CSV, seed/rules
+and local seal are in ignored `data/human_study/`; do not regenerate or replace them. The 2 Nov
+observations below are historical and describe the earlier forms/Sheet, not the current accepted
+build. The team reports pre-collection coordination and required handover acknowledgements complete.
+Remaining work concerns the main human study: recruitment, response collection, coding and
+analysis, followed by retention/deletion at the agreed time. If an authorized rebuild is ever
+needed, use the runbook above and repeat applicable manual settings and acceptance checks.
 
 ## W5 block-randomised assignment option
 
 **W5.8 canonical assignment completed by Yolanda using Lucas's generator:** it already exists in
 ignored `data/human_study/` with private seed/rules and `assignment_seal.json`. Exact reproduction,
-allocations and hash verification pass; Harry/Lucas independent acknowledgement is not claimed.
+allocations and hash verification pass; the team reports the restricted handover acknowledged (4 Nov).
 Do not run the generation command below on the existing canonical output: the generator overwrites
 files. It is retained as historical one-time setup documentation, not a remaining step.
 
@@ -120,7 +124,8 @@ The Apps Script now throws on essential routing/login-setting failures, and stud
 missing charts before creating forms. All forms start closed; `ACCEPTING_RESPONSES` is applied only
 after all four builds and link generation succeed. Set it false for initial rendering. A later
 failure can leave partially created **closed** forms: inspect and remove those before retrying.
-Google Drive permissions and draft-saving behaviour still need manual verification.
+For any authorized rebuild, manually recheck Google Drive permissions and draft-saving behaviour;
+the team's current live-check status is reported in the section above.
 
 For private scoring/coding commands, final-run safeguards and member responsibilities see
 `docs/HANDOFF.md` section 12. Only aggregate outputs may be shared; free text and participant codes
