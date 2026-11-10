@@ -1,0 +1,195 @@
+/**
+ * Renders the human-study forms from form_spec.json (fixture or study build).
+ * Apps Script is a thin renderer: all content and checks live in build_spec.py
+ * and test_spec.py. Untested against live Google until the first run.
+ *
+ * Before running:
+ *  1. Upload form_spec.json and assignment_fixture.csv to the team's restricted Drive folder.
+ *  2. Fill CONFIG with their file IDs and a TEST response sheet ID.
+ *  3. Optional: put W5.3's chart_<case>.png files in one restricted Drive folder and set CHART_FOLDER_ID.
+ *  4. Run renderAll() once and approve the permissions. Forms close before other settings.
+ *     After any error verify closure before retrying; inspect CHART MISSING fixture warnings.
+ * Output: four forms (Form 1 to Form 4, one per variant in the spec) and a sheet "Assignment links (<fixture or study>)".
+ * Keep ACCEPTING_RESPONSES false except during a test.
+ */
+const CONFIG = {
+  SPEC_FILE_ID: 'PASTE_FILE_ID',
+  ASSIGNMENT_FILE_ID: 'PASTE_FILE_ID',
+  RESPONSE_SHEET_ID: 'PASTE_TEST_SHEET_ID',
+  ACCEPTING_RESPONSES: false,
+  CHART_FOLDER_ID: '',  // Drive folder with chart_<case>.png (W5.3); '' keeps the TBD boxes
+};
+
+function renderAll() {
+  const spec = JSON.parse(readDriveText_(CONFIG.SPEC_FILE_ID));
+  if (spec.pack_kind === 'study') {
+    if (!CONFIG.CHART_FOLDER_ID) throw new Error('Study build requires a chart folder.');
+    spec.variants.forEach(function (v) {
+      v.sections.forEach(function (sec) {
+        sec.items.forEach(function (it) {
+          if (it.image && !chartBlob_(it.image)) throw new Error('Missing study chart: ' + it.image);
+        });
+      });
+    });
+  }
+  const forms = {};
+  spec.variants.forEach(function (v) {
+    forms[v.variant_id] = buildForm_(spec, v);
+  });
+  writeLinks_(forms, spec);
+  if (CONFIG.ACCEPTING_RESPONSES) {
+    try {
+      Object.keys(forms).forEach(function (id) { forms[id].setAcceptingResponses(true); });
+    } catch (e) {
+      const failures = [];
+      Object.keys(forms).forEach(function (id) {
+        try {
+          forms[id].setAcceptingResponses(false);
+        } catch (closeError) {
+          failures.push(id + ': ' + closeError.message);
+        }
+      });
+      throw new Error('Opening forms failed: ' + e.message +
+        (failures.length ? '. Could not close; close manually: ' + failures.join('; ') :
+          '. All forms closed again.'));
+    }
+  }
+}
+
+function readDriveText_(fileId) {
+  return DriveApp.getFileById(fileId).getBlob().getDataAsString('UTF-8');
+}
+
+function buildForm_(spec, v) {
+  const form = FormApp.create(spec.form_title + ' - ' + v.form_label);
+  form.setAcceptingResponses(false);
+  form.setCollectEmail(false)
+    .setAllowResponseEdits(false)
+    .setLimitOneResponsePerUser(false)
+    .setPublishingSummary(false)
+    .setShowLinkToRespondAgain(false)
+    .setConfirmationMessage(spec.confirmation || spec.debrief);
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, CONFIG.RESPONSE_SHEET_ID);
+  try {
+    form.setRequireLogin(false);  // no sign-in (W2.4, acceptance check 5)
+  } catch (e) {
+    throw new Error('Form remains closed: verify no sign-in for "' + v.form_label + '": ' + e.message);
+  }
+
+  const pages = {};
+  const pending = [];
+  v.sections.forEach(function (sec, i) {
+    if (i === 0) {
+      form.setTitle(spec.form_title);
+      form.setDescription(sec.title + '\n\n' + sec.description);
+    } else {
+      pages[sec.id] = form.addPageBreakItem().setTitle(sec.title).setHelpText(sec.description || '');
+    }
+    sec.items.forEach(function (it) {
+      addItem_(form, it, pending);
+    });
+  });
+
+  // Navigation needs every page to exist, so choices are set last.
+  pending.forEach(function (p) {
+    // Google rejects a mix of routed and unrouted answers, so unrouted ones get CONTINUE.
+    const hasRoutes = Object.keys(p.goto).length > 0;
+    const choices = p.labels.map(function (label) {
+      const target = p.goto[label];
+      if (!target) return hasRoutes ? p.item.createChoice(label, FormApp.PageNavigationType.CONTINUE) : p.item.createChoice(label);
+      if (target === 'SUBMIT') return p.item.createChoice(label, FormApp.PageNavigationType.SUBMIT);
+      return p.item.createChoice(label, pages[target]);
+    });
+    try {
+      p.item.setChoices(choices);
+    } catch (e) {
+      throw new Error('Form remains closed: routing failed for "' + p.item.getTitle() + '": ' + e.message);
+    }
+  });
+
+  // A section marked after = SUBMIT ends the form there, so completers never reach the decline page.
+  v.sections.forEach(function (sec, i) {
+    const next = v.sections[i + 1];
+    if (sec.after !== 'SUBMIT' || !next) return;
+    try {
+      pages[next.id].setGoToPage(FormApp.PageNavigationType.SUBMIT);
+    } catch (e) {
+      throw new Error('Form remains closed: completion routing failed: ' + e.message);
+    }
+  });
+  return form;
+}
+
+function addItem_(form, it, pending) {
+  const required = it.required !== false;
+  switch (it.type) {
+    case 'multiple_choice': {
+      const item = form.addMultipleChoiceItem().setTitle(it.title).setRequired(required);
+      pending.push({ item: item, labels: it.choices, goto: it.goto_map || {} });
+      break;
+    }
+    case 'scale':
+      form.addScaleItem().setTitle(it.title).setBounds(it.low, it.high)
+        .setLabels(it.low_label, it.high_label).setRequired(required);
+      break;
+    case 'paragraph':
+      form.addParagraphTextItem().setTitle(it.title).setHelpText(it.help || '').setRequired(required);
+      break;
+    case 'short_text': {
+      const item = form.addTextItem().setTitle(it.title).setHelpText(it.help || '').setRequired(required);
+      if (it.number_range) {  // e.g. the self-reported minutes question
+        item.setValidation(FormApp.createTextValidation()
+          .setHelpText('Please enter a number from ' + it.number_range[0] + ' to ' + it.number_range[1] + '.')
+          .requireNumberBetween(it.number_range[0], it.number_range[1]).build());
+      }
+      break;
+    }
+    case 'text_block': {
+      // A chart box carries its image file name; insert the image when it is in the chart folder.
+      const blob = it.image ? chartBlob_(it.image) : null;
+      if (blob) {
+        form.addImageItem().setTitle(it.title).setImage(blob);
+      } else {
+        if (it.image && CONFIG.CHART_FOLDER_ID) Logger.log('CHART MISSING: ' + it.image + ' (TBD box kept)');
+        form.addSectionHeaderItem().setTitle(it.title).setHelpText(it.text || '');
+      }
+      break;
+    }
+    default:
+      throw new Error('Unknown item type: ' + it.type);
+  }
+}
+
+/** Writes each slot's pre-filled link (code and variant) to a new sheet. */
+const chartCache_ = {};
+
+/** Returns the chart image with this file name from CHART_FOLDER_ID, or null. */
+function chartBlob_(name) {
+  if (!CONFIG.CHART_FOLDER_ID) return null;
+  if (!(name in chartCache_)) {
+    const files = DriveApp.getFolderById(CONFIG.CHART_FOLDER_ID).getFilesByName(name);
+    chartCache_[name] = files.hasNext() ? files.next().getBlob() : null;
+  }
+  return chartCache_[name];
+}
+
+function writeLinks_(forms, spec) {
+  const rows = Utilities.parseCsv(readDriveText_(CONFIG.ASSIGNMENT_FILE_ID));
+  const head = rows[0];
+  const iCode = head.indexOf('participant_code');
+  const iVariant = head.indexOf('variant_id');
+  const out = [head.concat(['prefilled_link'])];
+  for (let r = 1; r < rows.length; r++) {
+    const form = forms[rows[r][iVariant]];
+    const codeItem = form.getItems(FormApp.ItemType.TEXT).filter(function (i) {
+      return i.getTitle() === 'Your participant code';
+    })[0];
+    const response = form.createResponse()
+      .withItemResponse(codeItem.asTextItem().createResponse(rows[r][iCode]));
+    out.push(rows[r].concat([response.toPrefilledUrl()]));
+  }
+  const ss = SpreadsheetApp.create('Assignment links (' + (spec.pack_kind || 'fixture') + ')');
+  const sheet = ss.getSheets()[0];
+  sheet.getRange(1, 1, out.length, out[0].length).setValues(out);
+  Logger.log('Links sheet: ' + ss.getUrl());
+}
