@@ -70,10 +70,7 @@ report-tooling code.
 \includegraphics[width=\linewidth,trim=0 0 0 25,clip]{deletion_faithfulness_validation.png}\\[2pt]
 {\small (b) Faithfulness on 544 validation students}
 \end{minipage}
-\caption{(a) With 109 slots and 213 test dropouts, recall cannot exceed 0.51. (b) Mean change in the
-model's dropout probability as semantic groups are replaced by typical values in SHAP order (blue) or
-in random order (orange): SHAP's top groups move the prediction far more, so the explanations point at
-what the model uses.}
+\caption{(a) With 109 slots, recall cannot exceed 0.51. (b) Removing groups in SHAP order (blue) moves the prediction far more than random order (orange).}
 \label{fig:outreach}
 \label{fig:faithfulness}
 \end{figure}
@@ -95,8 +92,7 @@ first-semester groups act together.
 
 \begin{table}[H]
 \centering
-\caption{Validation sensitivity analyses (\tabicl unless noted; exploratory, not used for model
-selection).}
+\caption{Validation sensitivity analyses (exploratory; not used for model selection).}
 \label{tab:sensitivity}
 \footnotesize
 \begin{tabular}{@{}lcccc@{}}
@@ -115,10 +111,7 @@ Only students with $\geq$1 first-semester evaluation (frozen model, re-ranked) &
 
 \begin{table}[H]
 \centering
-\caption{Descriptive subgroup diagnostics. Left: locked final test (frozen \tabicl). Right: dropout
-recall on validation for the all-feature refit and the refit without protected attributes. Final-test
-metrics follow the protocol (suppressed below 30 students); validation recall is also suppressed when a
-group has fewer than 30 dropouts (--). Gender coded as in the UCI data (0 = female).}
+\caption{Descriptive subgroup diagnostics: final test (left) and validation recall with and without protected attributes (right). --: fewer than 30 students or dropouts; gender 0 = female.}
 \label{tab:subgroups}
 \footnotesize
 \begin{tabular}{@{}llcccc@{\hspace{18pt}}cc@{}}
@@ -148,14 +141,13 @@ Age at entry & $\leq$20 & 318 & 0.283 & 0.116 & 0.411 & 0.342 & 0.378 \\
 \includegraphics[width=0.40\linewidth]{human_accuracy_by_group.png}\hspace{0.06\linewidth}
 \includegraphics[width=0.40\linewidth]{human_confidence_vs_accuracy.png}\\[4pt]
 \makebox[0.40\linewidth]{\small (a) Accuracy by group}\hspace{0.06\linewidth}\makebox[0.40\linewidth]{\small (b) Confidence vs.\ accuracy}
-\caption{Participant-level accuracy and confidence (25 participants per group).}
+\caption{Participant-level accuracy and confidence.}
 \label{fig:human-extra}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Case-level accuracy (25 participants per group per case) and leave-one-case-out difference
-(B $-$ A, 95\% bootstrap interval).}
+\caption{Case-level accuracy and the B $-$ A difference without each case (95\% intervals).}
 \label{tab:cases}
 \footnotesize
 \begin{tabular}{@{}lcccc@{}}
@@ -180,7 +172,7 @@ C10 & Yes & 0.96 & 1.00 & $-$0.022 [$-$0.071, 0.031] \\
 
 \begin{table}[H]
 \centering
-\caption{Primary themes of the 1,500 written answers (single coding pass; 500 answers per question).}
+\caption{Primary themes of the 1,500 written answers (single coding pass).}
 \label{tab:themes}
 \footnotesize
 \begin{tabular}{@{}llr@{\hspace{24pt}}llr@{}}
@@ -250,9 +242,6 @@ was not tested with users; it is therefore a demonstration rather than evidence.
 \includegraphics[height=0.43\textheight]{figures/interface_whatif_174.png}\\[2pt]
 {\small (b) What-if mode: fees paid and debt cleared}
 \end{minipage}
-\caption{Local research interface (validation students only; not study or test cases). (a) Student
-916: flag and rank on the risk curve, top reasons and how stable those reasons are. (b) Student
-174 in what-if mode: the frozen model re-scores an edited copy, and the result is labelled as model
-behaviour, not advice.}
+\caption{Local research interface (validation students only): (a) saved view for student 916; (b) what-if mode for student 174.}
 \label{fig:interface}
 \end{figure}

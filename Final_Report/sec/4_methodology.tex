@@ -25,11 +25,7 @@
     \draw[arr] (n4) -- (n5); \draw[arr] (n5) -- (n6); \draw[arr] (n6) -- (n7);
     \draw[arr] (n7) -- (n8); \draw[arr] (n8) -- (n9);
   \end{tikzpicture}
-  \caption{Research workflow as carried out (updated from the proposal). The model, outreach rule and
-  explanation settings were frozen on validation data before the one-time final test. Orange steps (the
-  full explanation audit, the validation-only sensitivity checks and the local interface) were
-  completed after the final test without changing the model. Ethics, governance and reproducibility
-  apply throughout.}
+  \caption{Research workflow. The model, outreach rule and explanation settings were frozen before the one-time final test; orange steps were added afterwards without changing the model.}
   \label{fig:project-pipeline}
 \end{figure*}
 
@@ -63,8 +59,7 @@ Section~\ref{sec:fairness}.
 
 \begin{table}[!htb]
 \centering
-\caption{Training-split profile by outcome (2,541 students). Average grade is on the 0--20 scale and
-is 0 when no unit was passed.}
+\caption{Training-split profile by outcome (2,541 students; grade 0--20, and 0 if no unit was passed).}
 \label{tab:eda}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -143,7 +138,6 @@ discussed as a limitation.
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{human_study_design.png}
-  \caption{Two-group forward-simulation design: 25 participants per group, one practice case and
-  ten scored test cases in two counterbalanced orders.}
+  \caption{Two-group forward-simulation design (25 participants per group).}
   \label{fig:human-design}
 \end{figure}

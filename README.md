@@ -86,6 +86,17 @@ Locked final test: 545 students, run once. Each model flags its top 20% (109 stu
   <img src="figures/report_ready/explanation_stability.png" alt="Top-five stability by variation source" width="45%">
 </p>
 
+<p align="center">
+  <img src="figures/report_ready/demo_card_validation.png" alt="Example adviser card for a validation student" width="80%">
+  <br><sub>Example adviser card for a validation student: the record available after the first semester, the flag and rank, and the five largest grouped SHAP reasons.</sub>
+</p>
+
+<p align="center">
+  <img src="figures/report_ready/human_study_design.png" alt="Two-group human-study design" width="45%">
+  <img src="figures/human_study/human_accuracy_by_case.png" alt="Accuracy by case and group" width="45%">
+  <br><sub>Left: two-group forward-simulation design. Right: accuracy by case. Case C01 is the only one where the chart group did worse.</sub>
+</p>
+
 | Human study (25 per group) | Profiles only | + Explanation charts | Difference (95% CI) |
 |:---|:---:|:---:|:---:|
 | Accuracy (agreement with the model's flag) | 0.916 | 0.900 | −0.016 [−0.060, 0.032] |
@@ -116,8 +127,10 @@ Locked final test: 545 students, run once. Each model flags its top 20% (109 stu
 ## Methodology
 
 <p align="center">
-  <img src="figures/report_ready/project_pipeline.png" alt="Project pipeline" width="90%">
+  <img src="figures/report_ready/workflow_diagram.png" alt="Research workflow: decision frame to deliverables" width="95%">
 </p>
+
+<p align="center"><sub>The model, outreach rule and explanation settings were frozen on validation data before the one-time final test. Orange steps were added afterwards without changing the model.</sub></p>
 
 1. **EDA and data design:** training-split profile, leakage removal and a frozen split saved as row IDs
 2. **Five models, one rule:** logistic regression, depth-3 tree, XGBoost, main-effects EBM and TabICL (4 ensemble members, CPU), all on the same 33 inputs

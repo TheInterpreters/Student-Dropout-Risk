@@ -18,8 +18,7 @@ achieved the best capacity recall and precision.
 
 \begin{table}[!htb]
 \centering
-\caption{Locked final-test results (545 students; top 20\% flagged by every model). Best value per
-column in bold.}
+\caption{Locked final-test results (545 students, top 20\% flagged; best in bold).}
 \label{tab:final-test}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -50,8 +49,7 @@ demonstrated predictive value over simpler models on this task.
 
 \begin{table}[!htb]
 \centering
-\caption{\tabicl minus baseline on the final test (2,000 paired bootstrap resamples; 95\% intervals).
-Negative Brier differences favour \tabicl.}
+\caption{\tabicl minus each baseline on the final test (95\% paired-bootstrap intervals; negative $\Delta$ Brier favours \tabicl).}
 \label{tab:paired}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -82,7 +80,7 @@ transcript already shows, and the flags arrive when these students may already h
 
 \begin{table}[!htb]
 \centering
-\caption{The 108 validation students flagged by \tabicl, compared with a simple rule.}
+\caption{The 108 flagged validation students compared with a simple rule.}
 \label{tab:who}
 \footnotesize
 \begin{tabular}{@{}lr@{}}
@@ -142,17 +140,14 @@ whose progress bar outweighs every other reason. Global methods agree
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.62\linewidth]{demo_card_validation.png}
-  \caption{Example adviser card for a validation student (not a study or test case). Left: the
-  information available after the first semester. Right: the flag, the cohort rank, the five largest
-  grouped SHAP contributions (orange raises and blue lowers the estimate relative to 25 typical
-  training students) and cautions to read before acting.}
+  \caption{Example adviser card for a validation student: the record (left) and the flag, rank and five largest grouped SHAP reasons (right).}
   \label{fig:card}
 \end{figure*}
 
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=\linewidth]{top_explanation_groups.png}
-  \caption{Mean absolute grouped SHAP contribution on the 544 validation students.}
+  \caption{Mean absolute grouped SHAP contribution (544 validation students).}
   \label{fig:top-groups}
 \end{figure}
 
@@ -164,8 +159,7 @@ below 0.80) (Figure~\ref{fig:stability}).
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=\linewidth]{explanation_stability.png}
-  \caption{Top-five stability across 10 recomputations per student. The dashed line marks the 0.80
-  warning level.}
+  \caption{Top-five stability over 10 recomputations (dashed line: 0.80 warning level).}
   \label{fig:stability}
 \end{figure}
 
@@ -252,8 +246,7 @@ does not establish a benefit. In Group~B, 21 of 25 participants passed both char
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=\linewidth]{human_accuracy_by_case.png}
-  \caption{Accuracy by case and group. Case C01 is the only case in which the chart group performed
-  worse.}
+  \caption{Accuracy by case and group; only C01 was worse with charts.}
   \label{fig:human-case}
 \end{figure}
 
