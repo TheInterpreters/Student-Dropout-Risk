@@ -7,7 +7,7 @@ Uses validation-split rows only (artifacts/split_ids.csv). Writes to forms/out/:
   private_lookup_fixture.json  case -> UCI source row (model_flag null in fixtures). Keep private.
   form_spec.json               four forms: A1, A2 (control), B1, B2 (explanation)
   assignment_fixture.csv       participant slots (50 main + 4 spares + 1 pilot) -> form
-Anything marked [TBD] or 'placeholder' must be replaced before a real run.
+Fixture contributions are synthetic and must never be used as study results.
 """
 import csv
 import json
@@ -25,8 +25,8 @@ SPLIT = ROOT / "artifacts" / "split_ids.csv"
 OUT = ROOT / "forms" / "out"
 
 FIXTURE_SEED = 1               # picks dummy validation rows (fixture only)
-ORDER_SEEDS = [11]  # one fixed order shared by both groups; placeholder seed, record the real one
-ALLOCATION_SEED = 2026         # placeholder: record real seed
+ORDER_SEEDS = [11]  # fixed case-order seed used by both groups
+ALLOCATION_SEED = 2026         # fixture-only allocation; the real study uses the sealed W5 CSV
 PER_GROUP = 25  # 50 participants, 25 per group (13 + 12 across the group's two forms)
 SPARES_PER_FORM = 1  # 4 spares, one per form (two per group), held by W4 (TASK_SPLIT section 2)
 PILOT_FORM = "B1"     # pilot (W4.6) uses Form 3: Group B shows the most (charts and comprehension check)
@@ -37,14 +37,14 @@ FORM_TITLE = "Understanding an AI Model's Predictions: Class Research Activity"
 FORBIDDEN_PHRASES = ["probability", "base value", "capacity boundary",
                      "predicted class", "final score", "score", "correct answer"]
 
-DECISIONS_PENDING = [
+DESIGN_DECISIONS = [
     "Survey 1 is dropped. No background questions appear in this form.",
-    "Role item S6.1 is included (default; confirm in W2.1).",
-    "Q3 to Q5 are required (default; question bank item 10).",
+    "Role item S6.1 is included.",
+    "Q3 to Q5 are required.",
     "Sessions are online and unsupervised (team decision, 31 Oct); total time is self-reported in S6.2.",
-    "Participants are not told the flag mix (default; item 8).",
+    "Participants are not told the flag mix.",
     "Four forms: each group sees the seeded order (Form 1 and Form 3) and its reverse (Form 2 and Form 4). Agreed by the team on 30 Oct; TASK_SPLIT, HANDOFF and the protocol JSON updated.",
-    "Order seed and allocation seed are placeholders. Total is 50 participants (25 per group, 13 or 12 per form).",
+    "Case-order seed 11 is fixed. The real allocation is the separately sealed W5 list. Total is 50 participants (25 per group, 13 or 12 per form).",
     "Consent has no retention date, withdrawal deadline or named contact (team decision, 30 Oct). The person who sent the form is the contact.",
     "Economic indicators are shown on profile cards (UCI cases are Portuguese students).",
 ]
@@ -155,7 +155,7 @@ def profile_items(case, group):
     items = [item_block(case["case_id"] + ".profile", "Student profile", profile_text(case))]
     if group == "B":
         chart = item_block(case["case_id"] + ".chart", "Contribution chart",
-                           "[TBD: chart image rendered by W5.3; placeholder in fixture]")
+                           "Chart image unavailable. Do not open this form for responses.")
         chart["image"] = case_pack.chart_file(case["case_id"])  # file name the renderer will insert
         items.append(chart)
     return items
@@ -294,10 +294,10 @@ def build_all(pack_path=None, private_path=None):
     for group in ["A", "B"]:
         for index in (1, 2):
             variants.append(build_variant(group, index, seed, orders[index], cases_by_id))
-    status = ("FIXTURE 0.1 (dummy cases, placeholders)" if pack["pack_kind"] == "fixture"
+    status = ("FIXTURE 0.1 (dummy cases; never use as results)" if pack["pack_kind"] == "fixture"
               else "STUDY: " + pack["source"])
     spec = {"spec_status": status, "pack_kind": pack["pack_kind"], "form_title": FORM_TITLE,
-            "debrief": DEBRIEF, "confirmation": CONFIRMATION, "decisions_pending": DECISIONS_PENDING,
+            "debrief": DEBRIEF, "confirmation": CONFIRMATION, "design_decisions": DESIGN_DECISIONS,
             "profile_groups": [{"heading": h, "fields": [{"field": f, "label": l, "kind": k} for f, l, k in fs]} for h, fs in labels.GROUPS],
             "variants": variants}
     return pack, lookup, spec, build_assignment([v["variant_id"] for v in variants])

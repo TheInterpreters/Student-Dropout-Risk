@@ -17,7 +17,7 @@ const CONFIG = {
   ASSIGNMENT_FILE_ID: 'PASTE_FILE_ID',
   RESPONSE_SHEET_ID: 'PASTE_TEST_SHEET_ID',
   ACCEPTING_RESPONSES: false,
-  CHART_FOLDER_ID: '',  // Drive folder with chart_<case>.png (W5.3); '' keeps the TBD boxes
+  CHART_FOLDER_ID: '',  // Drive folder with chart_<case>.png (W5.3); required for study builds
 };
 
 function renderAll() {
@@ -150,7 +150,7 @@ function addItem_(form, it, pending) {
       if (blob) {
         form.addImageItem().setTitle(it.title).setImage(blob);
       } else {
-        if (it.image && CONFIG.CHART_FOLDER_ID) Logger.log('CHART MISSING: ' + it.image + ' (TBD box kept)');
+        if (it.image && CONFIG.CHART_FOLDER_ID) Logger.log('CHART MISSING: ' + it.image);
         form.addSectionHeaderItem().setTitle(it.title).setHelpText(it.text || '');
       }
       break;

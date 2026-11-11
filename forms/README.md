@@ -67,14 +67,13 @@ authorized rebuild is required. They are not a direction to rebuild currently ac
    Run one pilot before distributing the individual study links.
 
 ## Current follow-up
-The team reports the real forms, privacy/access controls, live acceptance/export checks and pilot
-complete (4 Nov); per-check evidence is not reproduced on this page. The canonical CSV, seed/rules
-and local seal are in ignored `data/human_study/`; do not regenerate or replace them. The 2 Nov
-observations below are historical and describe the earlier forms/Sheet, not the current accepted
-build. The team reports pre-collection coordination and required handover acknowledgements complete.
-Remaining work concerns the main human study: recruitment, response collection, coding and
-analysis, followed by retention/deletion at the agreed time. If an authorized rebuild is ever
-needed, use the runbook above and repeat applicable manual settings and acceptance checks.
+The real forms, privacy/access controls, live acceptance/export checks and pilot were completed
+before collection. The main study is now complete: 50/50 assigned main participants responded,
+with 25 per group and no exclusions. Quantitative scoring and aggregate report assets are complete;
+see `docs/HUMAN_STUDY_RESULTS.md`. Team qualitative coding and the agreed retention/deletion action
+remain. The canonical CSV, seed/rules and local seal are in ignored `data/human_study/`; do not
+regenerate or replace them. If an authorized rebuild is ever needed, use the runbook above and
+repeat applicable manual settings and acceptance checks.
 
 ## W5 block-randomised assignment option
 
@@ -114,8 +113,9 @@ It does not replace the live Google Forms/Sheet acceptance checks.
 
 ## Source-form identity and fail-closed rendering
 
-Export each actual form's response tab separately and record which tab belongs to A1/A2/B1/B2.
-Pass one `--variants` value per export in the same order. Same-group forms have identical question
+Export each actual form's response tab separately, or retain the original `.xlsx` workbook, and
+record which tab belongs to A1/A2/B1/B2. Pass one `--variants` value per CSV export, or one
+`--sheets` and `--variants` value per workbook tab, in the same order. Same-group forms have identical question
 headers, so neither the file contents nor the editable participant code prove which form was used.
 The transform rejects an incorrect source-group declaration and reports codes belonging to another
 variant. Do not guess tab identity from participant codes or rename an unknown tab and continue.

@@ -240,7 +240,7 @@ partial inspection of earlier forms/Sheet, not results for the current accepted 
 | 6 | Form text matches the model card and the consent text | | | | |
 | 7 | A dry-run export transforms into the right long CSV | | | | |
 
-## 12. Draft wording for the report (methods; human results not yet collected)
+## 12. Draft wording for the report (methods; written 4 Nov before collection — results now in `docs/HUMAN_STUDY_RESULTS.md`)
 
 > The study uses four Google Forms generated from one specification. The canonical seeded
 > list allocates 50 main slots to Group A (profile only) or Group B (profile plus contribution chart),

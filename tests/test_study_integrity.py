@@ -6,10 +6,12 @@ import sys
 import tempfile
 import unittest
 
+from openpyxl import Workbook
+
 ROOT = Path(__file__).resolve().parents[1]
 from forms import build_spec as b, case_pack as cp, transform_responses as tr
 from scripts.analyze_human_study import main as analyze, score_responses, write_csv, read_csv
-from scripts.assign_human_coding import assign_coding, raw_agreement
+from scripts.assign_human_coding import ALLOWED_CODES, assign_coding, raw_agreement, theme_summary
 
 
 def dummy_rows(n=50):
@@ -37,6 +39,21 @@ def dummy_people(n=50):
 
 
 class StudyIntegrityTests(unittest.TestCase):
+    def test_workbook_reader_preserves_google_headers_and_integer_answers(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "responses.xlsx"
+            workbook = Workbook()
+            sheet = workbook.active
+            sheet.title = "Form Responses 1"
+            sheet.append(["Timestamp", "Question", "Question 2"])
+            sheet.append(["2026-11-11 10:00", "Yes", 5.0])
+            workbook.save(path)
+            exports = tr.read_workbook(path, ["Form Responses 1"])
+            self.assertEqual(exports[0][1][0], ["Timestamp", "Question", "Question 2"])
+            self.assertEqual(exports[0][1][1], ["2026-11-11 10:00", "Yes", "5"])
+        self.assertTrue(tr.export_header_matches(["Q", "Q"], ["Q", "Q 2"]))
+        self.assertFalse(tr.export_header_matches(["Q", "Q"], ["Q", "Q 3"]))
+
     def test_same_group_wrong_variant_is_dropped(self):
         _, _, spec, assignment = b.build_all()
         variant = next(v for v in spec["variants"] if v["variant_id"] == "A2")
@@ -201,7 +218,7 @@ assert.throws(() => context.renderAll(), /closing failed/);
             self.assertNotEqual(a["primary_coder"], a["secondary_coder"])
         self.assertTrue(all("group" not in t and "recruiter" not in t for t in tasks))
         for t in tasks:
-            t["code"] = "comprehension"
+            t["code"] = sorted(ALLOWED_CODES[t["field"]])[0]
         agreement = raw_agreement(assignments, tasks)
         self.assertEqual([r["raw_agreement"] for r in agreement], [1, 1, 1])
         self.assertEqual([r["n_items"] for r in agreement], [100, 100, 100])
@@ -209,6 +226,13 @@ assert.throws(() => context.renderAll(), /closing failed/);
         missing = [t for t in tasks if not (t["participant_id"] == doubled and t["case_id"] == "C01")]
         with self.assertRaises(ValueError):
             raw_agreement(assignments, missing)
+        reconciled = []
+        for row in dummy_rows(1):
+            for field in ALLOWED_CODES:
+                reconciled.append({"participant_id": row["participant_id"], "case_id": row["case_id"],
+                                   "field": field, "code": sorted(ALLOWED_CODES[field])[0]})
+        summary = theme_summary(reconciled)
+        self.assertEqual(sum(row["n_items"] for row in summary), 30)
 
     def test_analysis_and_coding_cli_end_to_end(self):
         lookup = {cid: {"source_row_id": i, "model_flag": int(1 <= i <= 5)}
@@ -235,7 +259,7 @@ assert.throws(() => context.renderAll(), /closing failed/);
             self.assertTrue(all(r["mean_accuracy"] == "1.0" for r in read_csv(out / "group_summary_dummy.csv")))
             tasks = [r for p in out.glob("coder_*_dummy.csv") for r in read_csv(p)]
             for row in tasks:
-                row["code"] = "comprehension"
+                row["code"] = sorted(ALLOWED_CODES[row["field"]])[0]
             write_csv(out / "completed.csv", tasks)
             result = subprocess.run([
                 sys.executable, "scripts/assign_human_coding.py", "agreement",

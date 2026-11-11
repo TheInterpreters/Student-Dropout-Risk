@@ -309,8 +309,9 @@ def main():
             if bad:
                 fails.append("no label for %s value %r (%s)" % (field, bad[0], bad[1]))
 
-    notes.append("[TBD] markers still open in spec: %d" % blob.count("[tbd"))
-    notes.append("pending decisions listed in spec: %d" % len(spec["decisions_pending"]))
+    if "[tbd" in blob or "placeholder" in blob:
+        fails.append("form spec contains unresolved placeholder text")
+    notes.append("recorded design decisions: %d" % len(spec["design_decisions"]))
     for n in notes:
         print("NOTE", n)
     if fails:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """W2.8: turn the Google Forms response export into the analysis files.
 
-Input: one CSV per form tab of the response Sheet (File > Download > Comma-separated values),
+Input: either one CSV per form tab of the response Sheet, or the original Excel workbook,
 plus the assignment list and form_spec.json from the same build, and optionally W4's send log.
 
 Output, in --out-dir (forms/out by default, never committed):
@@ -29,6 +29,8 @@ import json
 import math
 import pathlib
 import sys
+
+from openpyxl import load_workbook
 
 HERE = pathlib.Path(__file__).resolve().parent
 TEMPLATE = HERE.parent / "docs" / "human_study_response_template.csv"
@@ -61,6 +63,20 @@ def group_titles(spec):
     return titles
 
 
+def export_header_matches(expected, actual):
+    """Accept Google Sheets' numeric suffixes for repeated question titles."""
+    if len(expected) != len(actual):
+        return False
+    occurrences = {}
+    for wanted, observed in zip(expected, actual):
+        occurrences[wanted] = occurrences.get(wanted, 0) + 1
+        number = occurrences[wanted]
+        exported = wanted if number == 1 else f"{wanted} {number}"
+        if observed not in (wanted, exported):
+            return False
+    return True
+
+
 def minutes_to_seconds(text):
     if not str(text).strip():
         return ""
@@ -89,6 +105,30 @@ def read_export(path):
         return list(csv.reader(f))
 
 
+def read_workbook(path, sheets):
+    """Read selected workbook sheets in the same row-oriented form as CSV exports."""
+    def cell_text(value):
+        if value is None:
+            return ""
+        if isinstance(value, float) and value.is_integer():
+            return str(int(value))
+        return str(value)
+
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    missing = [sheet for sheet in sheets if sheet not in workbook.sheetnames]
+    if missing:
+        raise ValueError("workbook is missing sheets: " + ", ".join(missing))
+    exports = []
+    for sheet in sheets:
+        rows = [
+            [cell_text(value) for value in record]
+            for record in workbook[sheet].iter_rows(values_only=True)
+        ]
+        exports.append((sheet, rows))
+    workbook.close()
+    return exports
+
+
 def transform(exports, assignment, spec, send_log=None, source_variants=None):
     """exports: list of (name, rows) where rows[0] is the Sheet header. Returns (long_rows, people, report)."""
     send_log = send_log or {}
@@ -113,7 +153,7 @@ def transform(exports, assignment, spec, send_log=None, source_variants=None):
         if not rows:
             raise ValueError("%s is empty" % name)
         header = [h.strip() for h in rows[0][1:]]
-        group = next((g for g, t in titles.items() if t == header), None)
+        group = next((g for g, t in titles.items() if export_header_matches(t, header)), None)
         if group is None:
             best = max(titles, key=lambda g: sum(a == b for a, b in zip(titles[g], header)))
             want = titles[best]
@@ -184,7 +224,9 @@ def write_csv(path, columns, rows):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="W2.8: Google Forms export -> long CSV for analysis.")
-    ap.add_argument("exports", nargs="+", help="one CSV per form tab of the response Sheet")
+    ap.add_argument("exports", nargs="*", help="one CSV per form tab of the response Sheet")
+    ap.add_argument("--workbook", help="original .xlsx response workbook")
+    ap.add_argument("--sheets", nargs="+", help="workbook sheet names, in --variants order")
     ap.add_argument("--variants", nargs="+", required=True,
                     choices=["A1", "A2", "B1", "B2"],
                     help="actual source variant for each export, in the same order (from the form/tab, not the code)")
@@ -194,8 +236,18 @@ def main(argv=None):
     ap.add_argument("--label", required=True, choices=LABELS, help="dummy for tests, pilot, or study")
     ap.add_argument("--out-dir", default=str(HERE / "out"))
     args = ap.parse_args(argv)
-    if len(args.variants) != len(args.exports) or len(set(args.exports)) != len(args.exports):
-        ap.error("provide one --variants entry per unique export path")
+    if bool(args.workbook) == bool(args.exports):
+        ap.error("provide either CSV exports or --workbook, but not both")
+    if args.workbook:
+        if not args.sheets or len(args.sheets) != len(args.variants) or len(set(args.sheets)) != len(args.sheets):
+            ap.error("--workbook needs one unique --sheets entry per --variants entry")
+        source_names = args.sheets
+    else:
+        if args.sheets:
+            ap.error("--sheets is only valid with --workbook")
+        if len(args.variants) != len(args.exports) or len(set(args.exports)) != len(args.exports):
+            ap.error("provide one --variants entry per unique export path")
+        source_names = args.exports
 
     with open(args.spec, encoding="utf-8") as f:
         spec = json.load(f)
@@ -203,9 +255,11 @@ def main(argv=None):
         assignment = list(csv.DictReader(f))
     log = load_send_log(args.send_log) if args.send_log else {}
     try:
+        exports = (read_workbook(args.workbook, args.sheets) if args.workbook
+                   else [(p, read_export(p)) for p in args.exports])
         long_rows, people, report = transform(
-            [(p, read_export(p)) for p in args.exports], assignment, spec, log,
-            dict(zip(args.exports, args.variants)))
+            exports, assignment, spec, log,
+            dict(zip(source_names, args.variants)))
     except ValueError as e:
         print("ERROR:", e)
         return 1
