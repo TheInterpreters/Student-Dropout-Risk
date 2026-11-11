@@ -1,0 +1,178 @@
+{
+  "protocol_version": "1.3.0",
+  "amendments": [
+    "1.1: Added a native main-effects EBM baseline before final-test access; no split, seed, target, feature window, operating policy, or test data changed.",
+    "1.2: Before final-test access, froze semantic-group SHAP aggregation, label-free case selection, perturbation scaling, capacity-consistent recourse, subgroup suppression, proxy diagnostics, paired uncertainty, and no-feedback human-study rules.",
+    "1.3: Before final-test access, made explicit that the 20 faithfulness/stability audit cases come from the validation split (predictions only), specified the Google Forms study instrument (replacing the planned custom interface), and added subgroup/proxy diagnostics on the test split to the one-time final evaluation; no model, split, seed, target, feature window, operating policy, or test data changed.",
+    "2 Nov accelerated amendment, before final-test access: owner replaced the full explanation audit with a one-case, two-seed exploratory execution check and selected a local content-hashed freeze instead of mandatory Git publication. Omitted analyses and incomplete acceptance are disclosed, not marked passed. Model settings, data/splits, SHAP settings for study charts, once-only test lock, participant consent/privacy and assignment consistency are unchanged."
+  ],
+  "seed": 42,
+  "explanation_check": {
+    "mode": "exploratory_smoke",
+    "amendment": "2 Nov: full validation audit stopped at the owner's request before final-test access; replaced by a short exploratory execution check, not an explanation-quality certification.",
+    "cases": 1,
+    "seeds": [42, 43],
+    "omitted_analyses": [
+      "ranked-versus-random deletion faithfulness and uncertainty",
+      "multi-case seed stability",
+      "training-background stability",
+      "prediction-preserving perturbation stability",
+      "constrained recourse audit"
+    ],
+    "legacy_settings": "faithfulness/stability sections below describe the superseded full audit, available only with explicit --full-audit; not required or claimed by the accelerated workflow"
+  },
+  "target": "Dropout=1 versus Graduate=0; Enrolled excluded",
+  "primary_feature_window": "first_semester",
+  "sensitivity_feature_window": "enrollment",
+  "split": {
+    "train": 0.70,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "model": {
+    "name": "tabicl",
+    "version": "2.2.0",
+    "n_estimators": 4,
+    "device": "cpu",
+    "selection_split": "validation"
+  },
+  "baselines": {
+    "models": [
+      "logistic_regression",
+      "decision_tree_depth_3",
+      "xgboost",
+      "explainable_boosting_main_effects"
+    ],
+    "ebm": {
+      "library": "interpret",
+      "version": "0.7.8",
+      "interactions": 0,
+      "n_jobs": 1,
+      "categorical_representation": "explicit nominal feature types on raw named columns",
+      "explanation": "exact additive global shape functions and local term contributions"
+    }
+  },
+  "operating_policy": {
+    "type": "cohort_capacity_ranking",
+    "maximum_flag_fraction": 0.20,
+    "tie_break": "stable source-row order",
+    "rationale": "pre-specified limited outreach capacity",
+    "universal_probability_threshold": false,
+    "counterfactual_success": "case leaves the flagged top-20% set after its score is changed, all other cohort scores are held fixed, and ranking is recomputed"
+  },
+  "shap": {
+    "algorithm": "permutation",
+    "output": "dropout_probability",
+    "background_source": "training_only",
+    "background_size": 25,
+    "max_evals": 67,
+    "display_top_k": 5,
+    "semantic_group_aggregation": "sum signed member SHAP values, then rank groups by the absolute signed total"
+  },
+  "faithfulness": {
+    "cases": 20,
+    "case_selection_split": "validation",
+    "case_selection": "four deterministic positions from each of five predicted-risk strata; predictions only, labels unused",
+    "random_deletion_repetitions": 50,
+    "primary_statistic": "area between ranked and random cumulative absolute probability-change curves",
+    "masking": "training median/mode with semantic grouping and derived-feature recomputation"
+  },
+  "stability": {
+    "cases": 20,
+    "case_selection_split": "validation",
+    "runs_per_case": 10,
+    "primary_metric": "mean pairwise top-5 overlap",
+    "seed_and_background_variation_reported_separately": true,
+    "prediction_tolerance_absolute_probability": 0.01,
+    "continuous_perturbation_fraction": 0.01,
+    "continuous_perturbation_scale": "Gaussian SD equals 1% of the feature's training-set SD; clip to training range and recompute derived features",
+    "low_stability_warning_overlap_below": 0.80
+  },
+  "global_explanations": {
+    "validation_sample_size": 100,
+    "grouped_permutation_repetitions": 5,
+    "ale_features": 3,
+    "ale_bins": 10,
+    "feature_selection_split": "validation"
+  },
+  "fairness": {
+    "minimum_group_size": 30,
+    "small_group_policy": "retain every group count in the table, suppress performance metrics when n < 30, and state when comparison is unavailable",
+    "protected_attributes": [
+      "gender",
+      "nacionality",
+      "age_band",
+      "international",
+      "displaced",
+      "educational_special_needs"
+    ],
+    "proxy_association_scope": "all non-protected model features against every protected attribute; Cramer's V for categorical features and correlation ratio eta for continuous features",
+    "metrics": [
+      "flag_rate",
+      "true_positive_rate",
+      "false_positive_rate",
+      "precision",
+      "mean_predicted_risk",
+      "calibration_gap"
+    ]
+  },
+  "final_test_inference": {
+    "one_time_only": true,
+    "paired_bootstrap_resamples": 2000,
+    "bootstrap_seed": 42,
+    "interval_level": 0.95,
+    "comparisons": [
+      "roc_auc_difference",
+      "brier_score_difference",
+      "capacity_recall_difference",
+      "capacity_precision_difference"
+    ],
+    "subgroup_and_proxy_diagnostics_on_test": "descriptive, same code and suppression rule (n < 30), run once inside the final-test evaluation",
+    "one_run_guard": "lock file artifacts/final_test.lock written before the run and committed right after it; deleting output tables does not clear it; clearing needs a recorded team decision"
+  },
+  "calibration": {
+    "probabilities": "raw frozen-model outputs; no post-test recalibration",
+    "metrics": [
+      "brier_score",
+      "expected_calibration_error_10bin",
+      "reliability_curve"
+    ],
+    "interface_label": "estimated model risk, not a causal or guaranteed individual probability"
+  },
+  "human_study": {
+    "practice_cases": 1,
+    "practice_case_scored": false,
+    "scored_case_selection": "five flagged and five unflagged cases selected deterministically across each output group's risk range; model predictions only, outcome labels unused",
+    "standardized_instructions": true,
+    "capacity_policy_instructions": "Both groups are told that at most the top 20% of a full cohort are flagged; the selected 10-case sample is not representative and its flag proportion is not disclosed.",
+    "practice_chart_checks": "Record and report Group B practice chart answers without correction or automatic exclusion for wrong answers.",
+    "answer_feedback": "none until all 10 scored cases are submitted",
+    "primary_unit": "participant accuracy across 10 cases",
+    "think_aloud_notes": false,
+    "participants": {
+      "target": 50,
+      "per_recruiter": 10,
+      "group_split": "25/25",
+      "minimum_completed": 40,
+      "minimum_per_group": 18,
+      "spare_slots": "4 (two per group)",
+      "replacement": "next recruit inherits the empty slot's group and variant",
+      "pilot_counted": false
+    },
+    "coding": "shared across all five members; each codes about 10 participants (not their own recruits); random 20% double-coded; raw agreement reported",
+    "instrument": "Google Forms: four forms, Group A and Group B each in two case orders (a seeded order and its exact reverse)",
+    "group_assignment": "seeded list of pre-filled links; neither participants nor recruiters choose the group",
+    "assignment_generator": "W5 scripts/make_assignment_list.py; permuted blocks; main A1/A2/B1/B2 counts 13/12/12/13; seal one private CSV before links; W2 default allocation is fixture-only",
+    "session_mode": "online and unsupervised on the participant's own device via a personal pre-filled link (changed 31 Oct; disclosed deviation)",
+    "time_recording": "self-reported total time (last form question, minutes); per-case time is not recorded"
+  },
+  "study_instrument": {
+    "outputs": "versioned precomputed Python outputs and rendered explanation images; no live inference",
+    "pre_test_parity": "validation fixtures",
+    "study_cases_loaded": "after the single final evaluation, followed by an export-parity check without retuning",
+    "never_shown_to_participants": "model outputs, probabilities, base values, capacity boundary, predicted class",
+    "form_settings": "no email collection, no sign-in, response editing off, summary charts hidden, responses to one restricted Sheet",
+    "group_b_image_rule": "contribution direction and magnitude only"
+  },
+  "test_access": "locked until this protocol and all integration checks pass"
+}

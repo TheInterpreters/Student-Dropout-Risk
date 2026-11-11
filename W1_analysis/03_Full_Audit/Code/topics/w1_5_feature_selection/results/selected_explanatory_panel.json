@@ -1,0 +1,270 @@
+{
+  "selection_scope": "explanatory_reporting_only",
+  "prediction_model_changed": false,
+  "status": "provisional_explanatory_panel",
+  "uses_actual_outcome_labels_for_selection": false,
+  "selected_main_groups": [
+    {
+      "feature_group": "first_semester_progress",
+      "cases_observed": 544,
+      "members": "curricular_units_1st_sem_approved, curricular_units_1st_sem_grade, first_semester_pass_rate",
+      "mean_absolute_group_shap": 0.27691527203369115,
+      "median_absolute_group_shap": 0.2725282009132207,
+      "mean_signed_group_shap": 0.01689966970789315,
+      "fraction_raising_prediction": 0.43014705882352944,
+      "fraction_lowering_prediction": 0.5698529411764706,
+      "baseline_top5_fraction": 0.9650735294117647
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "cases_observed": 544,
+      "members": "curricular_units_1st_sem_enrolled, curricular_units_1st_sem_evaluations, curricular_units_1st_sem_without_evaluations, first_semester_no_enrollment, first_semester_no_evaluations",
+      "mean_absolute_group_shap": 0.052525600724466666,
+      "median_absolute_group_shap": 0.031997678256593665,
+      "mean_signed_group_shap": 0.0009038814704913073,
+      "fraction_raising_prediction": 0.5551470588235294,
+      "fraction_lowering_prediction": 0.44485294117647056,
+      "baseline_top5_fraction": 0.6838235294117647
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "cases_observed": 544,
+      "members": "tuition_fees_up_to_date",
+      "mean_absolute_group_shap": 0.05131742025653639,
+      "median_absolute_group_shap": 0.033974353373050666,
+      "mean_signed_group_shap": -0.004325721392318985,
+      "fraction_raising_prediction": 0.15625,
+      "fraction_lowering_prediction": 0.84375,
+      "baseline_top5_fraction": 0.8694852941176471
+    },
+    {
+      "feature_group": "course",
+      "cases_observed": 544,
+      "members": "course",
+      "mean_absolute_group_shap": 0.041827607380982956,
+      "median_absolute_group_shap": 0.04165151961147784,
+      "mean_signed_group_shap": -0.02192378974014633,
+      "fraction_raising_prediction": 0.2665441176470588,
+      "fraction_lowering_prediction": 0.7334558823529411,
+      "baseline_top5_fraction": 0.7463235294117647
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "cases_observed": 544,
+      "members": "scholarship_holder",
+      "mean_absolute_group_shap": 0.019296801573569503,
+      "median_absolute_group_shap": 0.010685280077159416,
+      "mean_signed_group_shap": -0.0030593317912494325,
+      "fraction_raising_prediction": 0.75,
+      "fraction_lowering_prediction": 0.25,
+      "baseline_top5_fraction": 0.32169117647058826
+    }
+  ],
+  "selected_model_columns": [
+    "course",
+    "curricular_units_1st_sem_approved",
+    "curricular_units_1st_sem_enrolled",
+    "curricular_units_1st_sem_evaluations",
+    "curricular_units_1st_sem_grade",
+    "curricular_units_1st_sem_without_evaluations",
+    "first_semester_no_enrollment",
+    "first_semester_no_evaluations",
+    "first_semester_pass_rate",
+    "scholarship_holder",
+    "tuition_fees_up_to_date"
+  ],
+  "selected_pairs": [
+    {
+      "group_a": "first_semester_participation",
+      "group_b": "first_semester_progress",
+      "cases_observed": 360,
+      "eligible_for_panel": true,
+      "mean_abs_single_a_change": 0.096217295092841,
+      "mean_abs_single_b_change": 0.3063441868302309,
+      "mean_abs_joint_change": 0.26381215586120055,
+      "mean_abs_nonadditivity": 0.18592965360213484,
+      "mean_signed_nonadditivity": -0.1100140483222074,
+      "mean_joint_gain_over_best_single": -0.09384585073631671,
+      "gain_ci_lower_95": -0.11693951689017316,
+      "gain_ci_upper_95": -0.0703460547344811,
+      "joint_exceeds_each_single_fraction": 0.3277777777777778
+    },
+    {
+      "group_a": "first_semester_progress",
+      "group_b": "scholarship_holder",
+      "cases_observed": 169,
+      "eligible_for_panel": true,
+      "mean_abs_single_a_change": 0.2219332274608865,
+      "mean_abs_single_b_change": 0.039948376533492695,
+      "mean_abs_joint_change": 0.3227723094802791,
+      "mean_abs_nonadditivity": 0.11659346772330267,
+      "mean_signed_nonadditivity": 0.09778304224056826,
+      "mean_joint_gain_over_best_single": 0.08145801206091804,
+      "gain_ci_lower_95": 0.05848185758426036,
+      "gain_ci_upper_95": 0.10410148686530982,
+      "joint_exceeds_each_single_fraction": 0.591715976331361
+    },
+    {
+      "group_a": "first_semester_progress",
+      "group_b": "tuition_fees_up_to_date",
+      "cases_observed": 457,
+      "eligible_for_panel": true,
+      "mean_abs_single_a_change": 0.3000095919374768,
+      "mean_abs_single_b_change": 0.0306779558910974,
+      "mean_abs_joint_change": 0.3635673498519833,
+      "mean_abs_nonadditivity": 0.050253756317825624,
+      "mean_signed_nonadditivity": -0.04199655494842214,
+      "mean_joint_gain_over_best_single": 0.04806790190098779,
+      "gain_ci_lower_95": 0.03456691957850221,
+      "gain_ci_upper_95": 0.06249209361551306,
+      "joint_exceeds_each_single_fraction": 0.16192560175054704
+    }
+  ],
+  "best_recorded_main_variant": "OLS+main",
+  "best_recorded_pair_variant": "Lasso+pairs",
+  "best_main_holdout_mae": 0.07152966189882452,
+  "best_pair_holdout_mae": 0.02239424640846934,
+  "pair_family_preferred_for_local_approximation": true,
+  "policy": {
+    "top_main_groups": 5,
+    "top_pairs": 3,
+    "minimum_pair_cases": 30,
+    "main_rank": "Mean absolute grouped SHAP over every validation case.",
+    "pair_rank": "Mean absolute reference-masking nonadditivity, among selected groups with sufficient support."
+  },
+  "limits": [
+    "Reporting shortlist, not validated input selection for a new dropout predictor.",
+    "Selected groups/pairs are not the exact nonzero Lasso coefficient identities; those were not saved.",
+    "Family selection on recorded holdouts is exploratory, not a new independent test.",
+    "Model response strength and surrogate fidelity do not measure real intervention benefit.",
+    "Background/seed instability and recorded convergence warnings require review."
+  ],
+  "fit_warning_evidence": {
+    "source": "complete audit.log",
+    "convergence_warning_count": 579,
+    "cases_with_recorded_convergence_warning": 342,
+    "interpretation": "Warnings arose in surrogate fitting; some may be inner-CV fits, not necessarily final selected fits. Completion does not mean every diagnostic passed."
+  },
+  "feature_stability": [
+    {
+      "feature_group": "course",
+      "variation": "background",
+      "baseline_top5_cases": 406,
+      "valid_runs": 4060,
+      "retained_runs": 3042,
+      "conditional_top5_retention": 0.7492610837438424
+    },
+    {
+      "feature_group": "course",
+      "variation": "perturbation",
+      "baseline_top5_cases": 406,
+      "valid_runs": 3837,
+      "retained_runs": 3836,
+      "conditional_top5_retention": 0.9997393797237425
+    },
+    {
+      "feature_group": "course",
+      "variation": "seed",
+      "baseline_top5_cases": 406,
+      "valid_runs": 4060,
+      "retained_runs": 3812,
+      "conditional_top5_retention": 0.9389162561576355
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "variation": "background",
+      "baseline_top5_cases": 372,
+      "valid_runs": 3720,
+      "retained_runs": 3116,
+      "conditional_top5_retention": 0.8376344086021505
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "variation": "perturbation",
+      "baseline_top5_cases": 372,
+      "valid_runs": 3457,
+      "retained_runs": 3454,
+      "conditional_top5_retention": 0.9991321955452704
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "variation": "seed",
+      "baseline_top5_cases": 372,
+      "valid_runs": 3720,
+      "retained_runs": 3174,
+      "conditional_top5_retention": 0.853225806451613
+    },
+    {
+      "feature_group": "first_semester_progress",
+      "variation": "background",
+      "baseline_top5_cases": 525,
+      "valid_runs": 5250,
+      "retained_runs": 5176,
+      "conditional_top5_retention": 0.985904761904762
+    },
+    {
+      "feature_group": "first_semester_progress",
+      "variation": "perturbation",
+      "baseline_top5_cases": 525,
+      "valid_runs": 4966,
+      "retained_runs": 4966,
+      "conditional_top5_retention": 1.0
+    },
+    {
+      "feature_group": "first_semester_progress",
+      "variation": "seed",
+      "baseline_top5_cases": 525,
+      "valid_runs": 5250,
+      "retained_runs": 5216,
+      "conditional_top5_retention": 0.9935238095238095
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "variation": "background",
+      "baseline_top5_cases": 175,
+      "valid_runs": 1750,
+      "retained_runs": 1634,
+      "conditional_top5_retention": 0.9337142857142857
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "variation": "perturbation",
+      "baseline_top5_cases": 175,
+      "valid_runs": 1681,
+      "retained_runs": 1676,
+      "conditional_top5_retention": 0.9970255800118977
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "variation": "seed",
+      "baseline_top5_cases": 175,
+      "valid_runs": 1750,
+      "retained_runs": 1468,
+      "conditional_top5_retention": 0.8388571428571429
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "variation": "background",
+      "baseline_top5_cases": 473,
+      "valid_runs": 4730,
+      "retained_runs": 3393,
+      "conditional_top5_retention": 0.7173361522198731
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "variation": "perturbation",
+      "baseline_top5_cases": 473,
+      "valid_runs": 4533,
+      "retained_runs": 4533,
+      "conditional_top5_retention": 1.0
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "variation": "seed",
+      "baseline_top5_cases": 473,
+      "valid_runs": 4730,
+      "retained_runs": 4488,
+      "conditional_top5_retention": 0.9488372093023256
+    }
+  ]
+}

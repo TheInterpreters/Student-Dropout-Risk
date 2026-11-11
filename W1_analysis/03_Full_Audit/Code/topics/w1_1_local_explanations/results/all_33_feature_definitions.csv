@@ -1,0 +1,34 @@
+model_column,feature_group,meaning,action_context,attribution_available
+curricular_units_1st_sem_approved,first_semester_progress,First-semester curricular units passed,Historical academic record,Group total only; individual member SHAP not saved
+curricular_units_1st_sem_grade,first_semester_progress,First-semester average grade (0–20),Historical academic record,Group total only; individual member SHAP not saved
+first_semester_pass_rate,first_semester_progress,Approved / enrolled units; zero when enrollment is zero,Derived; recompute from source units,Group total only; individual member SHAP not saved
+curricular_units_1st_sem_enrolled,first_semester_participation,Number of first-semester curricular units enrolled,Historical enrollment record,Group total only; individual member SHAP not saved
+curricular_units_1st_sem_evaluations,first_semester_participation,Number of first-semester evaluations recorded,Historical assessment record; not classroom attendance,Group total only; individual member SHAP not saved
+curricular_units_1st_sem_without_evaluations,first_semester_participation,First-semester units without evaluations,Historical assessment record,Group total only; individual member SHAP not saved
+first_semester_no_enrollment,first_semester_participation,Indicator that first-semester enrollment is zero,Derived; recompute from enrollment,Group total only; individual member SHAP not saved
+first_semester_no_evaluations,first_semester_participation,Indicator that first-semester evaluation count is zero,Derived; recompute from evaluations,Group total only; individual member SHAP not saved
+tuition_fees_up_to_date,tuition_fees_up_to_date,"Tuition fees up to date: 1=yes, 0=no",Administrative status; verify balance and assistance options,Individual feature (singleton group)
+debtor,debtor,"Recorded debtor status: 1=yes, 0=no",Administrative status; verify with finance office,Individual feature (singleton group)
+scholarship_holder,scholarship_holder,"Recorded scholarship holder: 1=yes, 0=no",Check eligibility; receiving aid is not a guaranteed score effect,Individual feature (singleton group)
+course,course,Programme/course category code,"Category, not a numeric attainment scale; discuss fit with adviser",Individual feature (singleton group)
+gender,gender,Recorded gender category,Personal attribute; never a recommended change,Individual feature (singleton group)
+displaced,displaced,Recorded displaced-status indicator,"Context; ask about practical access needs, not changing identity/status to lower risk",Individual feature (singleton group)
+unemployment_rate,unemployment_rate,Recorded unemployment-rate context,Macroeconomic context; not controlled by a student,Individual feature (singleton group)
+previous_qualification_grade,previous_qualification_grade,Grade for the qualification held before enrollment,Historical attainment record,Individual feature (singleton group)
+age_at_enrollment,age_at_enrollment,Age when the student enrolled,Historical/personal attribute; not an action target,Individual feature (singleton group)
+fathers_qualification,fathers_qualification,Father’s qualification category,Family background; not an action target,Individual feature (singleton group)
+curricular_units_1st_sem_credited,curricular_units_1st_sem_credited,First-semester curricular units credited/recognized,Historical credit recognition; verify records if incorrect,Individual feature (singleton group)
+mothers_qualification,mothers_qualification,Mother’s qualification category,Family background; not an action target,Individual feature (singleton group)
+application_mode,application_mode,Admission/application route category,Historical admission record,Individual feature (singleton group)
+daytime_evening_attendance,daytime_evening_attendance,Daytime/evening study regime,Study-regime category; not measured attendance frequency,Individual feature (singleton group)
+gdp,gdp,Recorded GDP economic context,Macroeconomic context; not controlled by a student,Individual feature (singleton group)
+mothers_occupation,mothers_occupation,Mother’s occupation category,Family background; not an action target,Individual feature (singleton group)
+fathers_occupation,fathers_occupation,Father’s occupation category,Family background; not an action target,Individual feature (singleton group)
+admission_grade,admission_grade,Grade used at admission,Historical attainment record,Individual feature (singleton group)
+application_order,application_order,Order of the programme in application preferences,Historical application record,Individual feature (singleton group)
+inflation_rate,inflation_rate,Recorded inflation-rate context,Macroeconomic context; not controlled by a student,Individual feature (singleton group)
+marital_status,marital_status,Recorded marital-status category,Personal context; not an action target,Individual feature (singleton group)
+previous_qualification,previous_qualification,Previous qualification category,Historical education record,Individual feature (singleton group)
+nacionality,nacionality,Recorded nationality category (source spelling retained),Personal attribute; not an action target,Individual feature (singleton group)
+educational_special_needs,educational_special_needs,Recorded educational special-needs indicator,Check accessibility/support preferences; not an attribute to change,Individual feature (singleton group)
+international,international,Recorded international-student indicator,Personal/context attribute; offer relevant support without changing identity,Individual feature (singleton group)
