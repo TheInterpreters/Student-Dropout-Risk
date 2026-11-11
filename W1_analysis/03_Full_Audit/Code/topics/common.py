@@ -48,7 +48,7 @@ def safe(value):
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(safe(value), indent=2, allow_nan=False) + '\n')
+    path.write_text(json.dumps(safe(value), indent=2, allow_nan=False) + '\n', encoding='utf-8')
 
 
 def find_cases(override=None):
@@ -63,8 +63,8 @@ def find_cases(override=None):
         candidates = [base / suffix for base in bases for suffix in suffixes]
         pointer = Path('/workspace/student_dropout_runs/latest_run.txt')
         if pointer.is_file():
-            run = Path(pointer.read_text().strip())
-            metadata = json.loads((run / 'job.json').read_text())
+            run = Path(pointer.read_text(encoding='utf-8').strip())
+            metadata = json.loads((run / 'job.json').read_text(encoding='utf-8'))
             candidates.append(Path(metadata['code_root']) / 'W1_Noey_Enhanced/outputs/cases')
     for path in candidates:
         if (path / 'manifest.json').is_file() and len(list(path.glob('case_*.json'))) == 544:
@@ -84,7 +84,7 @@ class SavedAudit:
 
 def load_completed(cases_path=None):
     folder = find_cases(cases_path)
-    manifest = json.loads((folder / 'manifest.json').read_text())
+    manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
     if manifest.get('split') != 'validation' or manifest.get('test_evaluated') is not False:
         raise ValueError("This extension only accepts the original validation audit.")
     expected = manifest['selected_source_row_ids']
@@ -145,5 +145,5 @@ def load_completed(cases_path=None):
     warning_candidates = [p / 'recorded_fit_warnings.json' for p in folder.parents]
     warning_candidates += [p / '05_Provenance/recorded_fit_warnings.json' for p in folder.parents]
     warning_file = next((p for p in warning_candidates if p.is_file()), None)
-    warnings = json.loads(warning_file.read_text()) if warning_file else {'status': 'not supplied; fit warnings not verified'}
+    warnings = json.loads(warning_file.read_text(encoding='utf-8')) if warning_file else {'status': 'not supplied; fit warnings not verified'}
     return SavedAudit(records, manifest, folder, predictions, warnings, fingerprints)

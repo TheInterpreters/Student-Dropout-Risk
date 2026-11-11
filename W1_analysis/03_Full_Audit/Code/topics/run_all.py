@@ -12,7 +12,7 @@ from w1_4_human_support.scenarios import analyse_scenarios
 from w1_5_feature_selection.analysis import select_panel
 
 ROOT = Path(__file__).resolve().parent
-POLICY = json.loads((ROOT / 'policy.json').read_text())
+POLICY = json.loads((ROOT / 'policy.json').read_text(encoding='utf-8'))
 TOPIC_NAMES = ['w1_1_local_explanations', 'w1_2_single_vs_pairs', 'w1_3_robustness',
                'w1_4_human_support', 'w1_5_feature_selection']
 
@@ -88,7 +88,7 @@ def run(cases=None, output_root=None):
               'The 24/8 local masking design and its six saved variants are reused. Pair effects are conditional on each student’s SHAP-selected top five groups. Rare pairs remain in the summary with their counts but are excluded from the reporting panel below the declared support threshold.', '',
               'Convergence warnings, background/seed instability, off-manifold masking and the absent original private fitted-model bundle remain limitations. No retention improvement or causal effect is inferred from these files.', '']
     report = '\n'.join(lines)
-    (output_root / 'W1_SUMMARY.md').write_text(report)
+    (output_root / 'W1_SUMMARY.md').write_text(report, encoding='utf-8')
     return {'inputs': inputs, 'local': local, 'pairs': pair, 'surrogates': surrogate,
             'stability': stable, 'support': support, 'scenarios': scenarios, 'selection': panel, 'output_root': output_root}
 
