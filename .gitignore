@@ -1,8 +1,17 @@
 # Raw datasets should stay out of Git by default.
 data/**
 
-# Private link exports downloaded from Google Sheets.
+# Private link exports and raw response workbooks downloaded from Google Sheets/Forms.
+# They contain participant codes and free text: keep them under data/human_study/ only.
 /Assignment links (*).xlsx
+*.xlsx
+*.xls
+*.ods
+/response sheet*
+/responses*.csv
+
+# Raw human-study response workbooks contain participant free text.
+/response sheet*.xlsx
 
 # Out-of-scope Office for Students background-data exploration.
 EDA/
@@ -55,3 +64,12 @@ venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# LaTeX build by-products (the report sources stay; Final_Report/ is not committed yet)
+*.aux
+*.bbl
+*.blg
+*.brf
+*.log
+*.out
+*.synctex.gz
