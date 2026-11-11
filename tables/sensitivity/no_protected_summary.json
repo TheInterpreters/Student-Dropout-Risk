@@ -1,0 +1,55 @@
+{
+  "analysis": "Sensitivity without protected attributes (TA feedback; exploratory, validation only)",
+  "test_split_accessed": false,
+  "final_model_changed": false,
+  "protected_columns_removed": [
+    "gender",
+    "nacionality",
+    "age_at_enrollment",
+    "international",
+    "displaced",
+    "educational_special_needs"
+  ],
+  "flags_in_both": 103,
+  "flags_only_control": 5,
+  "flags_only_no_protected": 5,
+  "dropouts_among_changed_flags": {
+    "only_control": 5,
+    "only_no_protected": 5
+  },
+  "metrics": [
+    {
+      "model": "control_all_features",
+      "n_features": 33,
+      "n": 544,
+      "balanced_accuracy": 0.7535,
+      "macro_f1": 0.768,
+      "roc_auc": 0.9521,
+      "dropout_recall": 0.507,
+      "dropout_precision": 1.0,
+      "flag_rate": 0.1985,
+      "brier_score": 0.0708,
+      "expected_calibration_error_10bin": 0.0186,
+      "n_flagged": 108,
+      "capacity_boundary": 0.9901,
+      "seconds": 18.0
+    },
+    {
+      "model": "no_protected",
+      "n_features": 27,
+      "n": 544,
+      "balanced_accuracy": 0.7535,
+      "macro_f1": 0.768,
+      "roc_auc": 0.9503,
+      "dropout_recall": 0.507,
+      "dropout_precision": 1.0,
+      "flag_rate": 0.1985,
+      "brier_score": 0.0724,
+      "expected_calibration_error_10bin": 0.0195,
+      "n_flagged": 108,
+      "capacity_boundary": 0.9917,
+      "seconds": 10.7
+    }
+  ],
+  "note": "Descriptive only. Removing protected columns does not remove proxy information, and similar validation performance does not establish fairness."
+}

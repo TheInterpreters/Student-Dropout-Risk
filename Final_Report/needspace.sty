@@ -1,0 +1,17 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{needspace}[2026/04/13 Minimal local fallback]
+
+\makeatletter
+\newcommand{\needspace}[1]{%
+  \par
+  \begingroup
+    \dimen@=#1\relax
+    \dimen@ii=\pagegoal
+    \advance\dimen@ii by -\pagetotal
+    \ifdim\dimen@>\dimen@ii
+      \vfil
+      \break
+    \fi
+  \endgroup
+}
+\makeatother

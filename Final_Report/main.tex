@@ -1,0 +1,55 @@
+% Trustworthy Explanations for Student Dropout Risk
+% Final-report skeleton based on the CVPR 2026 author kit.
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage[pagenumbers]{cvpr}
+\input{preamble}
+
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,allcolors=cvprblue]{hyperref}
+
+\def\paperID{0000}
+\def\confName{XDS Final Project}
+\def\confYear{2026}
+
+\title{Trustworthy Explanations for Student Dropout Risk:\\
+Comparing Black-Box and Interpretable Models}
+
+\author{
+Aye Khin Khin Hpone (Yolanda Lim) 125970; \quad Nguyen Liem Son (Lucas) 126729;\\
+Witchayda Theppithuk (Noey) 127419; \quad Han Htoo Zaw (Han) 127305;\\
+Pyae Sone Han (Harry) 127366.
+}
+
+\begin{document}
+\maketitle
+
+\input{sec/1_abstract}
+\input{sec/2_introduction}
+\input{sec/3_literature_review}
+\input{sec/4_methodology}
+\input{sec/5_algorithms}
+\input{sec/6_preliminary_results}
+\input{sec/7_contribution}
+\input{sec/8_conclusion}
+
+\section*{Acknowledgements}
+The authors would like to express sincere gratitude to Dr.\ Sein Minn for supervision and guidance
+throughout this project, including the feedback on the proposal that shaped the eligibility, SHAP
+budget, protected-attribute and readability analyses in this report. The authors also thank the 50
+volunteers who took part in the study.
+
+\section*{Source Code and Data Availability}
+The code, frozen protocol and all aggregate results are available at
+\href{https://github.com/TheInterpreters/Student-Dropout-Risk}{https://github.com/TheInterpreters/Student-Dropout-Risk}.
+The UCI dataset is public (CC~BY~4.0); raw participant responses are not shared.
+
+{\small
+\bibliographystyle{ieeenat_fullname}
+\bibliography{references}
+}
+
+\input{sec/9_appendix}
+
+\end{document}

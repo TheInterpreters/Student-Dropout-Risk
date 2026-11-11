@@ -1,0 +1,57 @@
+{
+  "analysis": "TA feedback checks from saved W1 validation cases (exploratory, post-hoc)",
+  "test_split_accessed": false,
+  "model_run": false,
+  "top_reason_counts_among_flagged": {
+    "first_semester_progress": 108
+  },
+  "composition": {
+    "validation_students": 544,
+    "flagged": 108,
+    "flagged_dropout": 108,
+    "flagged_no_evaluations": 25,
+    "flagged_zero_units_passed": 78,
+    "flagged_with_units_passed": 30,
+    "flagged_with_units_passed_fees_unpaid": 19,
+    "zero_pass_rule_selected": 103,
+    "zero_pass_rule_precision": 0.8738,
+    "zero_pass_rule_recall": 0.4225,
+    "model_precision": 1.0,
+    "model_recall": 0.507,
+    "zero_pass_not_flagged": 25,
+    "zero_pass_not_flagged_graduate": 13,
+    "flagged_top_reason_first_semester_progress": 108
+  },
+  "bar_sum": [
+    {
+      "score": "sum_all_bars",
+      "description": "all grouped contributions (not shown to participants)",
+      "auc_vs_model_flag": 1.0,
+      "flags_recovered_in_top_108": 108,
+      "sign_agrees_with_flag": 0.8143
+    },
+    {
+      "score": "sum_top5_bars",
+      "description": "top five bars (as shown to Group B, without numbers)",
+      "auc_vs_model_flag": 0.9713,
+      "flags_recovered_in_top_108": 89,
+      "sign_agrees_with_flag": 0.8162
+    }
+  ],
+  "eligibility_subset": {
+    "subset": "at least one first-semester evaluation",
+    "n": 495,
+    "n_dropout": 177,
+    "flagged": 99,
+    "tp": 99,
+    "fp": 0,
+    "fn": 78,
+    "tn": 318,
+    "recall": 0.5593,
+    "precision": 1.0,
+    "roc_auc": 0.9486,
+    "excluded_no_evaluation": 49,
+    "excluded_no_evaluation_dropout": 36
+  },
+  "note": "Evaluation presence and units passed are proxies; these checks do not establish eligibility, benefit from outreach, or performance on Enrolled students."
+}

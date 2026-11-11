@@ -1,0 +1,44 @@
+% Shared packages and commands for the student-dropout final report.
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xspace}
+
+\graphicspath{
+  {../figures/report_ready/}
+  {../figures/human_study/}
+  {../figures/demo_card/}
+  {figures/}
+  {../W1_analysis/03_Full_Audit/Figures/}
+}
+
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+% Do not stretch vertical space to make every column end at the same height
+% (avoids large gaps above headings when a float or box moves to the next column).
+\raggedbottom
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
+\setcitestyle{authoryear,round,semicolon,aysep={,}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\projectname}{Student Dropout Risk\xspace}
+\newcommand{\tabicl}{TabICL\xspace}
+\newcommand{\ebm}{EBM\xspace}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}

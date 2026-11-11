@@ -1,0 +1,31 @@
+{
+  "analysis": "W3.7 Enrolled-handling sensitivity (optional, exploratory)",
+  "splits_used": [
+    "train",
+    "validation",
+    "Enrolled 70% and 15% shares"
+  ],
+  "test_split_accessed": false,
+  "final_model_changed": false,
+  "enrolled_total": 794,
+  "enrolled_train_share": 555,
+  "enrolled_validation_share": 119,
+  "capacity_displacement": {
+    "cohort_validation_only": 544,
+    "cohort_with_enrolled": 663,
+    "enrolled_in_cohort": 119,
+    "flags_validation_only": 108,
+    "flags_with_enrolled": 132,
+    "flags_given_to_enrolled": 7,
+    "flags_given_to_validation_dropout": 125,
+    "flags_given_to_validation_graduate": 0,
+    "dropout_recall_validation_only": 0.5070422535211268,
+    "dropout_recall_with_enrolled_in_cohort": 0.5868544600938967,
+    "fixed_slots": 108,
+    "fixed_slots_given_to_enrolled": 3,
+    "dropout_recall_fixed_slots_with_enrolled": 0.49295774647887325,
+    "capacity_boundary_validation_only": 0.9900555610656738,
+    "capacity_boundary_with_enrolled": 0.9763423204421997
+  },
+  "note": "Enrolled outcomes are unresolved: flags given to Enrolled students are neither correct nor incorrect. Grouping Enrolled as not-dropout is an assumption."
+}

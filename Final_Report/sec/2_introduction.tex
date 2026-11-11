@@ -1,0 +1,114 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\begin{figure}[t]
+\noindent\fbox{\parbox{0.97\linewidth}{\small
+\textbf{Summary for student-support staff.}
+\emph{The decision.} After the first semester, a support office can meet only about one in five
+students and must decide whom to contact first.
+\emph{What the model does.} It assigns each student a dropout-risk score from records the
+university already holds (first-semester results, fees and background) and places the top 20\% on
+a contact list.
+\emph{Main findings.} On past data, the list is accurate: 108 of the 109 flagged test students
+dropped out. However, most flagged students had passed no units at all, which staff can already
+see, and the list still misses about half of the students who later leave, partly because only one
+in five can be contacted. A simpler, fully transparent model performed equally well. The ``reasons'' displayed are useful hints but may change
+when recalculated, and seeing them did not help people predict the model's decision.
+\emph{Limitations.} The model was tested only on Portuguese data from students with a known final
+outcome (still-enrolled students were excluded). It does not explain \emph{why} a student is
+struggling or what will help, and it must never be used to deny support.}}
+\end{figure}
+
+\subsection{Background and Problem Statement}
+
+Student dropout is costly for students and institutions alike, and the dataset used here was created
+specifically to help identify at-risk students early enough for support~\citep{realinho2021uci,
+realinho2022predicting}. In practice, a
+student-support office can hold only a limited number of outreach meetings after the first semester
+and must therefore rank students and contact those at highest risk first. Ranking alone, however,
+is insufficient: before a conversation, an adviser also needs to understand \emph{why} a student was
+flagged, and those reasons must be trustworthy.
+
+Tabular foundation models such as TabPFN~\citep{hollmann2025tabpfn} and
+\tabicl~\citep{qu2025tabicl} have been reported to match or outperform tuned gradient boosting on
+many small tabular benchmarks without dataset-specific training. They are, however, black boxes
+whose explanations must be obtained post hoc, for example with SHAP~\citep{lundberg2017shap}, and
+for high-stakes decisions an interpretable model should arguably be preferred whenever it performs
+comparably~\citep{rudin2019stop}.
+
+\textbf{Problem statement.} Benchmark accuracy does not establish that a foundation model improves a
+capacity-limited outreach decision, nor that its post-hoc explanations are faithful, stable or
+useful to the people who must act on them, and none of the representative studies in
+Table~\ref{tab:prior-work} combines these three perspectives for dropout outreach. This project
+therefore asks whether a foundation model's complexity is justified here and whether its
+explanations withstand technical and human evaluation.
+
+\subsection{Decision Setting}
+
+The intended user is a student-support officer rather than the student. Predictions are made once,
+after the first semester; second-semester information is excluded, as it would not yet be
+available. The operating rule was fixed in advance: all students in a cohort are ranked by
+predicted dropout probability, and exactly the top 20\% (the assumed outreach capacity) are flagged,
+with ties broken by record order. A flag means ``offer a support conversation''; it never implies
+withdrawing support or making an automated decision about the student. Errors carry different
+costs: a missed student may leave without being offered help, whereas an unnecessary flag uses a
+scarce meeting and may stigmatise a student who was coping, and a misread explanation may steer the
+conversation towards the wrong problem.
+
+\subsection{Research Questions}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item[\textbf{RQ1.}] Does \tabicl add predictive value over simpler conventional and
+  intrinsically interpretable baselines at a fixed 20\% outreach capacity?
+  \item[\textbf{RQ2.}] Are its local explanations faithful, stable and appropriately constrained,
+  and what do they reveal to an adviser about the students it flags?
+  \item[\textbf{RQ3.}] Do explanation charts help people anticipate the model's outreach flag and
+  identify useful support information?
+\end{enumerate}
+
+\subsection{Contributions}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item A pre-specified, locked comparison of \tabicl with logistic regression, a depth-3 decision
+  tree, XGBoost and a main-effects EBM at the same outreach capacity, with paired bootstrap
+  intervals \textbf{(RQ1)}.
+  \item A post-hoc audit of the explanations for all 544 validation students, covering
+  faithfulness, stability and constrained recourse, together with an analysis of which students are
+  flagged \textbf{(RQ2)}.
+  \item A two-group forward-simulation study with 50 adult participants, including a qualitative
+  analysis of 1,500 written answers \textbf{(RQ3)}.
+  \item Sensitivity analyses for still-enrolled students, an admission-time feature window and a
+  model without protected attributes, together with a local, validation-only research interface
+  that illustrates how the outputs could be presented to staff.
+\end{enumerate}
+
+\subsection{Scope of the Work}
+
+The study relies on one public dataset from a single Portuguese institution, a binary
+Dropout-versus-Graduate target and one fixed train/validation/test split, and its fairness analysis
+is descriptive. The human study involved volunteers acting as proxy users rather than support
+officers; it therefore measures understanding of the model's output, not decisions about real
+students or their outcomes. Table~\ref{tab:terms} defines the key terms.
+
+\begin{table}[!htb]
+\centering
+\caption{Key terms used in this report.}
+\label{tab:terms}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}p{6.0cm}@{}}
+\toprule
+\textbf{Term} & \textbf{Meaning} \\
+\midrule
+Outreach capacity & Share of students the office can meet: here the top 20\% of a cohort \\
+Flag & The student is in that top 20\% and would be offered a meeting \\
+Risk score & The model's estimated dropout probability; a score, not a certainty \\
+Contribution (SHAP) & How far one group of information moved a student's score relative to a typical student; association, not cause \\
+Faithfulness & Whether the reasons shown are those the model actually relies on \\
+Stability & Whether the same top five reasons reappear when the explanation is recalculated \\
+Recourse & A change to the record that would remove the flag; not advice \\
+Forward simulation & People predict the model's decision from the same information \\
+Locked final test & Held-out data used exactly once, after all choices were fixed \\
+\bottomrule
+\end{tabular}
+\end{table}

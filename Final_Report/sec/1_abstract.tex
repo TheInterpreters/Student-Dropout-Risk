@@ -1,0 +1,25 @@
+\begin{abstract}
+University support offices can hold only a limited number of outreach meetings and must therefore
+decide early which students to contact. This study examines whether a tabular foundation model,
+\tabicl, should be used to rank students for such meetings after the first semester, and whether its
+explanations are trustworthy and comprehensible. Using 3,630 Dropout or Graduate records from the
+public UCI \emph{Predict Students' Dropout and Academic Success} dataset, all modelling choices were
+fixed on a validation split before a single locked final test, in which each of five models flagged
+the top 20\% of students, the assumed outreach capacity. \tabicl achieved a ROC-AUC of 0.957 and
+flagged 109 test students, 108 of whom dropped out (precision 0.991, recall 0.507); however, it was
+not reliably better than XGBoost (difference 0.001, 95\% interval $-0.006$ to 0.009) or an
+interpretable Explainable Boosting Machine (0.003, $-0.007$ to 0.014). A post-hoc audit of all 544
+validation students showed that the SHAP explanations were faithful to the model but often
+unstable: when the comparison group changed, 411 students fell below the 0.80 stability threshold
+for their top five reasons. Moreover, the flags largely restated information already visible to
+advisers: 78 of the 108 flagged validation students had passed no first-semester units, and
+first-semester progress was the leading reason for every flagged student. In a 50-person study,
+participants predicted the model's flag equally well with and without explanation charts (0.900
+versus 0.916; difference $-0.016$, 95\% interval $-0.060$ to 0.032). On this dataset,
+these findings indicate that a simpler interpretable model would serve equally well, that
+explanations should be presented with their uncertainty, and that the model can support, but not
+replace, an adviser's judgement.
+\end{abstract}
+
+\noindent\textbf{Keywords:} student dropout risk, explainable artificial intelligence,
+tabular foundation models, interpretable machine learning, SHAP, human-centred evaluation

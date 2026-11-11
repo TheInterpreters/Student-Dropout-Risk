@@ -1,0 +1,80 @@
+{
+  "binary_cohort": 3630,
+  "train": 2541,
+  "validation": 544,
+  "test": 545,
+  "final_test": {
+    "roc_auc": 0.956629334238362,
+    "brier_score": 0.0739655941724777,
+    "dropout_recall": 0.5070422535211268,
+    "dropout_precision": 0.9908256880733946,
+    "flag_rate": 0.2
+  },
+  "explanation_audit_cases": 544,
+  "human_study": {
+    "study_status": "completed",
+    "included_participants": 50,
+    "groups": {
+      "A": 25,
+      "B": 25
+    },
+    "primary_unit": "participant accuracy across 10 cases",
+    "primary_comparison": {
+      "comparison": "Profiles + explanations minus profiles only",
+      "metric": "accuracy",
+      "difference": -0.015999999999999903,
+      "ci_lower_95": -0.05999999999999972,
+      "ci_upper_95": 0.03200000000000003,
+      "exploratory_permutation_p_two_sided": 0.6119388061193881,
+      "hedges_g": -0.1889087448024527,
+      "bootstrap_resamples": 10000,
+      "permutation_resamples": 10000,
+      "seed": 42
+    },
+    "interpretation": "Between-group estimates are exploratory; the study measures comprehension of model flags, not intervention benefit or deployment validity."
+  },
+  "qualitative_coding": {
+    "status": "completed_single_pass",
+    "inter_coder_agreement": "not measured",
+    "note": "one coding pass; the planned independent second coding of 20% was not done"
+  },
+  "enrolled_sensitivity": {
+    "status": "completed",
+    "capacity_displacement": {
+      "cohort_validation_only": 544,
+      "cohort_with_enrolled": 663,
+      "enrolled_in_cohort": 119,
+      "flags_validation_only": 108,
+      "flags_with_enrolled": 132,
+      "flags_given_to_enrolled": 7,
+      "flags_given_to_validation_dropout": 125,
+      "flags_given_to_validation_graduate": 0,
+      "dropout_recall_validation_only": 0.5070422535211268,
+      "dropout_recall_with_enrolled_in_cohort": 0.5868544600938967,
+      "fixed_slots": 108,
+      "fixed_slots_given_to_enrolled": 3,
+      "dropout_recall_fixed_slots_with_enrolled": 0.49295774647887325,
+      "capacity_boundary_validation_only": 0.9900555610656738,
+      "capacity_boundary_with_enrolled": 0.9763423204421997
+    }
+  },
+  "demo_card": {
+    "status": "built",
+    "split": "validation",
+    "source_row_id": 916,
+    "predicted_probability": 0.9990559220314026,
+    "flagged": true
+  },
+  "w1_refit_vs_frozen_validation": {
+    "n_cases": 544,
+    "max_abs_probability_difference": 1.0132789611816406e-05,
+    "flag_disagreements": 0,
+    "identical_within_tolerance": true
+  },
+  "scope_notes": [
+    "The final test was read from saved outputs and was not rerun.",
+    "W1 is a validation-only supplementary audit of a refit with frozen settings; its validation predictions match the frozen model (see w1_refit_vs_frozen_validation).",
+    "The Enrolled sensitivity is exploratory and was not used for model selection.",
+    "Human-study comparisons measure flag comprehension, not causal intervention benefit."
+  ]
+}

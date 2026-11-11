@@ -1,0 +1,69 @@
+\section{Related Work}
+\label{sec:related-work}
+
+\begin{table*}[!t]
+\centering
+\caption{Representative prior work and the gap this project addresses.}
+\label{tab:prior-work}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash\leavevmode}p{3.3cm}p{3.6cm}p{4.0cm}p{5.6cm}@{}}
+\toprule
+\textbf{Study} & \textbf{Focus} & \textbf{Method} & \textbf{Gap for this project} \\
+\midrule
+\citet{realinho2022predicting} & Dropout dataset (UCI) & Dataset description, ML baselines & Three-class accuracy; no capacity rule, explanation audit or users \\
+\citet{qu2025tabicl}; \citet{hollmann2025tabpfn} & Tabular foundation models & In-context learning on tables & Benchmarks accuracy; not explanation quality or decision use \\
+\citet{lou2013ebm}; \citet{caruana2015intelligible} & Interpretable models & Generalised additive models (EBM) & Glass-box alternative; predates, and is not compared with, foundation models \\
+\citet{lundberg2017shap} & Local explanations & Shapley-value attributions & Approximations depend on budget and background data \\
+\citet{tiukhova2024stability} & Learning analytics & Stability of XAI for student success & Stability of explanations, but no human evaluation \\
+\citet{nauta2023evaluation} & XAI evaluation & Systematic review (Co-12 properties) & Calls for quantitative, multi-property evaluation \\
+\citet{hase2020forward} & Human evaluation & Forward simulation & Not applied to dropout outreach \\
+\citet{karimi2021recourse} & Recourse & Counterfactuals vs.\ interventions & Feasible changes need causal care \\
+\midrule
+\textbf{This project} & Dropout outreach at 20\% capacity & TabICL vs.\ 4 baselines, SHAP audit, 50-person study & Combines predictive, technical-explanation and human evidence \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Student Dropout Prediction}
+
+\citet{realinho2022predicting} released the dataset used in this study~\citep{realinho2021uci}: 4,424
+undergraduates from a Portuguese polytechnic, described by demographic, socio-economic, application,
+first- and second-semester academic and macro-economic attributes and labelled Dropout, Enrolled or
+Graduate, and reported three-class prediction with standard classifiers. The present study instead
+fixes a single prediction time, excludes later-semester information and evaluates at an explicit
+outreach capacity, which are the conditions under which a support office would use the scores.
+
+\subsection{Tabular Foundation Models and Interpretable Baselines}
+
+TabPFN~\citep{hollmann2025tabpfn} and \tabicl~\citep{qu2025tabicl} are transformers pretrained on
+synthetic tables that predict a new row by reading the training rows as context, without gradient
+updates on the target data; \tabicl extends this approach to larger tables through column-then-row
+attention. Strong conventional baselines include logistic regression and gradient-boosted trees
+such as XGBoost~\citep{chen2016xgboost}. Explainable Boosting Machines (EBMs), by contrast, are
+boosted generalised additive models whose per-feature shape functions constitute the
+explanation~\citep{lou2013ebm, caruana2015intelligible}. \citet{rudin2019stop} argues that such models
+should be preferred in high-stakes settings when accuracy is comparable, a claim this study tests
+directly.
+
+\subsection{Evaluating Explanations}
+
+SHAP attributes a prediction to features using Shapley values~\citep{lundberg2017shap}. For
+black-box models these values are estimated by sampling and therefore depend on the sampling
+budget, the random seed and the background data that defines the ``typical'' reference.
+\citet{nauta2023evaluation} recommend measuring properties such as correctness (faithfulness) and
+consistency (stability) quantitatively rather than relying on anecdotes, and
+\citet{tiukhova2024stability} show that explanations of student-success models can be unstable
+across refits. Counterfactual explanations~\citep{wachter2017counterfactual} describe which change
+would alter a prediction; however, \citet{karimi2021recourse} caution that a feasible change to a
+feature is not equivalent to an effective real-world intervention. Global behaviour can be
+summarised with accumulated local effects (ALE)~\citep{apley2020ale}.
+
+\subsection{Human-Centred Explainability Evaluation}
+
+\citet{doshivelez2018considerations} distinguish application-grounded, human-grounded and
+functionally-grounded evaluation. Forward simulation, in which people predict a model's output from
+its input with or without an explanation, is a common human-grounded test~\citep{hase2020forward}.
+It measures whether an explanation makes the model's behaviour predictable, not whether people
+trust the model appropriately or make better decisions; this distinction is maintained throughout
+the interpretation of the study.

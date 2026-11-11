@@ -1,0 +1,126 @@
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Predictive Models}
+
+Table~\ref{tab:models} lists the five models. All receive the same 33 inputs, with coded
+administrative attributes (for example course, application route and parents' occupations) treated
+as categorical. Logistic regression, the decision tree and XGBoost share one preprocessing step
+(one-hot encoded categoricals; median-imputed, standardised numericals), whereas EBM and \tabicl
+receive the named columns directly. All settings were fixed in advance in a written analysis plan
+rather than tuned on the test set.
+
+\textbf{Model complexity.} The models differ in how far a person can follow them. \tabicl is a
+27.6-million-parameter transformer with 18 attention blocks (3 column, 3 row and 12 in-context),
+which scores each student by attending over all 2,541 training students as context and averages 4
+ensemble members. It is therefore neither simulatable nor decomposable, since its reasoning cannot be
+recovered from a coefficient list or a small tree, and it requires post-hoc explanation. The main-effects EBM, in contrast, is
+interpretable by construction: each prediction is exactly the logistic transform of an intercept
+plus one learned shape-function contribution per feature (its validation probabilities are
+reconstructed from these terms within $3.3\times10^{-16}$). Logistic regression and the depth-3 tree
+are also simulatable.
+
+\textbf{Validation-stage selection.} On the validation split, ROC-AUC was 0.952 for \tabicl, 0.946
+for EBM, 0.945 for logistic regression and XGBoost, and 0.923 for the tree. As the margin of \tabicl
+over EBM (0.006) was modest, the proposal had already identified EBM as a potentially more
+defensible candidate and deferred the decision to the final test.
+
+\begin{table}[!htb]
+\centering
+\caption{Models compared at the same 20\% outreach capacity.}
+\label{tab:models}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{2.1cm}p{5.9cm}@{}}
+\toprule
+\textbf{Model} & \textbf{Configuration} \\
+\midrule
+Logistic regression & One-hot categoricals, balanced class weights \\
+Decision tree & Depth 3, balanced class weights \\
+XGBoost & 300 trees, depth 4, learning rate 0.05, subsampling 0.8~\citep{chen2016xgboost} \\
+EBM & Main effects only (no interactions), interpret 0.7.8~\citep{lou2013ebm} \\
+\tabicl & v2.2.0, 4 ensemble members, CPU, official checkpoint~\citep{qu2025tabicl} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Predictive and Capacity-Based Evaluation}
+
+Ranking quality is measured by ROC-AUC, and probability quality by the Brier score and the 10-bin
+expected calibration error (ECE). Since the decision is to ``flag the top 20\%'', the principal
+operating metrics are dropout recall and precision among flagged students:
+\begin{align}
+\text{Recall@20\%} &= \frac{\#\{\text{flagged dropouts}\}}{\#\{\text{dropouts}\}}, \label{eq:recall}\\
+\text{Precision@20\%} &= \frac{\#\{\text{flagged dropouts}\}}{\#\{\text{flagged}\}}. \label{eq:precision}
+\end{align}
+With a fixed capacity, recall is capped: with 213 dropouts and 109 slots in the test set, at most
+51\% of dropouts can be flagged. Uncertainty in the differences between \tabicl and each baseline is
+estimated with 2,000 paired bootstrap resamples of the test set (seed 42).
+
+\subsection{Local and Global Explanations}
+
+Local explanations are computed with permutation SHAP~\citep{lundberg2017shap} on the predicted
+dropout probability, using 25 training rows as the background (the ``typical student'' reference), kept small since
+every SHAP evaluation scores the student against each background row.
+Signed SHAP values of related features are summed into semantic groups, such as
+\emph{first-semester progress} (units passed, grade and pass rate) and \emph{first-semester
+participation} (units enrolled and evaluated), and the five groups with the largest absolute values
+are displayed. The SHAP budget is \texttt{max\_evals}$\,=67=2\times 33+1$ model evaluations per
+student, which is exactly one forward-and-backward pass over one random feature ordering, the
+smallest budget shap's permutation explainer accepts. Exact TreeSHAP is
+unavailable, as \tabicl is not a tree ensemble. Before the final test, the pipeline was verified:
+SHAP values reconstructed \tabicl's probabilities within $4.1\times10^{-8}$, and on a synthetic
+white-box model the explainer recovered the known feature ranking exactly (Spearman 1.0). Global
+behaviour is summarised by grouped permutation importance and by ALE~\citep{apley2020ale}, which is
+less affected than partial dependence by correlated features.
+
+\subsection{Explanation Audit}
+
+The analysis plan originally scheduled the full audit on 20 validation students. Owing to the project
+timeline, it was instead conducted after the final test on all 544 validation students, using a
+\tabicl refit with the frozen settings. This refit reproduces the frozen model on validation
+(largest probability difference $1.0\times10^{-5}$; all 108 flags identical); it therefore describes
+the tested model, although it constitutes post-hoc evidence rather than a gate passed before the
+final test.
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Faithfulness.} Groups are replaced by training medians or modes in SHAP order and in
+  50 random orders; a positive area between the two cumulative probability-change curves indicates
+  that the SHAP ranking identifies the groups on which the model relies.
+  \item \textbf{Stability.} Each explanation is recomputed 10 times under three variations: a
+  different random seed, a different 25-row background sample and minimal grade perturbations
+  (Gaussian noise of 1\% of the training standard deviation, clipped to the training range and
+  accepted only if the prediction moves by at most 0.01). Stability is the mean pairwise overlap of
+  the top-five groups, since five bars are what an adviser sees; values below 0.80, meaning that more
+  than one of the five reasons typically changes, are flagged as unstable. All 544 students are used
+  so that instability can be counted rather than illustrated.
+  \item \textbf{Constrained recourse.} Features were classified in advance by availability and
+  feasibility: age, nationality, prior qualifications and completed first-semester results remain
+  fixed. For flagged students, only the administrative fields \emph{debtor} and \emph{tuition fees
+  up to date} may change, as these could realistically be resolved, often with institutional help,
+  before the second semester. The smallest such change is deemed to work if the student leaves the
+  top 20\% when re-ranked with all other scores fixed; students without a working change are
+  reported explicitly.
+  \item \textbf{Surrogates and pairs.} Six local linear surrogates (OLS, ridge and lasso, each with
+  and without pair terms) and pairwise group masking assess how additive the model's local behaviour
+  is.
+\end{itemize}
+
+\subsection{Human-Study Analysis}
+
+The pre-specified primary outcome is each participant's accuracy over the ten cases, defined as
+agreement with the model's flag. Group means are reported with 95\% intervals from 10,000 stratified
+bootstrap resamples, and the difference between Group~B and Group~A with its interval, a two-sided
+permutation $p$-value (10,000 label permutations) and Hedges' $g$. With 25 participants per group,
+these comparisons are exploratory. Confidence and self-reported time are analysed in the same way,
+while case-level accuracy, a leave-one-case-out sensitivity analysis and the chart-reading checks
+are reported descriptively.
+
+\subsection{Qualitative Coding}
+
+The 1,500 written answers (50 participants $\times$ 10 cases $\times$ 3 questions) were coded with a
+pre-written codebook, assigning one primary theme per answer before group membership was attached.
+Each support suggestion was additionally rated on four items from the proposal: whether it names a
+concrete next step, whether it could begin before the second semester, who is responsible (the
+student, the institution or both) and whether it asserts an unsupported cause. The planned
+independent double-coding of 20\% of answers was not carried out; inter-coder agreement was
+therefore not measured, and the themes represent a single descriptive coding pass.
