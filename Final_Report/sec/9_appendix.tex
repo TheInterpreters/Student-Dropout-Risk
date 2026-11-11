@@ -70,10 +70,16 @@ report-tooling code.
 \includegraphics[width=\linewidth,trim=0 0 0 25,clip]{deletion_faithfulness_validation.png}\\[2pt]
 {\small (b) Faithfulness on 544 validation students}
 \end{minipage}
-\caption{(a) With 109 slots, recall cannot exceed 0.51. (b) Removing groups in SHAP order (blue) moves the prediction far more than random order (orange).}
+\caption{Capacity-limited recall and precision (a) and deletion faithfulness (b).}
 \label{fig:outreach}
 \label{fig:faithfulness}
 \end{figure}
+
+With 109 slots and 213 test dropouts, recall cannot exceed 0.51 (Figure~\ref{fig:outreach}a), and
+removing groups in SHAP order moves the prediction far more than removing them in random order
+(Figure~\ref{fig:faithfulness}b). Table~\ref{tab:subgroups} reports final-test subgroups (left) and
+validation recall with and without protected attributes (right); gender follows the UCI coding
+(0 = female).
 
 \textbf{Global explanations.} Three global views agree with the local SHAP ranking. Grouped
 permutation importance on 100 validation students (5 repeats) ranks first-semester progress far
@@ -111,7 +117,7 @@ Only students with $\geq$1 first-semester evaluation (frozen model, re-ranked) &
 
 \begin{table}[H]
 \centering
-\caption{Descriptive subgroup diagnostics: final test (left) and validation recall with and without protected attributes (right). --: fewer than 30 students or dropouts; gender 0 = female.}
+\caption{Descriptive subgroup diagnostics (-- = suppressed, fewer than 30).}
 \label{tab:subgroups}
 \footnotesize
 \begin{tabular}{@{}llcccc@{\hspace{18pt}}cc@{}}

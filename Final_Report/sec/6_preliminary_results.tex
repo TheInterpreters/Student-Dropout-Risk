@@ -169,8 +169,8 @@ example, for validation student 174, recording the fees as paid and the debt as 
 estimate from 0.996 to 0.689 and the cohort rank from 87 to 182, outside the 108 slots
 (Appendix~\ref{sec:app-interface}). The
 best local surrogate (lasso with pair terms) approximated \tabicl with a mean absolute error of 0.022
-on held-out masking patterns, indicating that the model's local behaviour is close to additive under
-these perturbations.
+on held-out masking patterns, against 0.073 without pair terms: the model's local behaviour is
+captured well only once pairwise interactions are included.
 
 \textbf{Summing the bars.} SHAP contributions sum by construction to the prediction minus the
 comparison-group average, so all grouped contributions reproduce the ranking exactly. Even the five
@@ -246,7 +246,7 @@ does not establish a benefit. In Group~B, 21 of 25 participants passed both char
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=\linewidth]{human_accuracy_by_case.png}
-  \caption{Accuracy by case and group; only C01 was worse with charts.}
+  \caption{Accuracy by case and group; C01 had lower accuracy with charts.}
   \label{fig:human-case}
 \end{figure}
 

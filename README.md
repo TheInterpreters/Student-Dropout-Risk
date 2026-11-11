@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🎓 Trustworthy Explanations for Student Dropout Risk
+# 🎓 Evaluating the Trustworthiness of Explanations for Student Dropout Risk
 
-### Comparing Black-Box and Interpretable Models for Capacity-Limited Student Support
+### Comparing Black-Box and Interpretable Models
 
 Should a tabular foundation model decide which students a support office contacts first, and can its explanations be trusted? A locked comparison of TabICL with four simpler models, an explanation audit of 544 students and a 50-person human study.
 
@@ -57,11 +57,11 @@ Aye Khin Khin Hpone (Yolanda Lim) st125970 · Nguyen Liem Son (Lucas) st126729 �
 
 | | Finding |
 |---|---|
-| **RQ1: No added value** | TabICL had the highest ROC-AUC (0.957), but it could not be distinguished from XGBoost (Δ 0.001, 95% CI −0.006 to 0.009) or the interpretable EBM (Δ 0.003, −0.007 to 0.014). The transparent EBM is the better choice on this data. |
-| **Precision is not the whole story** | 108 of the 109 flagged test students dropped out, but most flagged students had passed no first-semester units, which staff can already see. Only one in five students can be contacted, so recall is capped at 0.51. |
+| **RQ1: No demonstrated added predictive value** | TabICL had the highest ROC-AUC (0.957), but it could not be distinguished from XGBoost (Δ 0.001, 95% CI −0.006 to 0.009) or the interpretable EBM (Δ 0.003, −0.007 to 0.014). The transparent EBM is the better candidate for further validation on these data. |
+| **Precision is not the whole story** | 108 of the 109 flagged test students dropped out, but on validation data most flagged students (78 of 108) had passed no first-semester units, which staff can already see. Only one in five students can be contacted, so recall is capped at 0.51. |
 | **RQ2: Faithful but unstable** | SHAP explanations point at what the model uses (positive for 536 of 544 students), but the top five reasons often change when the comparison group changes (411 of 544 students below the 0.80 stability threshold). |
 | **Recourse is rare and not causal** | For only 17 of 108 flagged students would clearing fees or debt remove the flag. That is model behaviour, not evidence that paying fees prevents dropout. |
-| **RQ3: Charts did not help** | Participants predicted the flag equally well with and without charts (0.900 vs 0.916; Δ −0.016, −0.060 to 0.032). The charts raised confidence, and on one case they misled people. |
+| **RQ3: No evidence that charts helped** | The study found no evidence that charts improved participants' predictions of the flag (0.900 with vs 0.916 without; Δ −0.016, −0.060 to 0.032). Participants with charts reported greater confidence, while accuracy was lower with charts on one case. |
 
 ---
 
@@ -238,7 +238,7 @@ python scripts/verify_release_readiness.py                # checks every saved n
 
 ## Ethics and Data Privacy
 
-- **Modelling data:** the UCI data is public and anonymised, so no real student records from any institution are used.
+- **Modelling data:** the public UCI file contains anonymised historical records of real Portuguese students with no direct identifiers. No identifiable records, and no AIT student records, are used.
 - **Participants:** 50 adult volunteers gave informed consent. Answers are stored under random codes, and no names are collected.
 - **Private data stays out of Git:** raw responses, the case lookup and the frozen model file are git-ignored and kept in restricted storage. The repository contains aggregate results only.
 - **No automated decisions:** the model only orders a contact list for an adviser. It must never be used to deny support or to target students by protected attributes.

@@ -86,7 +86,8 @@ final test.
   \item \textbf{Faithfulness.} Groups are replaced by training medians or modes in SHAP order and in
   50 random orders; a positive area between the two cumulative probability-change curves indicates
   that the SHAP ranking identifies the groups on which the model relies.
-  \item \textbf{Stability.} Each explanation is recomputed 10 times under three variations: a
+  \item \textbf{Stability.} Each explanation is recomputed 10 times (45 pairwise comparisons per
+  student, a workload still feasible for all 544 students) under three variations: a
   different random seed, a different 25-row background sample and minimal grade perturbations
   (Gaussian noise of 1\% of the training standard deviation, clipped to the training range and
   accepted only if the prediction moves by at most 0.01). Stability is the mean pairwise overlap of

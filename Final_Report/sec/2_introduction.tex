@@ -9,11 +9,12 @@ students and must decide whom to contact first.
 \emph{What the model does.} It assigns each student a dropout-risk score from records the
 university already holds (first-semester results, fees and background) and places the top 20\% on
 a contact list.
-\emph{Main findings.} On past data, the list is accurate: 108 of the 109 flagged test students
-dropped out. However, most flagged students had passed no units at all, which staff can already
-see, and the list still misses about half of the students who later leave, partly because only one
-in five can be contacted. A simpler, fully transparent model performed equally well. The ``reasons'' displayed are useful hints but may change
-when recalculated, and seeing them did not help people predict the model's decision.
+\emph{Main findings.} On past data, the list had very high precision: 108 of the 109 flagged
+test students dropped out. However, on validation data most flagged students had passed no units at all, which
+staff can already see, and the list still misses about half of the students who later leave, partly
+because only one in five can be contacted. A simpler, fully transparent model had comparable
+final-test performance within the paired-bootstrap uncertainty. The ``reasons'' displayed are useful hints but may change
+when recalculated, and there was no evidence that seeing them helped people predict the model's decision.
 \emph{Limitations.} The model was tested only on Portuguese data from students with a known final
 outcome (still-enrolled students were excluded). It does not explain \emph{why} a student is
 struggling or what will help, and it must never be used to deny support.}}

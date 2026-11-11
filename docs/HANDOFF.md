@@ -22,7 +22,7 @@ TASK_SPLIT §4.
 
 - Final project report deadline: **Mon 16 Nov 2026**; the report schedule in
   `docs/TASK_SPLIT.md` supersedes earlier project dates and lists task owners.
-- Final title: **Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and
+- Final report title: **Evaluating the Trustworthiness of Explanations for Student Dropout Risk: Comparing Black-Box and
   Interpretable Models**.
 - Submission files: `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx`
   and the matching `.pdf` (re-exported from the DOCX on 2026-10-27).

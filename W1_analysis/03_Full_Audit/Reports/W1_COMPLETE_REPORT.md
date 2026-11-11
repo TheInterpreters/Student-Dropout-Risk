@@ -97,4 +97,5 @@ Complete computational outputs generated; independent human/team review still ne
 
 ## Source files
 
-All audit outputs reside only in `W1_Noey_Enhanced/outputs/`: `tables/` has local SHAP, deletion, stability, pairwise reference-masking, all recourse scenarios and summary JSON; `figures/` has five charts; `cases/` has the provenance manifest and 544 case-level JSON records. Original Yolanda-produced source/results files are unchanged.
+All audit outputs are in `W1_analysis/03_Full_Audit/` (first generated under
+`W1_Noey_Enhanced/outputs/`): `Tables/` has local SHAP, deletion, stability, pairwise reference-masking, all recourse scenarios and summary JSON; `Figures/` has five charts; `Cases/` has the provenance manifest and 544 case-level JSON records. Original Yolanda-produced source/results files are unchanged.

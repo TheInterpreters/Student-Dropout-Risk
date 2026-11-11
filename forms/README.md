@@ -71,8 +71,8 @@ authorized rebuild is required. They are not a direction to rebuild currently ac
 The real forms, privacy/access controls, live acceptance/export checks and pilot were completed
 before collection. The main study is now complete: 50/50 assigned main participants responded,
 with 25 per group and no exclusions. Quantitative scoring and aggregate report assets are complete;
-see `docs/HUMAN_STUDY_RESULTS.md`. Team qualitative coding and the agreed retention/deletion action
-remain. The canonical CSV, seed/rules and local seal are in ignored `data/human_study/`; do not
+see `docs/HUMAN_STUDY_RESULTS.md`. All 1,500 written answers were coded in a single pass;
+inter-coder agreement was not measured. The canonical CSV, seed/rules and local seal are in ignored `data/human_study/`; do not
 regenerate or replace them. If an authorized rebuild is ever needed, use the runbook above and
 repeat applicable manual settings and acceptance checks.
 
