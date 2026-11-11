@@ -1,6 +1,6 @@
 # Project Handoff — Single Source of Truth
 
-Updated: 2026-11-04. This file replaces the former `MODEL_CARD.md`, `human_study_instrument.md`,
+Updated: 2026-11-11. This file replaces the former `MODEL_CARD.md`, `human_study_instrument.md`,
 `interface_spec.md`, `course_concept_alignment.md`, `proposal_final_audit.md` and `tasks.md`
 (all still recoverable from git history). `README.md` is the public overview;
 `docs/TASK_SPLIT.md` assigns the remaining work to five workstreams.
@@ -30,21 +30,23 @@ TASK_SPLIT §4.
   the PDF after any further DOCX change and re-check the page count.
 - The repository contains only the UCI predictive dataset. The unrelated OfS background-data
   branch has been removed from version control.
-- **63 unit tests pass** in the pinned Python 3.12 environment; separate form checks pass.
+- **94 unit tests pass** in the pinned Python 3.12 environment; separate form checks pass.
   Run `python -m unittest discover -s tests` and `python forms/test_spec.py`.
 - The **single final evaluation is completed** on 545 cases. Preserve the completed
   `artifacts/final_test.lock`; never rerun the final test. Results are in section 8.
-- The full explanation audit was stopped and replaced by an exploratory one-case/two-seed
-  execution check, not explanation-quality certification. The local hashed freeze and deviations
-  are recorded in section 12; independent approval is not claimed.
+- The planned pre-final explanation audit was stopped and replaced by an exploratory one-case/two-seed
+  execution check. A separate validation-only W1 audit later completed all 544 validation cases;
+  it does not retroactively change the original gate or final test.
 - The real 11-case pack, 11 charts and locally sealed canonical assignment exist privately.
   The team reports real-form build, live privacy/acceptance checks, exports and pilot complete
   (4 Nov); pre-collection coordination and private assignment handover are reported complete.
-  Main human-response collection remains outstanding.
+- Human-response collection and quantitative analysis are complete: 50 participants, 25 per group,
+  500 scored case responses and no exclusions. Qualitative coding completed in one coding pass on 11 Nov (independent 20% double-coding not done; agreement not measured).
 
-For an honest status update: model evaluation, private case/chart export and the team's live
-form/privacy/pilot gates are complete; human-response collection and analysis are not. Historical
-schedules and full-audit requirements below are superseded by the accelerated amendment in section 12.
+For an honest status update: model evaluation, the later W1 validation audit, private case/chart
+export, live form/privacy/pilot gates, collection and quantitative study analysis are complete.
+Independent human review of report claims and a second coder for 20% of the written answers remain. Historical schedules and
+pre-final full-audit requirements below are superseded by the timeline recorded in section 12.
 
 ## 2. Scope decision
 
@@ -60,8 +62,8 @@ model are faithful, stable, actionable, fair and useful to a university student-
 - Evidence: deletion faithfulness, repeated-run and perturbation stability, constrained
   counterfactuals, subgroup/proxy diagnostics, two-group forward-simulation study.
 - Unstructured data: only the consented, pseudonymised written responses from the human study,
-  linked by pseudonymous participant and case IDs. Participants are voluntary AIT community
-  members assessing UCI cases; no AIT student records are collected.
+  linked by pseudonymous participant and case IDs. Participants are adult volunteers
+  recruited by team members, assessing UCI cases; no AIT student records are collected.
 
 There is **no external review corpus and no second predictive dataset**. The old
 `final.csv`/BERTopic branch is archived and must not supply claims, figures or findings.
@@ -192,24 +194,58 @@ Current checklist under the accelerated amendment (section 12):
   acceptance outcomes are not recorded here; this is not an independent live audit.
 - [x] **Pre-collection arrangements (team-reported complete 4 Nov)**: the team reports the form,
   consent/privacy, response-access/export and pilot gates complete.
-- [ ] **Main human study** (§6): recruit and consent participants; target 50 (10 per team member;
-  minimum 40, at least 18 per group); run 1 practice + 10 scored cases; log actual counts and
-  exclusions; code responses (20% double-coded); analyse accuracy and self-reported time descriptively.
+- [x] **Main human-study collection and quantitative analysis (11 Nov)**: all 50 assigned main
+  participants completed (25/25 groups), with 500 scored case responses and no exclusions.
+  Aggregate scoring, bootstrap/permutation comparisons, case/flag summaries and privacy-safe figures
+  are complete in `tables/human_study/`, `figures/human_study/` and `docs/HUMAN_STUDY_RESULTS.md`.
+- [x] **Qualitative coding (single pass, 11 Nov)**: all three free-text fields coded with the codebook
+  plus the section 5.7 intervention ratings; aggregate tables in `tables/report_ready/human_study_theme_*`
+  and `human_study_intervention_flags_by_group.csv`; results in `docs/HUMAN_STUDY_RESULTS.md`.
+- [ ] **Second coder (optional) and retention**: independent 20% double-coding was not done, so agreement
+  is not measured (deviation); private data must still be deleted on the retention date.
 - [x] **Clean-clone/evidence verification (4 Nov)**: 62 unit tests, four form variants and all
   22 saved final-evidence hashes passed; protocol hash matched the manifest and lock. The
   once-only final evaluation was not rerun. This clean-clone run preceded the later tag-mode
-  bundle-hash regression test; the current local suite has 63 passing tests.
-- [ ] Optional sensitivity checks (Enrolled handling; admission-time window).
-- [ ] Hygiene: do not rerun or tune on the final test; keep raw responses out of version control;
-  verify all 63 unit tests and separate form checks in `.venv-core`;
-  keep repo scope clean (no OfS/text-analysis material); keep DOCX, README
-  and this file in sync and re-export the PDF after every DOCX change.
+  bundle-hash, workbook, privacy and demo-card regressions; the current local suite has 97 passing tests (11 Nov, after coding, report-tooling, interface, what-if and TA-feedback tests).
+- [x] **Optional sensitivity checks (11 Nov; exploratory, validation-only, not used for model
+  selection).** Admission-time window: `tables/temporal_window_validation_metrics.csv`.
+  TA feedback checks: `python scripts/run_ta_feedback_checks.py` (saved cases, no model run) and
+  `python scripts/run_no_protected_sensitivity.py` (refit without protected attributes: ROC-AUC
+  0.9521 → 0.9503, 103/108 flags unchanged, gender recall gap 0.19 → 0.10); summary and report
+  wording in `docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md`.
+  Enrolled handling: `python scripts/run_enrolled_sensitivity.py` → `tables/sensitivity/`.
+  Enrolled rows (794, never in `split_ids.csv`) were split 70/15/15 with seed 42; only the 70% and
+  15% shares were used, and the test split was not touched. (A) The frozen model scored the
+  119-student Enrolled validation share at median 0.354 (graduates 0.064, dropouts 0.990). If those
+  students share the validation cohort, the 20% rule flags 7 of 132 of them (5%, although they are
+  18% of the cohort). With the slot count held at 108, 3 slots move to Enrolled students and
+  validation dropout recall falls from 0.507 to 0.493. (B) Grouping Enrolled with non-dropout:
+  the frozen model's ROC-AUC on the grouped validation set is 0.924 (0.952 on binary validation);
+  a TabICL refit on the grouped target reaches 0.929 with Brier 0.085 (frozen 0.111), and logistic
+  regression 0.925. Enrolled flags are neither right nor wrong (outcomes unresolved), and grouping
+  them as non-dropout is an assumption. Three-class modelling was not run.
+- [x] **W5.1 static demo card (11 Nov):** `python scripts/build_demo_card.py` →
+  `figures/demo_card/`. One validation student (row 916; middle-ranked flagged case, excluding the
+  practice case), frozen model, frozen SHAP settings; the script refuses study cases and shows no
+  recourse advice.
+- [x] **W1 reproducibility (11 Nov):** `W1_analysis/03_Full_Audit/Code/topics/run_all.py` reruns
+  from the saved 544 cases in seconds and regenerates every topic table byte-identically (UTF-8
+  fix applied for Windows). The heavy audit scripts are archived (original `W1_Noey_Enhanced/`
+  layout). W1 explains a **refit** with the frozen settings, not the frozen model bundle. That refit
+  reproduces the frozen model on all 544 validation students (max probability difference 0.00001;
+  108/108 flags identical; `artifacts/w1_refit_identity.json`). See `W1_analysis/README.md`.
+- [x] **Qualitative-coding tooling (11 Nov):** `assign_human_coding.py` now has `reconcile`
+  (agreed codes, adjudication sheet for disagreements) and a by-group/by-flag `summary`; dry-run on
+  synthetic data passed. Real coding is blocked only on the private `data/human_study/send_log.csv`.
+- [x] Hygiene: the raw workbook and row-level responses remain outside version control; the final
+  test was not rerun; current unit/form checks and aggregate manifests are verified. Keep the final
+  report, README and this file synchronized when report preparation begins.
 
 ## 6. Human-study protocol
 
 The three free-text fields collected here are the project's only unstructured data (criterion 5:
-explanation vs no explanation, forward simulation). Participants are voluntary AIT community
-members assessing pseudonymised UCI cases; unless they are support professionals they are
+explanation vs no explanation, forward simulation). Participants are adult volunteers recruited
+by team members, assessing pseudonymised UCI cases; unless they are support professionals they are
 intended-user proxies, so the study evaluates comprehensibility, not model validity or
 effectiveness at AIT.
 
@@ -367,12 +403,13 @@ not marked passed; no further model evaluation is needed.
 
 ## 8. Model card — student dropout early-warning model
 
-**Status (2 Nov, final evaluation completed).** The five frozen models were evaluated once on
-545 held-out cases using the owner-authorized local hashed freeze. The completed final-test lock
-prevents reruns. This was an accelerated protocol deviation without independent approval:
-the full explanation audit was replaced by a one-case smoke check, and live form acceptance
-was incomplete. These limitations must accompany reported results. The policy ranks each cohort
-and flags at most the top 20%.
+**Status (updated 11 Nov).** The five frozen models were evaluated once on 545 held-out cases
+under the owner-authorized local hashed freeze (2 Nov); the completed final-test lock prevents
+reruns. That evaluation was an accelerated protocol deviation without independent approval: the
+pre-final explanation audit was replaced by a one-case smoke check and live form acceptance was
+incomplete at the time. Since then, a full 544-case validation explanation audit (11 Nov, post-final,
+on a refit verified to match the frozen model), the 50-participant human study, an Enrolled-handling
+sensitivity check and a validation-only demo card have been completed. The written answers were coded in a single pass (agreement not measured). The policy ranks each cohort and flags at most the top 20%.
 
 **Intended use.** Decision support for a student-support officer prioritising voluntary outreach
 after first-semester results. Not an autonomous decision system; must not be used to deny
@@ -413,16 +450,34 @@ XGBoost has the lowest point-estimate Brier score; EBM has the highest capacity 
 Do not select or tune a different model after seeing the held-out results. Full tables, 2,000-resample
 paired intervals, reliability plots and descriptive subgroup/proxy screens are in `tables/final_test/`.
 
-**Explanation evidence.** Permutation SHAP (25 background rows, 67 evaluations) reconstructed
-probabilities within 4.1e-8 on two validation cases (artifact max 3.2e-8); synthetic white-box
-rank Spearman 1.0. EBM intercept plus main effects reconstruct validation probabilities within
-3.3e-16 (intrinsic reference). There are 33 input features; the configured `max_evals=67` is
-`2 × 33 + 1`, the permutation explainer's evaluation budget per case, not 67 cases. This budget
-choice is not evidence that the attributions are stable or sufficiently precise. The accelerated
-smoke check produced top-five overlap 0.8 on one validation case across two seeds; this is an
-execution check, not a general stability estimate. Full deletion/faithfulness, multi-case,
-background/perturbation stability and constrained-recourse audits were omitted, not passed.
-Human-study results do not exist yet.
+**Explanation evidence (integration checks, pre-final).** Permutation SHAP (25 background rows,
+67 evaluations) reconstructed probabilities within 4.1e-8 on two validation cases (artifact max
+3.2e-8); synthetic white-box rank Spearman 1.0. EBM intercept plus main effects reconstruct
+validation probabilities within 3.3e-16 (intrinsic reference). There are 33 input features;
+`max_evals=67` is `2 x 33 + 1`, the explainer's evaluation budget per case, not 67 cases. For shap's
+PermutationExplainer this is exactly one forward-and-backward permutation, the minimum allowed, so seed
+instability may partly reflect the budget; a larger-budget rerun was not done (see
+`docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md`). Grouped
+permutation importance and ALE are in `tables/`.
+
+**Explanation audit (W1, post-final, validation only; `W1_analysis/`).** Run after the final test on
+all 544 validation students (the proposal planned 20) with a TabICL refit using the frozen settings.
+The refit reproduces the frozen model on validation: largest probability difference 0.00001 and
+108/108 identical flags (`artifacts/w1_refit_identity.json`). Report it as post-hoc evidence, not a
+pre-final gate that passed.
+- *Faithfulness:* SHAP-ranked deletion vs 50 random group orders; mean ranked-minus-random area 1.557
+  (95% bootstrap interval 1.476 to 1.643), positive in 536/544 cases. This shows model reliance on the
+  ranked groups under training-reference masking, not causal effects.
+- *Stability (mean top-five overlap; 0.80 warning level):* seed 0.818 (213/544 cases below 0.80),
+  background sample **0.745 (411/544 below; below the warning level)**, small grade perturbations
+  0.996 (0 below). Background choice is the main source of instability; show this, do not hide it.
+- *Most influential groups (mean absolute grouped SHAP):* first-semester progress 0.277,
+  first-semester participation 0.053, tuition fees up to date 0.051, course 0.042, scholarship 0.019.
+- *Recourse (debtor/tuition only, rank-based):* 17 of 108 flagged students have a feasible
+  administrative change that moves them out of the top 20%; 91 have none.
+- *Surrogates:* six local surrogates approximate TabICL on held-out masked inputs; the lowest pooled
+  holdout MAE is 0.0224 (Lasso with pairs). This measures approximation of TabICL, not outcome
+  accuracy. The log records 579 convergence warnings across 342 cases' surrogate fits.
 
 **Fairness and limitations.** Retain subgroup counts, suppress metrics below n=30, report the
 all-feature proxy screen. Single institution; may not transfer across countries or time.
@@ -434,38 +489,81 @@ permit descriptive subgroup/proxy audits, not because they are established as ap
 criteria. These analyses do not authorize prioritising real students by protected status; that
 would require a separate, justified and governed decision and further evaluation. Small-group
 performance metrics are suppressed in the tables; cross-country/generalisation claims remain
-unsupported. Human-response collection/analysis remain outstanding. Clean-clone/evidence
-verification completed 4 Nov without rerunning the final test. The team reports the live
-form/privacy/export checks and pilot complete (4 Nov).
+unsupported. Clean-clone/evidence verification completed 4 Nov without rerunning the final test.
 
-**Recourse and human-study interpretation for reporting.** Fee/debtor status is an administrative feature that can reflect financial circumstances. The
-dataset's association between fee status and a later Dropout label does not establish causal
-direction: financial difficulty may affect fee status, fee status may be a marker of other
-circumstances, and the label records a later outcome. A change to a model score after changing this
-feature is not evidence that paying fees prevents dropout, is feasible for a student, or should be
-recommended. The full constrained-recourse audit was omitted. In the planned human study,
-participants guess the model's hidden flag; Group B additionally sees directions and relative sizes
-of contribution bars, while numeric probabilities, base values and output labels are hidden. The
-bars may still help participants infer the flag; whether they can reconstruct it is an empirical
-question, not an assumed finding. Thus the study tests participants' ability to anticipate model
-outputs from profiles with or without charts; it does not establish support-officer effectiveness,
-better interventions or student outcomes. The study is not yet complete; report findings only after
-actual data collection and analysis.
+**Enrolled sensitivity (W3.7, 11 Nov; exploratory, validation only, not used for model selection;
+`tables/sensitivity/`).** The frozen model scores Enrolled students between the two labelled groups
+(median 0.354 vs graduates 0.064 and dropouts 0.990). If an Enrolled share joins the validation
+cohort, it receives 7 of 132 flags (5%) despite being 18% of the cohort; with slots fixed at 108,
+3 move to Enrolled students and dropout recall falls from 0.507 to 0.493. Grouping Enrolled with
+non-dropout lowers the frozen model's ROC-AUC from 0.952 to 0.924; a grouped-target refit reaches
+0.929 (Brier 0.085 vs 0.111). Enrolled flags are neither right nor wrong (outcomes unresolved). A
+three-class model was not run.
+
+**Decision-support demonstration (W5.1).** `figures/demo_card/demo_card_validation.png`: one
+validation student (not a study case), frozen model and SHAP settings, labelled estimate, five
+largest contributions and limitations, deliberately without recourse advice.
+
+**Local research interface (reduced section 5.6, added 11 Nov).** `python scripts/launch_interface.py`
+builds and opens `interface/student_support_demo.html`: a self-contained page for 543 validation
+students (practice/study cases refused, test split never read) showing outreach status and cohort rank
+(with a risk-curve chart marking the top-20% cut-off, the student and any fee/debt rank changes), a
+stability chart against the 0.80 warning line,
+the five largest grouped SHAP contributions, that student's W1 stability warning (below 0.80), the
+debtor/tuition recourse check labelled as model behaviour rather than advice, adviser topics and an audit
+panel (model hash, protocol 1.3.0, split, refit identity). Invalid saved cases are rejected, not repaired.
+Scores come from the W1 refit (frozen model within 0.00001, 108/108 identical flags). The saved page has
+no live inference (the optional what-if mode below runs the frozen model locally) and no blinded-study mode, was built after the study and was not evaluated with users
+(deviations D5/D8 narrowed accordingly).
+
+**What-if mode** (`python scripts/launch_interface.py --what-if`): a local server on 127.0.0.1 loads the frozen model (hash-checked against the lock) and re-predicts a validation student after edits to first-semester results or fee/debt/scholarship status only; demographic and family fields are fixed. Inputs must be consistent and within the train/validation range or are rejected; rank is recomputed against the other 543 frozen scores; an optional fresh explanation takes a few seconds. Speed: TabICL has no weights trained on this data, so each uncached prediction re-reads all training students as context (about 9 s on CPU even for one student). At startup the server builds TabICL's own in-memory key-value cache of that context (the model file is unchanged) and uses it only if it reproduces the frozen cohort (largest gap 0.000011, identical ranking); a prediction then takes about 0.05 s. Re-audit with the cache (11 Nov): all 104 saved fee/debt scenario predictions match (largest gap 0.0000041, same ranks) and recomputed explanations for students 174 and 916 match the saved ones within 0.000001. Nothing is saved, nothing is retrained and the test split is never read. What-if results have no stability audit or fee/debt check and describe model responses, not effects on students. Audit (11 Nov): all 27 saved fee/debt recourse scenarios reproduce through the what-if mode (largest probability difference 0.0000034, same ranks), 16 unchanged students (including ranks 107-110) return their saved rank, flag and score, and recomputed explanations for students 174 and 916 equal the saved ones. Live inference goes beyond proposal section 5.6, which planned precomputed outputs only; report it as an added local demonstration feature. Page features for first-time readers: a how-to panel, numbered question headings, example and previous/next navigation, hover tooltips (curve, bars, stability, field help) and per-field units, recorded values and input checks.
+
+**Recourse and human-study interpretation for reporting.** Fee/debtor status is an administrative
+feature that can reflect financial circumstances. The dataset's association between fee status and a
+later Dropout label does not establish causal direction: financial difficulty may affect fee status,
+fee status may be a marker of other circumstances, and the label records a later outcome. A change
+to a model score after changing this feature is not evidence that paying fees prevents dropout, is
+feasible for a student, or should be recommended.
+
+**Human study (forward simulation; completed 11 Nov; `docs/HUMAN_STUDY_RESULTS.md`).** 50 adult
+volunteers (25 profiles only, 25 profiles plus contribution charts), all consented and completed;
+no exclusions. Participants guessed the model's hidden flag for 10 cases (5 flagged, 5 not); Group B
+also saw bar directions and relative sizes, never probabilities or labels.
+- *Accuracy (agreement with the model's flag):* 0.916 profiles only vs 0.900 with charts; difference
+  -0.016 (95% bootstrap interval -0.060 to 0.032; exploratory permutation p = 0.61). No accuracy
+  benefit from the charts was shown.
+- *Confidence:* 0.208 points higher with charts (interval 0.016 to 0.416, exploratory).
+- *Time (self-reported total):* -3.2 minutes with charts (interval -8.72 to 2.04).
+- *Case C01* (not flagged): 0.20 accuracy with charts vs 0.60 without. Leaving C01 out changes the
+  difference to +0.027 (interval -0.013 to 0.076), still inconclusive. On unflagged cases overall,
+  accuracy was 0.808 with charts vs 0.864 without.
+- *Chart comprehension:* 21/25 Group B participants answered both practice chart checks correctly.
+- *Written answers (single coding pass; agreement not measured):* with charts, 72% of rationales cited
+  the chart; without, answers cited academic results or several factors. Suggestions were mostly academic
+  support, financial/fee help (flagged cases) or no action (unflagged); 76% named a concrete step and
+  2.8% asserted an unsupported cause. Participants most wanted attendance/enrolment status and work or
+  family circumstances.
+
+The study measures whether proxy users can anticipate the model's output. It does not establish
+support-officer effectiveness, better interventions, student outcomes or deployment suitability.
 
 **Final-report framing (notes, not the final report).** Start with the practical question in plain
 language: whether a model can help prioritise a limited number of voluntary support contacts after
 first-semester results. Define the cohort and outcome (Dropout versus Graduate; Enrolled excluded),
 explain that the 20% rule means selecting up to one fifth of a cohort for outreach, then state the
-central result and its eligibility/recall caveat. Separate completed model evaluation and smoke
-checks from omitted explanation audits, team-reported completed live acceptance, and any human
-study not yet completed. Avoid protocol jargon on page one; do not imply that retrospective metrics certify
+central results: (1) TabICL is not shown to beat simpler models, and the interpretable EBM is
+statistically indistinguishable; (2) explanations rely on the ranked features but vary with the
+background sample; (3) charts raised confidence without raising accuracy. Keep model, audit and
+human-study evidence separate (proposal section 9), and disclose the deviations in TASK_SPLIT
+section 8. Avoid protocol jargon on page one; do not imply that retrospective metrics certify
 real-world use.
 
 ## 9. Course-criteria alignment
 
 The tables below retain the original evidence plan, not a list of completed findings.
 Full faithfulness, multi-case stability and constrained-recourse audits were omitted under
-the accelerated amendment. Human usefulness is pending the study; subgroup/proxy screens
+the accelerated amendment (a later post-final 544-case validation audit is reported in section 8).
+The human study is complete (section 8; `docs/HUMAN_STUDY_RESULTS.md`); subgroup/proxy screens
 are descriptive and do not certify fairness. Do not present implemented helpers or planned
 analyses as empirical evidence.
 
@@ -520,7 +618,7 @@ data confirmed every quoted figure.
 | Model and baseline | §5.1: five models, one frozen split, one final same-test-set comparison | Complete; single final test completed and locked |
 | Faithfulness | §5.2: signed group SHAP, grouped deletion, 50 random orders, white-box check | Complete design; integration evidence |
 | Stability | §5.3: label-free five-stratum validation cases, 10 runs, 0.80 warning | Complete design |
-| Human evidence | §5.4, §5.7: blinded two-group study, practice case, 10 cases, coding | Complete design; recruitment pending |
+| Human evidence | §5.4, §5.7: blinded two-group study, practice case, 10 cases, coding | Completed 11 Nov: 50 participants (25/25), single-pass coding (agreement not measured) |
 | Actionability | §5.5: immutable vs feasible; exact cohort reranking | Complete design and implementation |
 | Complexity | §7: non-decomposable TabICL vs exactly additive EBM | Complete |
 | Ethics and data handling | §6: licence, consent, class-level ethics, suppression, proxies, safeguards | Complete |
@@ -630,16 +728,13 @@ Per-check evidence for the current build is retained with the study materials, n
 **Corrections/improvements applied:** task-level completion/remaining-work attribution, omitted
 audit disclosure, prospective rather than fabricated completed human methods, current no-rerun
 instructions, canonical-assignment overwrite warnings and explicit approval for instrument changes.
-The frozen builder still contains historical `DECISIONS_PENDING`/placeholder annotations; the
-fixture check reports 22 TBD markers and nine decision entries. These are not nine independently
-verified open decisions or a live-readiness pass. The team reports the real-form/privacy/export
-checks and pilot complete (4 Nov); retain the live acceptance evidence separately without silently
-editing the frozen scientific inputs.
+The current builder records nine settled design decisions and fails validation if unresolved TBD or
+placeholder text enters the form specification. Study builds require every chart image before any
+form is created. The original pre-final frozen snapshot remains unchanged under `data/local_freeze/`.
 
-**Next:** recruitment, response collection and analysis if the schedule allows. The team reports
-pre-collection coordination, form/privacy/export gates and pilot complete; remaining independent
-scoring/coding review, static demo, actual collection/coding/analysis, final
-report/slides and retention-date deletion remain pending. This local audit did not independently
+**Next:** collection and quantitative analysis are complete. Remaining work is independent claim
+review, optional second coding of 20% of written answers, the final report/slides and retention-date deletion.
+This local audit did not independently
 reverify live sharing/settings.
 
 ### Historical execution notes (superseded by the completion record above)
@@ -791,13 +886,13 @@ validation dry-run outputs. Existing live forms have autosave disabled.
 Current material status (supersedes the earlier preparation check): the real pack, saved fitted
 model, completed final-test lock and 11 genuine charts now exist and verify. The team reports the
 real forms, privacy/export acceptance checks and one-person pilot complete (4 Nov). Clean-clone/
-evidence verification was completed separately on 4 Nov. Human-response collection remains pending.
-The canonical private
+evidence verification was completed separately on 4 Nov. Human-response collection and quantitative
+analysis completed on 11 Nov; qualitative coding completed in one coding pass on 11 Nov (independent 20% double-coding not done; agreement not measured). The canonical private
 `data/human_study/assignment_list.csv` now exists with private seed/rules and local seal.
 Do not rename fixtures as study
 material or repeat the final evaluation.
 
-**Live-form and pilot gates reported complete; participant collection remains pending.** Preserve
+**Live-form, pilot, collection and quantitative-analysis gates are complete.** Preserve
 the exact sealed assignment for links and transformation; do not regenerate or switch lists. Keep
 the private lookup restricted to the designated scorer and maintain the response-sheet access
 controls. The full audit was omitted under the amendment, not deferred as a mandatory launch gate.
@@ -806,11 +901,11 @@ controls. The full audit was omitted under the amendment, not deferred as a mand
 
 | Member | Code ready for review | Next real action |
 |---|---|---|
-| Noey (W1) | Accelerated runner, smoke check and limitation note completed by Yolanda | Review/incorporate W1.5 note into final report: full audits omitted, single-case overlap not general stability; no mandatory long rerun |
-| Han (W2) | Provenance, source-tab identity, duration and closed-form safeguards in `forms/` | Preserve the completed live acceptance evidence; coordinate any remaining wording/export corrections before distributing links |
+| Noey (W1) | Later 544-case validation audit and report package complete | Independently review W1 claims and ensure the report distinguishes the later refit audit from the pre-final gate |
+| Han (W2) | Provenance, source-tab identity, workbook ingestion, duration and closed-form safeguards in `forms/` | Review the completed instrument and C01 interface finding for the methods/limitations section |
 | Yolanda (W3) | Final evaluation, pack/charts, model card and local verification completed | Hand over pack/charts privately and lookup only to scorer; support independent review. Preserve freeze/model/lock; never repeat final evaluation |
-| Harry (W4) | Private scoring/coding interfaces below | Maintain restricted Drive/Sheet access; confirm retention/deletion plan, complete send-out kit and codebook/training, recruit and track counts without names beside codes |
-| Lucas (W5) | `scripts/analyze_human_study.py`, `scripts/assign_human_coding.py`; genuine charts and locally sealed canonical assignment | Acknowledge private list/seed/hash handover with Harry; complete the remaining independent scoring/coding review and static demo; never rerun the final test |
+| Harry (W4) | Completed private transformation/scoring plus coding interfaces below | Maintain restricted storage; coordinate codebook training, qualitative coding/agreement and retention/deletion |
+| Lucas (W5) | Aggregate human-study analysis, report assets and assignment/coding tools | Independently review quantitative results and assist with qualitative coding/agreement; never rerun the final test |
 
 ### Safe checks and optional validation regeneration (not a new freeze)
 
@@ -914,11 +1009,13 @@ that same CSV for the Apps Script links and use it for all later response export
 lists after links are distributed. See `forms/README.md` for chart/settings preflight and cleanup.
 
 Each response Sheet tab must be identified from its actual form, **not the participant code**.
-Required `--variants` entries correspond one-for-one to export paths:
+The completed study used the original workbook with explicit sheet-to-variant mapping:
 
 ```powershell
-python forms/transform_responses.py A1.csv A2.csv B1.csv B2.csv --variants A1 A2 B1 B2 --assignment data/human_study/assignment_list.csv --spec forms/out/form_spec.json --label dummy
-python scripts/analyze_human_study.py forms/out/responses_long_dummy.csv --participants forms/out/responses_participants_dummy.csv --private data/study_cases/private_lookup_study.json --label dummy
+python forms/transform_responses.py --workbook data/human_study/scoring_private/exports/response_sheet_study.xlsx --sheets "Form Responses 1" "Form Responses 2" "Form Responses 3" "Form Responses 4" --variants A1 A2 B1 B2 --assignment data/human_study/assignment_list.csv --spec data/human_study/scoring_private/form_spec.json --label study --out-dir data/human_study/analysis
+python scripts/analyze_human_study.py data/human_study/analysis/responses_long_study.csv --participants data/human_study/analysis/responses_participants_study.csv --private data/human_study/scoring_private/private_lookup_study.json --label study --out data/human_study/analysis
+python scripts/build_human_study_report.py --scored data/human_study/analysis/scored_study.csv --people data/human_study/analysis/participants_study.csv --participants data/human_study/analysis/responses_participants_study.csv --private data/human_study/scoring_private/private_lookup_study.json
+python scripts/build_report_assets.py
 python scripts/assign_human_coding.py assign forms/out/responses_long_dummy.csv --send-log data/human_study/send_log.csv --members M1 M2 M3 M4 M5 --label dummy
 python scripts/assign_human_coding.py agreement --assignments data/human_study/coding/assignments_dummy.csv --coded data/human_study/coding/completed_dummy.csv --label dummy
 ```
