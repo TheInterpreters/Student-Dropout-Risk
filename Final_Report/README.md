@@ -13,5 +13,5 @@ pdflatex -interaction=nonstopmode -halt-on-error main.tex
 pdflatex -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-Use `../docs/REPORT_PREPARATION_BRIEF.md` and `../tables/report_ready/project_numbers.json` when
+Use `../docs/report_notes/REPORT_PREPARATION_BRIEF.md` and `../tables/report_ready/project_numbers.json` when
 writing. Do not rerun the final test or introduce claims not supported by the saved aggregate files.

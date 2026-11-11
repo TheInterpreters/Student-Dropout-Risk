@@ -315,7 +315,7 @@ slides exist, have been reviewed or rehearsed.
 
 **TA feedback response plan (4 Nov; final project report deadline: Mon 16 Nov 2026).**
 Update 11 Nov: the numbers and wording for every point below are collected in
-`docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md` (each point marked [DOC] for the final report or [CODE] for
+`docs/report_notes/TA_FEEDBACK_FINAL_REPORT_NOTES.md` (each point marked [DOC] for the final report or [CODE] for
 analyses run: flag composition, bar sums, and a refit without protected attributes). The larger-SHAP-
 budget rerun was skipped; report the budget as a limitation. The unticked boxes below are report-writing
 tasks. Where the boxes below say a stability, faithfulness or recourse audit was "omitted", that was true

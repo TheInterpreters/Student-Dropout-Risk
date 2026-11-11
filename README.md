@@ -109,7 +109,11 @@ No external review corpus and no second predictive dataset are part of the curre
 - `docs/HANDOFF.md` — the single internal document (start here): status, methodology,
   task list, human-study protocol, study instrument (Google Forms), model card, criteria alignment, audit
 - `docs/TASK_SPLIT.md` — current report plan to 16 Nov: five workstreams, shared report/slides track, dependencies, fair-share hours, recruitment
-- `eda_uci_data/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env)
+- `docs/workstreams/` — per-workstream notes (W2 study forms; W5 assignment list, images and demo card)
+- `docs/report_notes/` — report-writing notes (claims brief, TA feedback mapping)
+- `scripts/README.md` — index of all scripts by stage, with run order
+- `notebooks/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env; the data file stays in
+  `eda_uci_data/data/`, which the frozen pipeline reads)
 - `notebooks/uci_tfm_baseline.ipynb` — executable modeling/split overview
 - `scripts/run_core.py` — regenerate validation-only baseline metrics
 - `scripts/run_tfm_feasibility.py` — rerun the TFM feasibility gate
@@ -122,7 +126,7 @@ No external review corpus and no second predictive dataset are part of the curre
 - `docs/human_study_response_template.csv` — ratings/response schema for the human study
 - `tables/human_study/` and `figures/human_study/` — aggregate completed-study results
 - `tables/report_ready/` and `figures/report_ready/` — centralized later-report assets
-- `docs/REPORT_PREPARATION_BRIEF.md` — report claims, asset map and remaining non-report work
+- `docs/report_notes/REPORT_PREPARATION_BRIEF.md` — report claims, asset map and remaining non-report work
 - `docs/QUALITATIVE_CODEBOOK.md` — finalized primary-theme codes and coding workflow
 - `scripts/build_human_study_report.py` — privacy-safe quantitative study analysis
 - `scripts/build_report_assets.py` — regenerate aggregate report tables and figures without model inference
@@ -134,7 +138,7 @@ No external review corpus and no second predictive dataset are part of the curre
   108 flags are, a "passed zero units" rule, top reasons, adding up the bars); no model run
 - `scripts/run_no_protected_sensitivity.py` — TA feedback: validation-only refit without the six protected
   attributes, against an all-feature refit control (output in `tables/sensitivity/no_protected_*`)
-- `docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md` — each TA point marked [DOC] or [CODE], with the numbers
+- `docs/report_notes/TA_FEEDBACK_FINAL_REPORT_NOTES.md` — each TA point marked [DOC] or [CODE], with the numbers
   to use in the final report
 - `scripts/check_w1_refit_identity.py` — confirms W1's refit matches the frozen model on validation
   (`artifacts/w1_refit_identity.json`: max difference 0.00001, 108/108 flags identical)

@@ -212,7 +212,7 @@ Current checklist under the accelerated amendment (section 12):
   TA feedback checks: `python scripts/run_ta_feedback_checks.py` (saved cases, no model run) and
   `python scripts/run_no_protected_sensitivity.py` (refit without protected attributes: ROC-AUC
   0.9521 → 0.9503, 103/108 flags unchanged, gender recall gap 0.19 → 0.10); summary and report
-  wording in `docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md`.
+  wording in `docs/report_notes/TA_FEEDBACK_FINAL_REPORT_NOTES.md`.
   Enrolled handling: `python scripts/run_enrolled_sensitivity.py` → `tables/sensitivity/`.
   Enrolled rows (794, never in `split_ids.csv`) were split 70/15/15 with seed 42; only the 70% and
   15% shares were used, and the test split was not touched. (A) The frozen model scored the
@@ -457,7 +457,7 @@ validation probabilities within 3.3e-16 (intrinsic reference). There are 33 inpu
 `max_evals=67` is `2 x 33 + 1`, the explainer's evaluation budget per case, not 67 cases. For shap's
 PermutationExplainer this is exactly one forward-and-backward permutation, the minimum allowed, so seed
 instability may partly reflect the budget; a larger-budget rerun was not done (see
-`docs/TA_FEEDBACK_FINAL_REPORT_NOTES.md`). Grouped
+`docs/report_notes/TA_FEEDBACK_FINAL_REPORT_NOTES.md`). Grouped
 permutation importance and ALE are in `tables/`.
 
 **Explanation audit (W1, post-final, validation only; `W1_analysis/`).** Run after the final test on
@@ -634,7 +634,7 @@ task in §5 is complete.
 **Map.** `README.md` (public overview) · this file · `config/evaluation_protocol.json` (frozen
 protocol) · `src/` (`modeling.py`, `explanations.py`, `auditing.py`) · `scripts/` (validation and
 audit runners) · `tests/` · `tables/` and `artifacts/` (validation evidence) ·
-`eda_uci_data/eda_dropout.ipynb` and `notebooks/uci_tfm_baseline.ipynb` ·
+`notebooks/eda_dropout.ipynb` and `notebooks/uci_tfm_baseline.ipynb` ·
 `docs/human_study_response_template.csv` · the proposal DOCX and PDF.
 The submission DOCX is edited directly (only the appointed report editor; every workstream writes its own section and slides, see `docs/TASK_SPLIT.md` §5). The old
 builder `scripts/finalize_proposal_docx.py` and `docs/proposal_source.docx` were removed on
