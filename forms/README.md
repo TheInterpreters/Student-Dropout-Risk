@@ -9,7 +9,8 @@ live acceptance/export checks and pilot are complete. This repository page does 
 individual acceptance results; retain those records with the study materials. The build and test
 commands below are runbook/reproduction instructions, not outstanding live tasks. Do not rebuild,
 replace the canonical assignment, or change live response settings as part of routine documentation
-work. Human-response collection and analysis remain separate, pending work.
+work. Response collection (50 participants) and analysis were completed on 11 Nov; see
+`docs/HUMAN_STUDY_RESULTS.md`.
 
 ## Files
 - `build_spec.py`: builds the fixture case pack, the four form specs (A1, A2 = Group A; B1, B2 = Group B)

@@ -210,6 +210,10 @@ def coding_assets():
             table.to_csv(TABLE_OUT / f"human_study_{name.replace('_study', '')}.csv",
                          index=False, float_format="%.4f")
             found[name] = True
+        elif (TABLE_OUT / f"human_study_{name.replace('_study', '')}.csv").is_file():
+            # Clean clone: the private coding folder is absent, but the committed aggregate copy
+            # is the evidence, so the status must not regress to "pending".
+            found[name] = True
     if not any(name in found for name in required):
         return {"status": "pending"}
     if not all(name in found for name in required):

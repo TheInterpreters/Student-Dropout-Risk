@@ -76,7 +76,16 @@ def main():
 
     # Qualitative coding is reported as a status, not a pass/fail gate, until the team completes it.
     coding_dir = ROOT / "data" / "human_study" / "coding"
-    if not (coding_dir / "theme_by_group_study.csv").is_file():
+    committed = ROOT / "tables" / "report_ready"
+    if not (coding_dir / "theme_by_group_study.csv").is_file() and (
+            committed / "human_study_theme_by_group.csv").is_file():
+        # Clean clone: private coding files are absent; judge from the committed aggregate copies.
+        coding_dir = None
+    if coding_dir is None:
+        coding_status = ("completed with measured inter-coder agreement"
+                         if (committed / "human_study_agreement.csv").is_file()
+                         else "completed in a single pass; inter-coder agreement not measured")
+    elif not (coding_dir / "theme_by_group_study.csv").is_file():
         coding_status = "pending: assignments generated; coding not done"
     elif (coding_dir / "agreement_study.csv").is_file():
         coding_status = "completed with measured inter-coder agreement"

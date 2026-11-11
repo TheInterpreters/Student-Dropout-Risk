@@ -1,259 +1,273 @@
-# Trustworthy Explanations for Student Dropout Risk: Comparing Black-Box and Interpretable Models
+<div align="center">
 
-## The Interpreters
+# 🎓 Trustworthy Explanations for Student Dropout Risk
 
-## Group Members
+### Comparing Black-Box and Interpretable Models for Capacity-Limited Student Support
 
-Aye Khin Khin Hpone (Yolanda) - 125970, Nguyen Liem Son (Lucas) - 126729, Witchayda Theppithuk (Noey) - 127419, Han Htoo Zaw - 127305, Pyae Sone Han - 127366
+Should a tabular foundation model decide which students a support office contacts first, and can its explanations be trusted? A locked comparison of TabICL with four simpler models, an explanation audit of 544 students and a 50-person human study.
 
-## Current Development
+<br>
 
-**Model evaluation:** the single final evaluation is complete on 545 held-out cases under the
-authorized local hashed freeze; preserve `artifacts/final_test.lock` and never rerun it.
-Final metrics/intervals/reliability/subgroup outputs are in `tables/final_test/`. TabICL
-ROC-AUC is 0.9566 and Brier 0.0740; paired intervals do not establish superiority over XGBoost
-or EBM. At the 20% flag limit, test recall was 0.507 and precision was 0.991; this does not mean
-all dropouts are identified or that outreach benefits flagged students.
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![TabICL 2.2.0](https://img.shields.io/badge/TabICL-2.2.0-7C3AED?style=for-the-badge)](https://github.com/soda-inria/tabicl)
+[![SHAP 0.52](https://img.shields.io/badge/SHAP-0.52-F97316?style=for-the-badge)](https://github.com/shap/shap)
+[![Data: UCI CC BY 4.0](https://img.shields.io/badge/Data-UCI_CC_BY_4.0-0EA5E9?style=for-the-badge)](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success)
+[![Tests](https://img.shields.io/badge/Tests-98_passing-22C55E?style=for-the-badge)](#reproducing-the-results)
 
-**Validation eligibility sensitivity (exploratory, 4 Nov; distinct from the locked final test):**
-of 108 flagged validation records, 25 had no first-semester evaluations and 83 had at least one.
-Within the 495-record at-least-one-evaluation proxy subset, recomputing the 20% capacity flagged
-99 records (all with Dropout labels; recall 0.559, ROC-AUC 0.9486). Evaluation presence does not
-prove enrollment or reachability at the decision point; Enrolled outcomes remain excluded. See
-`docs/HANDOFF.md` for the full counts and limitations.
+**Team The Interpreters** · Explainable Data Science (XDS) · Asian Institute of Technology
 
-**Human study:** collection is complete for all 50 assigned main participants: 25 saw profiles
-only and 25 saw profiles plus explanation charts. All 50 consented, confirmed adult status,
-completed all 10 scored cases, and matched their sealed form variants; no response was excluded.
-Mean participant accuracy was 0.916 for profiles only and 0.900 with explanations. The exploratory
-between-group difference (explanations minus profiles only) was -0.016, with a stratified-bootstrap
-95% interval [-0.060, 0.032] and permutation p=0.612. This does not show an accuracy benefit from
-the explanation charts. Mean confidence was 0.208 points higher with explanations (exploratory
-95% interval [0.016, 0.416]); completion time differed by -3.2 minutes [−8.72, 2.04]. Group B's
-practice chart checks were both correct for 21/25 participants. Aggregate, privacy-safe outputs are
-in `tables/human_study/` and `figures/human_study/`. The 1,500 written answers were coded in one pass
-(themes plus proposal 5.7 intervention ratings; aggregate tables in `tables/report_ready/`). The planned
-independent double-coding of 20% was not done, so inter-coder agreement was not measured.
+Aye Khin Khin Hpone (Yolanda Lim) st125970 · Nguyen Liem Son (Lucas) st126729 · Witchayda Theppithuk (Noey) st127419 · Han Htoo Zaw (Han) st127305 · Pyae Sone Han (Harry) st127366
 
-**Interface (research demonstration, added 11 Nov):** a local page shows the saved model results for
-543 validation students: flag status and rank, the five main reasons, how stable those reasons are, and
-whether clearing fees or debt would change the flag. An optional what-if mode re-scores an edited
-student with the frozen model on your own computer. It was built after the human study, was not
-tested with users and is not deployed. See [Run the interface](#run-the-interface).
+<br>
 
-**Explanation-audit timeline:** on 2 Nov the planned pre-final full explanation audit was stopped
-at the owner's request.
-The default `python scripts/run_explanation_audit.py` now runs a one-case/two-seed validation
-smoke check (47.37 seconds in the recorded run, single-case top-five overlap 0.8). It checks
-execution, not explanation quality; faithfulness, background/perturbation stability and recourse
-auditing are omitted and must be disclosed. `--full-audit` explicitly opts into the old workload.
-The local hashed-freeze alternative and live-study status are documented in HANDOFF section 12.
-These amendments superseded the original pre-final full-audit/tag prerequisite. A separate,
-subsequent validation-only W1 audit was completed on 11 Nov across all 544 validation cases. It
-records faithfulness, seed/background/perturbation stability, pair-masking and constrained-recourse
-diagnostics. It used a reproducible refit with the frozen settings because the original serialized
-fitted model was not supplied; it does not retroactively change the 2 Nov gate status or test result.
+<img src="Final_Report/figures/interface_validation_916.png" alt="Local research interface: flag, rank, top reasons and their stability" width="420">
 
-EDA, validation-only model selection, and the explanation integration gate are complete.
-The frozen development configuration uses TabICL 2.2.0 with four estimators, a top-20%
-cohort-capacity outreach policy, grouped perturbations, and model-agnostic permutation
-SHAP with 25 training-background rows and 67 evaluations. The real TabICL/SHAP check and
-synthetic white-box check pass. Protocol 1.3 fixes signed semantic-group aggregation,
-label-free risk-stratified validation audit cases, capacity-consistent recourse, suppression/proxy rules,
-and paired final-test uncertainty. The single final evaluation is complete under the documented
-accelerated amendment; do not rerun it. The later supplementary W1 audit is under `W1_analysis/`.
+</div>
 
-## Project Scope
+---
 
-In real-world educational settings, universities face challenges in identifying students who may be at risk of dropping out before it is too late to provide appropriate support. Students may discontinue their studies due to various factors, including academic difficulties, financial constraints, personal circumstances, and insufficient academic engagement. Although universities collect substantial amounts of student information, such as academic performance, enrolment records, and demographic characteristics, identifying potential dropout risks often requires considerable time and effort from academic advisors and student-support officers. As a result, students who need assistance may not always be identified early enough to receive effective intervention.
+## Table of Contents
 
-The primary project predicts student dropout risk using structured UCI administrative
-data and a tabular foundation model (TFM), compared with conventional baselines
-(logistic regression, depth-3 decision tree, XGBoost) and a native main-effects
-Explainable Boosting Machine (EBM). The project evaluates whether the
-model's explanations are faithful, stable, actionable, fair, and useful to a university
-student-support officer.
+- [Research Questions](#research-questions)
+- [Key Findings](#key-findings)
+- [Results at a Glance](#results-at-a-glance)
+- [Dataset and Decision Setting](#dataset-and-decision-setting)
+- [Methodology](#methodology)
+- [Local Research Interface](#local-research-interface)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Reproducing the Results](#reproducing-the-results)
+- [Ethics and Data Privacy](#ethics-and-data-privacy)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
 
-That is the original research scope, not a claim that every property has been established.
-The project now contains final predictive diagnostics, a later validation-only explanation audit,
-and a completed 50-participant comprehension study. It still does not establish causal recourse,
-intervention benefit, fairness in deployment, or external validity.
+---
 
-The primary task is **Dropout (1) versus Graduate (0)**. Students labelled Enrolled are
-excluded because their final outcome is unresolved; retaining Enrolled as a separate
-class or grouping it with non-dropout is reserved for sensitivity analysis (grouped
-sensitivity completed 11 Nov on validation only: `tables/sensitivity/`, HANDOFF §5). This
-restriction may introduce selection bias and limits the target population. The primary
-prediction point is immediately after first-semester results, so second-semester
-curricular variables are excluded as temporal leakage.
+## Research Questions
 
-Short, consented written responses collected during the human study are the project's
-only unstructured data. They are linked to pseudonymous participant and study case IDs
-and support a small qualitative analysis of comprehension, actionability, and missing
-information. Participants were adult volunteers (a convenience sample, about ten recruited by each
-team member) who assessed pseudonymised UCI cases; no AIT student records were collected, and the
-study does not validate deployment at AIT.
-No external review corpus and no second predictive dataset are part of the current project.
+> **RQ1.** Does TabICL add predictive value over simpler conventional and intrinsically interpretable baselines at a fixed 20% outreach capacity?
+>
+> **RQ2.** Are its local explanations faithful, stable and appropriately constrained, and what do they reveal to an adviser about the students it flags?
+>
+> **RQ3.** Do explanation charts help people anticipate the model's outreach flag and identify useful support information?
 
-## Datasets
+---
 
-- **Primary (modeling):** UCI "Predict Students' Dropout and Academic Success"
-  https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success
-  — 4,424 students × 36 features, individual-level, CC-BY 4.0.
-- **Qualitative data (collected 11 Nov):** consented, pseudonymised responses from the human
-  evaluation (50 participants, 1,500 written answers; git-ignored). These responses are not model inputs and are reported only in aggregate
-  or through paraphrased examples.
+## Key Findings
 
-## Repository guide
+| | Finding |
+|---|---|
+| **RQ1: No added value** | TabICL had the highest ROC-AUC (0.957), but it could not be distinguished from XGBoost (Δ 0.001, 95% CI −0.006 to 0.009) or the interpretable EBM (Δ 0.003, −0.007 to 0.014). The transparent EBM is the better choice on this data. |
+| **Precision is not the whole story** | 108 of the 109 flagged test students dropped out, but most flagged students had passed no first-semester units, which staff can already see. Only one in five students can be contacted, so recall is capped at 0.51. |
+| **RQ2: Faithful but unstable** | SHAP explanations point at what the model uses (positive for 536 of 544 students), but the top five reasons often change when the comparison group changes (411 of 544 students below the 0.80 stability threshold). |
+| **Recourse is rare and not causal** | For only 17 of 108 flagged students would clearing fees or debt remove the flag. That is model behaviour, not evidence that paying fees prevents dropout. |
+| **RQ3: Charts did not help** | Participants predicted the flag equally well with and without charts (0.900 vs 0.916; Δ −0.016, −0.060 to 0.032). The charts raised confidence, and on one case they misled people. |
 
-- `docs/HANDOFF.md` — the single internal document (start here): status, methodology,
-  task list, human-study protocol, study instrument (Google Forms), model card, criteria alignment, audit
-- `docs/TASK_SPLIT.md` — current report plan to 16 Nov: five workstreams, shared report/slides track, dependencies, fair-share hours, recruitment
-- `docs/workstreams/` — per-workstream notes (W2 study forms; W5 assignment list, images and demo card)
-- `docs/report_notes/` — report-writing notes (claims brief, TA feedback mapping)
-- `scripts/README.md` — index of all scripts by stage, with run order
-- `notebooks/eda_dropout.ipynb` — completed UCI EDA (run in the `.venv-core` env; the data file stays in
-  `eda_uci_data/data/`, which the frozen pipeline reads)
-- `notebooks/uci_tfm_baseline.ipynb` — executable modeling/split overview
-- `scripts/run_core.py` — regenerate validation-only baseline metrics
-- `scripts/run_tfm_feasibility.py` — rerun the TFM feasibility gate
-- `tables/baseline_validation_metrics.csv` and `tables/tfm_validation_metrics.csv` — current evidence
-- `tables/ebm_global_terms_validation.csv` and `tables/ebm_local_contributions_validation.csv` — exact EBM explanation evidence
-- `config/evaluation_protocol.json` — frozen validation/test evaluation protocol
-- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.docx` — editable proposal submission candidate
-- `The-Interpreters-ProjectProposal-XDS-125970-126729-127419-127305-127366.pdf` — rendered proposal submission candidate
-- `requirements.txt` — pinned core modeling environment
-- `docs/human_study_response_template.csv` — ratings/response schema for the human study
-- `tables/human_study/` and `figures/human_study/` — aggregate completed-study results
-- `tables/report_ready/` and `figures/report_ready/` — centralized later-report assets
-- `docs/report_notes/REPORT_PREPARATION_BRIEF.md` — report claims, asset map and remaining non-report work
-- `docs/QUALITATIVE_CODEBOOK.md` — finalized primary-theme codes and coding workflow
-- `scripts/build_human_study_report.py` — privacy-safe quantitative study analysis
-- `scripts/build_report_assets.py` — regenerate aggregate report tables and figures without model inference
-- `scripts/build_demo_card.py` — validation-only static adviser-card demonstration; never a study/test case
-  (output in `figures/demo_card/`)
-- `scripts/run_enrolled_sensitivity.py` — optional W3.7 Enrolled-handling sensitivity, validation only
-  (output in `tables/sensitivity/`)
-- `scripts/run_ta_feedback_checks.py` — TA feedback numbers from the saved W1 validation cases (who the
-  108 flags are, a "passed zero units" rule, top reasons, adding up the bars); no model run
-- `scripts/run_no_protected_sensitivity.py` — TA feedback: validation-only refit without the six protected
-  attributes, against an all-feature refit control (output in `tables/sensitivity/no_protected_*`)
-- `docs/report_notes/TA_FEEDBACK_FINAL_REPORT_NOTES.md` — each TA point marked [DOC] or [CODE], with the numbers
-  to use in the final report
-- `scripts/check_w1_refit_identity.py` — confirms W1's refit matches the frozen model on validation
-  (`artifacts/w1_refit_identity.json`: max difference 0.00001, 108/108 flags identical)
-- `scripts/launch_interface.py` — builds and opens the local research interface (see [Run the interface](#run-the-interface))
-  (`interface/student_support_demo.html`; validation students only, saved results,
-  not used in the study); add `--what-if` to edit a validation student's first-semester results or
-  fee status and re-predict locally with the frozen model
-- `scripts/whatif_server.py` — local what-if server used by `launch_interface.py --what-if`
-- `W1_analysis/` — later 544-case validation explanation audit (a refit with the frozen settings,
-  not the frozen bundle); see its README for what is rerunnable
-- `scripts/inspect_proposal_docx.py` — print the proposal DOCX's structure and word count
-  (the submission DOCX is edited directly; there is no builder script)
+---
 
+## Results at a Glance
 
-## Run the interface
+Locked final test: 545 students, run once. Each model flags its top 20% (109 students).
 
-The interface is a research demonstration of how the model could support decisions about whom to
-offer a support contact. It is not a deployed service and must not be used for real students.
+| Model | ROC-AUC | Brier | ECE | Recall@20% | Precision@20% |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Logistic regression | 0.9525 | 0.0822 | 0.066 | 0.507 | 0.991 |
+| Decision tree (depth 3) | 0.9099 | 0.0999 | 0.069 | 0.502 | 0.982 |
+| XGBoost | 0.9557 | **0.0711** | **0.029** | 0.507 | 0.991 |
+| EBM (main effects) | 0.9539 | 0.0768 | 0.040 | **0.512** | **1.000** |
+| **TabICL** | **0.9566** | 0.0740 | 0.032 | 0.507 | 0.991 |
 
-**Prerequisites:** from the repository root, activate the pinned environment (`.venv-core`, Python 3.12,
-`pip install -r requirements.txt`). The saved page needs only files already in Git. What-if mode also
-needs the private frozen model `data/final_evaluation/selected_model.joblib` (git-ignored, about 2 MB;
-obtain it from the model owner and never commit it).
+<p align="center">
+  <img src="figures/report_ready/final_test_model_performance.png" alt="Final-test ROC-AUC and Brier score" width="70%">
+</p>
 
-**1. Saved page (no model, works offline):**
+<p align="center">
+  <img src="figures/report_ready/top_explanation_groups.png" alt="Mean absolute grouped SHAP contribution" width="45%">
+  <img src="figures/report_ready/explanation_stability.png" alt="Top-five stability by variation source" width="45%">
+</p>
 
-```powershell
-python scripts/launch_interface.py            # builds interface/student_support_demo.html and opens it
-python scripts/launch_interface.py --no-open  # build only; open the HTML file yourself later
+| Human study (25 per group) | Profiles only | + Explanation charts | Difference (95% CI) |
+|:---|:---:|:---:|:---:|
+| Accuracy (agreement with the model's flag) | 0.916 | 0.900 | −0.016 [−0.060, 0.032] |
+| Confidence (1–5) | 4.14 | 4.35 | +0.21 [0.02, 0.42] |
+| Self-reported minutes | 33.4 | 30.2 | −3.2 [−8.7, 2.0] |
+
+**Human study:** data collection is complete for all 50 assigned main participants (25 per group). All consented and finished the ten scored cases, and none were excluded.
+
+---
+
+## Dataset and Decision Setting
+
+**Source:** [UCI — Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success) (dataset 697, CC BY 4.0)
+
+`4,424` students from a Portuguese higher-education institution · `36` predictors · no direct identifiers
+
+| Decision | Choice |
+|:---|:---|
+| **Who uses it** | A student-support officer, not the student |
+| **When** | Once, after the first semester; second-semester data is excluded to prevent leakage |
+| **Target** | Dropout (1) vs Graduate (0): 3,630 records. Enrolled students are excluded because their outcome is unknown, and a sensitivity analysis examines them. |
+| **Rule** | Rank the cohort and flag exactly the top 20%, the assumed outreach capacity |
+| **What a flag means** | "Offer a support conversation", never "withdraw support" |
+| **Split** | Stratified 70/15/15, seed 42: 2,541 train / 544 validation / 545 test |
+
+---
+
+## Methodology
+
+<p align="center">
+  <img src="figures/report_ready/project_pipeline.png" alt="Project pipeline" width="90%">
+</p>
+
+1. **EDA and data design:** training-split profile, leakage removal and a frozen split saved as row IDs
+2. **Five models, one rule:** logistic regression, depth-3 tree, XGBoost, main-effects EBM and TabICL (4 ensemble members, CPU), all on the same 33 inputs
+3. **Validation-only selection:** every setting was chosen on validation data, then hashed and frozen
+4. **One locked final test:** run once on 2 Nov 2026, guarded by a lock file; 2,000 paired bootstrap resamples for model differences
+5. **Local explanations:** permutation SHAP (25 background rows, 67 evaluations), summed into semantic groups, top five shown
+6. **Explanation audit (all 544 validation students):** faithfulness (ranked vs random deletion), stability (seed, background, grade perturbation), constrained fee/debt recourse, local surrogates and pair masking
+7. **Sensitivity analyses:** enrolled students, an admission-time feature window, no protected attributes, students with at least one evaluation
+8. **Human study:** two-group forward simulation (profiles only vs profiles plus charts), 10 scored cases, 1,500 written answers coded for themes
+
+---
+
+## Local Research Interface
+
+A self-contained page for the 543 validation students not used in the study. For each student it shows:
+- the flag and the student's rank on the cohort risk curve;
+- the five main reasons and how stable they are;
+- whether clearing fees or debt would change the flag.
+
+An optional **what-if mode** re-scores an edited copy of a student with the frozen model on your own computer.
+
+<p align="center">
+  <img src="Final_Report/figures/interface_whatif_174.png" alt="What-if mode: fees paid and debt cleared" width="55%">
+</p>
+
+> Research demonstration only. It uses validation data, runs locally, was built after the human study and was not tested with users. Results show how the model responds, not what would happen to a student.
+
+Full usage guide, what-if rules and troubleshooting: [`docs/INTERFACE.md`](docs/INTERFACE.md).
+
+---
+
+## Project Structure
+
+```
+Student-Dropout-Risk/
+├── README.md                  # This page
+├── requirements.txt           # Pinned environment (Python 3.12)
+├── config/                    # Frozen evaluation protocol
+├── eda_uci_data/data/         # UCI source data (read by the pipeline)
+├── src/                       # Frozen modelling, explanation and audit code
+├── scripts/                   # Runnable steps; see scripts/README.md for the index
+├── forms/                     # Google Forms generator and response transform (human study)
+├── notebooks/                 # EDA and modelling walkthrough notebooks
+├── W1_analysis/               # Full explanation audit of all 544 validation students
+├── tables/                    # Saved results (validation, final test, sensitivity, human study)
+├── figures/                   # Report figures, demo card, human-study charts
+├── artifacts/                 # Split IDs, final-test lock, verification records
+├── interface/                 # Built interface page
+├── tests/                     # 98 unit tests
+├── docs/                      # Detailed documentation (handoff, codebook, study results)
+└── Final_Report/              # LaTeX source of the final report
 ```
 
-The HTML file is self-contained: double-click it, or send it to someone, to view it in any browser.
-Section 5 (what-if) shows as unavailable in this mode.
+---
 
-**2. What-if mode (frozen model, local only):**
+## Quick Start
 
-```powershell
-python scripts/launch_interface.py --what-if              # opens http://127.0.0.1:8765/
-python scripts/launch_interface.py --what-if --port 8766  # if port 8765 is busy
+```bash
+# 1. Clone
+git clone https://github.com/TheInterpreters/Student-Dropout-Risk.git
+cd Student-Dropout-Risk
+
+# 2. Create the environment (Python 3.12)
+python -m venv .venv-core
+.venv-core\Scripts\activate          # Windows  (macOS/Linux: source .venv-core/bin/activate)
+pip install -r requirements.txt
+
+# 3. Run the tests
+python -m unittest discover -s tests
+
+# 4. Open the research interface (saved results, no model needed)
+python scripts/launch_interface.py
 ```
 
-Startup takes about 20 seconds (it hash-checks the model against `artifacts/final_test.lock`, scores
-the 544 validation students and builds the context cache described below). Keep the terminal open while you use the page; press Ctrl+C to stop.
-The server listens only on your own computer (127.0.0.1).
+What-if mode (`python scripts/launch_interface.py --what-if`, then open `http://127.0.0.1:8765/`) also needs the frozen model file `data/final_evaluation/selected_model.joblib`. That file is not in the repository; ask the team for it.
 
-**Using the page:**
-1. Choose a student with the **Student** list, **◀ Previous / Next ▶**, the ← → keys, the **Example**
-   menu, by clicking the risk curve, or with `#student=<record id>` in the address (e.g. `#student=174`).
-2. Read sections 1–4: whether the student is flagged (top 108 of 544 = 20%), the five main reasons,
-   how stable those reasons are, and whether clearing fees or debt would change the flag. Hover over
-   the curve, bars, stability rows and **i** icons for explanations.
-3. In section 5 (what-if mode only), change first-semester results or fee/debt/scholarship status, or
-   use a quick example, then press **Predict** (under 1 second; a few seconds if "also recompute
-   the reasons" is ticked). Startup takes about 20 seconds: the server scores all 544 students, then
-   stores the training context in TabICL's in-memory cache and checks that it reproduces the frozen
-   scores and ranking exactly before using it (otherwise it falls back to about 10 seconds per
-   prediction). The result shows the new estimate, rank and flag, and a purple diamond on
-   the section 1 curve. **Reset to recorded values** restores the student.
+---
 
-**What what-if mode allows:** only validation students, and only first-semester units, evaluations,
-grade, fees, debt and scholarship can change; age, gender, nationality, family and background fields are
-fixed. Impossible combinations (for example more units passed than enrolled) are rejected with a reason.
-Other students' scores stay fixed. Nothing is saved or retrained and the test split is never read.
-Results show how the model responds, not what would happen to a student or what they should do.
+## Reproducing the Results
 
-**Troubleshooting:**
-- *Section 5 says "not available":* you opened the saved HTML file; start with `--what-if` and use the
-  `http://127.0.0.1:8765/` address instead.
-- *Blank or outdated page:* an older server may still hold the port. Close its terminal (or stop the
-  Python process) and start again, or use `--port 8766`; then reload with Ctrl+F5. The server now
-  refuses to start if the port is taken.
-- *"needs the private frozen model file":* the model file is missing; the saved page still works.
-
-**Checked (11 Nov, with the context cache on):** what-if reproduces all 104 saved fee/debt scenario
-predictions, including the 27 that move a student out of the top 20% (largest probability difference
-0.0000041, same ranks); an unedited student returns their saved rank, flag and score exactly; and
-recomputed reasons for students 174 and 916 match the saved ones within 0.000001. Tests: `tests/test_interface.py`, `tests/test_whatif.py`.
-
-## Reproduce the current checks
-
-From the repository root after activating `.venv-core`:
-
-```powershell
-python -m unittest tests.test_modeling tests.test_explanations tests.test_auditing -v
-python scripts/run_validation.py
-python scripts/validate_explanation_pipeline.py
-python scripts/run_validation_audits.py
-python scripts/run_temporal_sensitivity.py
-python scripts/run_enrolled_sensitivity.py
-python scripts/run_ta_feedback_checks.py
-python scripts/run_no_protected_sensitivity.py
-python scripts/build_report_assets.py
+```bash
+python scripts/reproduce_results.py                       # fast: tests, form checks, report tables/figures, verification
+python scripts/reproduce_results.py --validation-results  # adds the slower validation-only model refits (team only, see below)
+python scripts/verify_release_readiness.py                # checks every saved number without fitting models
 ```
 
-These commands use validation data only. For the complete current unit suite, run
-`python -m unittest discover -s tests`, then `python forms/test_spec.py`.
-The final test has already run: verify its saved evidence rather than evaluating it again.
-The private raw survey workbook and row-level free text are intentionally not committed. The
-aggregate human-study tables and figures are reproducible with the commands documented in
-`docs/HUMAN_STUDY_RESULTS.md` when the authorized private inputs are present.
+- **A fresh clone runs the fast command end to end.** This was checked on a clean clone with no private files: every step passes and the saved results are unchanged.
+- **The slower refits need a private file for some steps.** The `--validation-results` steps that compare against the frozen model need `data/final_evaluation/selected_model.joblib`, which is not in the repository.
 
-## Team handover (2 Nov 2026)
+- **The final test is never rerun.** `artifacts/final_test.lock` records the single run, and `scripts/run_final_test.py` refuses to run again. Its saved outputs are in `tables/final_test/`.
+- **Every report figure and table** is regenerated from saved outputs by `scripts/build_report_assets.py`.
+- **The human-study tables** are rebuilt from private responses that are not in the repository. The aggregate results are in `tables/human_study/`.
+- **A step-by-step script index** is in [`scripts/README.md`](scripts/README.md).
 
-See [HANDOFF section 12](docs/HANDOFF.md#12-member-handover-and-remaining-gates-2-nov-2026)
-for per-member actions, the W1 audit runner, validation dry run, once-only final-test lock,
-private study-case export, W5 scoring/coding commands and the remaining human-study steps.
-Run `python scripts/reproduce_results.py` to regenerate every report artefact from saved evidence:
-tests, form checks, fixture charts, W1 topic tables (checked byte-identical against the committed
-ones), report-ready tables/figures, the local interface page and the release-readiness check. It never opens the final test.
-`--validation-results` adds the slow validation refits, W1-refit identity check, demo card and
-Enrolled sensitivity; `--human-study` rebuilds the aggregate human-study tables when the restricted
-private files are present.
+| Package | Version | Used for |
+|---|---|---|
+| `tabicl` | 2.2.0 | Tabular foundation model |
+| `interpret` | 0.7.8 | Explainable Boosting Machine |
+| `xgboost` | 3.4.1 | Gradient-boosting baseline |
+| `scikit-learn` | 1.9.1 | Logistic regression, tree, preprocessing, metrics |
+| `shap` | 0.52.0 | Permutation SHAP explanations |
+| `torch` | 2.14.0 | TabICL dependency |
 
-The study uses W5's sealed assignment CSV throughout; form exports require explicit source
-variants to prevent same-group case-order mislabelling. The team reports live form/privacy/pilot
-acceptance complete; collection (50 participants) and analysis were completed on 11 Nov.
-Private fitted models, study lookups, case packs and chart handover files are intentionally
-excluded from Git.
+---
+
+## Ethics and Data Privacy
+
+- **Modelling data:** the UCI data is public and anonymised, so no real student records from any institution are used.
+- **Participants:** 50 adult volunteers gave informed consent. Answers are stored under random codes, and no names are collected.
+- **Private data stays out of Git:** raw responses, the case lookup and the frozen model file are git-ignored and kept in restricted storage. The repository contains aggregate results only.
+- **No automated decisions:** the model only orders a contact list for an adviser. It must never be used to deny support or to target students by protected attributes.
+
+---
+
+## Limitations
+
+- **One dataset:** a single Portuguese institution, with no external or temporal validation.
+- **Enrolled students excluded:** students without a known outcome were left out, and the 20% capacity is an assumption.
+- **Explanations:** they depend on the SHAP budget and the 25-row background. The full audit was run after the final test, on a refit that reproduces the frozen model.
+- **Human study:** volunteers acting as proxy users completed it online with ten selected cases. The written answers were coded in a single pass, so agreement was not measured.
+- **No causal claims:** nothing here shows what causes dropout or which intervention helps.
+
+---
+
+## Documentation
+
+| Document | Content |
+|---|---|
+| [`docs/HANDOFF.md`](docs/HANDOFF.md) | Full internal record: methodology, model card (§8), protocol and audit trail |
+| [`docs/HUMAN_STUDY_RESULTS.md`](docs/HUMAN_STUDY_RESULTS.md) | Human-study methods and results in detail |
+| [`docs/INTERFACE.md`](docs/INTERFACE.md) | Interface user guide, what-if rules and troubleshooting |
+| [`docs/QUALITATIVE_CODEBOOK.md`](docs/QUALITATIVE_CODEBOOK.md) | Themes used to code the written answers |
+| [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) | What can and cannot be regenerated, and why |
+| [`W1_analysis/README.md`](W1_analysis/README.md) | Explanation-audit package |
+| [`forms/README.md`](forms/README.md) | Building and checking the study forms |
+
+---
+
+## Acknowledgements
+
+Sincere thanks to **Dr. Sein Minn** for supervision and guidance throughout this project, to **TA Kaung Hein Htet** for valuable support and feedback, and to the 50 volunteers who took part in the study.
+
+Dataset: V. Realinho, J. Machado, L. Baptista and M. V. Martins, "Predicting Student Dropout and Academic Success," *Data*, 7(11):146, 2022.
+
+---
+
+<div align="center">
+
+**Asian Institute of Technology · Explainable Data Science · 2026**
+
+Team The Interpreters
+
+</div>

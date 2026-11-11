@@ -7,7 +7,9 @@ Run every script from the repository root with the core environment, for example
 
 **One command for everything:** `python scripts/reproduce_results.py` runs the tests, form checks,
 TA-feedback numbers and EDA profile without fitting models; add `--validation-results` to also
-regenerate the validation-only model results listed below (slower, fits models).
+regenerate the validation-only model results listed below (slower, fits models). The fast command
+runs on a fresh clone; the refit-identity check and demo card under `--validation-results` also
+need the private frozen model `data/final_evaluation/selected_model.joblib`.
 
 ## 1. Data, models and the final test
 

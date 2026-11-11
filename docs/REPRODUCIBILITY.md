@@ -7,10 +7,15 @@ forms, verify the saved final-test output manifest, inspect the complete 544-cas
 rebuild every aggregate report-ready table and figure from committed aggregate outputs.
 
 ```powershell
+python scripts/reproduce_results.py   # runs all of the steps below, then the release check
 python -m unittest discover -s tests -v
 python forms/test_spec.py
 python scripts/build_report_assets.py
+python scripts/verify_release_readiness.py
 ```
+
+This was checked on 11 Nov on a fresh clone with no private files. `reproduce_results.py` completes,
+the release check passes, and the committed results are reproduced unchanged.
 
 The locked final test must not be rerun. Its saved output hashes are in
 `tables/final_test/manifest.json`, and its once-only record is `artifacts/final_test.lock`.
