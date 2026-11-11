@@ -11,4 +11,3 @@ Two presentation figures are in `03_Full_Audit/Figures/Presentation/` (package-r
 ## New W1.1–W1.5 topic analysis
 
 Open `04_View_Results/W1_Topic_Analysis.html` or the executed notebook beside it for single-versus-pair comparisons, explanatory feature selection and human-support proposals. The code and derived results are grouped by topic under `03_Full_Audit/Code/topics/`. `topics/run_all.py` uses all 544 saved cases; it does not fit TabICL or rerun SHAP. The original model still uses its 33 inputs. The explanatory panel is not a new predictive feature set or a causal intervention ranking.
-

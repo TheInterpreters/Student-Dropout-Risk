@@ -1,0 +1,243 @@
+{
+  "split": "validation",
+  "n_cases": 544,
+  "expected_cases": 544,
+  "model_provenance": {
+    "origin": "refit_on_original_training_rows_with_frozen_settings",
+    "original_saved_fitted_model_loaded": false,
+    "checkpoint_name": "tabicl-classifier-v2-20260212.ckpt",
+    "checkpoint_sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0",
+    "checkpoint_digest_source": "expected SHA256 in supplied package installer",
+    "versions": {
+      "tabicl": "2.2.0",
+      "torch": "2.14.0+cpu",
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "shap": "0.52.0"
+    },
+    "training_rows": 2541,
+    "evaluation_rows": 544,
+    "test_evaluated": false,
+    "inference_cache": "kv",
+    "limitation": "The private original fitted-model/freeze bundle was not supplied; this is a reproducible refit, not verified identity with that serialized model."
+  },
+  "full_audit_completed": true,
+  "test_evaluated": false,
+  "faithfulness": {
+    "n_cases": 544,
+    "mean_area": 1.5571153193217042,
+    "ci_lower_95": 1.4756962065931596,
+    "ci_upper_95": 1.6426594171556164
+  },
+  "w1_local_shap_top_five_by_mean_absolute": [
+    {
+      "feature_group": "first_semester_progress",
+      "mean_absolute_group_shap": 0.27691527203369115,
+      "top_five_frequency": 0.9650735294117647
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "mean_absolute_group_shap": 0.052525600724466666,
+      "top_five_frequency": 0.6838235294117647
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "mean_absolute_group_shap": 0.05131742025653639,
+      "top_five_frequency": 0.8694852941176471
+    },
+    {
+      "feature_group": "course",
+      "mean_absolute_group_shap": 0.041827607380982956,
+      "top_five_frequency": 0.7463235294117647
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "mean_absolute_group_shap": 0.019296801573569503,
+      "top_five_frequency": 0.32169117647058826
+    }
+  ],
+  "faithfulness_positive_cases": 536,
+  "stability": {
+    "background": {
+      "cases_with_pairwise_overlap": 544,
+      "mean_top_5_overlap": 0.7451307189542483,
+      "cases_below_0_80": 411,
+      "cases_with_insufficient_runs": 0,
+      "mean_spearman": 0.7914594755281029
+    },
+    "perturbation": {
+      "cases_with_pairwise_overlap": 544,
+      "mean_top_5_overlap": 0.9958800186741366,
+      "cases_below_0_80": 0,
+      "cases_with_insufficient_runs": 0,
+      "mean_spearman": 0.9982606272566007
+    },
+    "seed": {
+      "cases_with_pairwise_overlap": 544,
+      "mean_top_5_overlap": 0.817516339869281,
+      "cases_below_0_80": 213,
+      "cases_with_insufficient_runs": 0,
+      "mean_spearman": 0.8733291037212605
+    }
+  },
+  "recourse": {
+    "n_flagged_cases": 108,
+    "n_cases_with_recourse": 17,
+    "n_flagged_without_recourse": 91
+  },
+  "pairwise_reference_masking": {
+    "n_pairs_evaluated": 5440,
+    "n_unique_pairs": 270,
+    "mean_absolute_nonadditive_effect": 0.03576530858139021,
+    "largest_mean_absolute_effect_pairs": [
+      {
+        "feature_group_a": "first_semester_progress",
+        "feature_group_b": "first_semester_participation",
+        "cases_observed": 320,
+        "mean_absolute_nonadditive_effect": 0.19723969592596405,
+        "mean_signed_nonadditive_effect": -0.11865323004312814,
+        "mean_absolute_joint_probability_change": 0.27274257848621347,
+        "joint_exceeds_single_fraction": 0.325
+      },
+      {
+        "feature_group_a": "debtor",
+        "feature_group_b": "mothers_occupation",
+        "cases_observed": 1,
+        "mean_absolute_nonadditive_effect": 0.1728677973151207,
+        "mean_signed_nonadditive_effect": -0.1728677973151207,
+        "mean_absolute_joint_probability_change": 0.10190239548683167,
+        "joint_exceeds_single_fraction": 0.0
+      },
+      {
+        "feature_group_a": "first_semester_progress",
+        "feature_group_b": "scholarship_holder",
+        "cases_observed": 163,
+        "mean_absolute_nonadditive_effect": 0.11801192050291213,
+        "mean_signed_nonadditive_effect": 0.10363415169438199,
+        "mean_absolute_joint_probability_change": 0.32982950491767854,
+        "joint_exceeds_single_fraction": 0.6073619631901841
+      },
+      {
+        "feature_group_a": "first_semester_participation",
+        "feature_group_b": "first_semester_progress",
+        "cases_observed": 40,
+        "mean_absolute_nonadditive_effect": 0.0954493150115013,
+        "mean_signed_nonadditive_effect": -0.04090059455484152,
+        "mean_absolute_joint_probability_change": 0.19236877486109732,
+        "joint_exceeds_single_fraction": 0.35
+      },
+      {
+        "feature_group_a": "fathers_occupation",
+        "feature_group_b": "debtor",
+        "cases_observed": 1,
+        "mean_absolute_nonadditive_effect": 0.07880187034606934,
+        "mean_signed_nonadditive_effect": -0.07880187034606934,
+        "mean_absolute_joint_probability_change": 0.02909889817237854,
+        "joint_exceeds_single_fraction": 0.0
+      }
+    ],
+    "pair_top3_stability_cases_with_two_or_more_rankings": 544,
+    "mean_top3_pair_rank_overlap": 0.9955709051297286
+  },
+  "improvement_scenarios": {
+    "n_scenarios": 2508,
+    "n_cases": 544,
+    "n_flagged_cases_with_simulated_change": 92,
+    "interpretation": "input-sensitivity scenarios only; historical grade changes are not future interventions"
+  },
+  "recourse_scenarios": {
+    "all_scenarios_count": 590,
+    "combined_scenarios_count": 23,
+    "successful_combined_scenarios_count": 8
+  },
+  "surrogate_comparison": {
+    "selection_metric": "lowest pooled holdout MAE vs unchanged TabICL on held-out masking patterns",
+    "best_fit_surrogate_variant": "Lasso+pairs",
+    "best_pooled_holdout_mae": 0.02239424640846934,
+    "comparison": [
+      {
+        "variant": "Lasso+pairs",
+        "mean_case_mae": 0.02239424640846934,
+        "median_case_mae": 0.009398174791025643,
+        "mean_case_rmse": 0.02760063904919303,
+        "mean_nonzero_terms": 9.884191176470589,
+        "mean_out_of_range_fraction": 0.031939338235294115,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.02239424640846934,
+        "pooled_n_holdout": 4352
+      },
+      {
+        "variant": "Ridge+pairs",
+        "mean_case_mae": 0.02514422248821095,
+        "median_case_mae": 0.011573312041222712,
+        "mean_case_rmse": 0.03006924467209484,
+        "mean_nonzero_terms": 13.455882352941176,
+        "mean_out_of_range_fraction": 0.04480698529411765,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.02514422248821095,
+        "pooled_n_holdout": 4352
+      },
+      {
+        "variant": "OLS+pairs",
+        "mean_case_mae": 0.02586359113631371,
+        "median_case_mae": 0.01135744687635453,
+        "mean_case_rmse": 0.03073233778565055,
+        "mean_nonzero_terms": 13.242647058823529,
+        "mean_out_of_range_fraction": 0.04871323529411765,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.02586359113631371,
+        "pooled_n_holdout": 4352
+      },
+      {
+        "variant": "OLS+main",
+        "mean_case_mae": 0.07152966189882452,
+        "median_case_mae": 0.05060624723044122,
+        "mean_case_rmse": 0.08014504147246439,
+        "mean_nonzero_terms": 4.948529411764706,
+        "mean_out_of_range_fraction": 0.047104779411764705,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.07152966189882452,
+        "pooled_n_holdout": 4352
+      },
+      {
+        "variant": "Ridge+main",
+        "mean_case_mae": 0.07276372906905784,
+        "median_case_mae": 0.05147192996349686,
+        "mean_case_rmse": 0.08492772702564425,
+        "mean_nonzero_terms": 4.948529411764706,
+        "mean_out_of_range_fraction": 0.03630514705882353,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.07276372906905784,
+        "pooled_n_holdout": 4352
+      },
+      {
+        "variant": "Lasso+main",
+        "mean_case_mae": 0.07312577842380202,
+        "median_case_mae": 0.05261397642283054,
+        "mean_case_rmse": 0.0841520312317756,
+        "mean_nonzero_terms": 3.738970588235294,
+        "mean_out_of_range_fraction": 0.03814338235294118,
+        "n_cases": 544,
+        "pooled_holdout_mae": 0.07312577842380202,
+        "pooled_n_holdout": 4352
+      }
+    ],
+    "limits": "Not an explanation-quality certification; masks may be off-manifold; full validation cohort comparison is descriptive; no causal or human-outcome claims"
+  },
+  "warnings": [
+    "Linear/Ridge/Lasso are explanatory post-hoc surrogates, not alternative student-dropout prediction models.",
+    "Surrogate fidelity is scored on eight higher-order masking patterns held out within each validation case; this measures one kind of local approximation fidelity, not explanation truth.",
+    "Ridge/Lasso penalties are chosen by inner training-fold CV only; holdout masking patterns are not used for alpha selection.",
+    "Pairwise masking nonadditivity is NOT SHAP interaction values and is NOT a causal interaction.",
+    "The top-five selection may change under alternative SHAP seeds/backgrounds; pair results are selection-conditional.",
+    "Academic grade/credit input changes are retrospective sensitivity tests, not achievable after first-semester support or causal benefits.",
+    "Pair probes may represent off-manifold student feature combinations.",
+    "Perturbation stability for pair effects checks up to ten grade-only probes; it is exploratory and not the original broader perturbation population.",
+    "Ranked deletion is a model reliance stress test, not causal attribution.",
+    "Training-reference masking can create off-manifold student profiles.",
+    "The add-on restricts continuous perturbations to measured grade variables and range-clips them, but this cannot guarantee joint real-world plausibility.",
+    "Recourse concerns a 20% cohort-ranking policy and only debtor/tuition resolutions; it does not establish feasibility or real-world impact.",
+    "This validation audit does not replace human-study or protected-group fairness evidence."
+  ]
+}

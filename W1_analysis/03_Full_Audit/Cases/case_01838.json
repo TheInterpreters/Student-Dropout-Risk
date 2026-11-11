@@ -1,0 +1,1451 @@
+{
+  "source_row_id": 1838,
+  "validation_position": 214,
+  "predicted_probability": 0.011225522495806217,
+  "flagged": 0,
+  "faithfulness_area": 1.795370783689432,
+  "baseline_top_five_groups": [
+    "first_semester_progress",
+    "course",
+    "tuition_fees_up_to_date",
+    "first_semester_participation",
+    "unemployment_rate"
+  ],
+  "baseline_group_contributions": [
+    {
+      "feature_group": "first_semester_progress",
+      "members": "curricular_units_1st_sem_approved, curricular_units_1st_sem_grade, first_semester_pass_rate",
+      "signed_shap": -0.3133836907334626,
+      "absolute_group_shap": 0.3133836907334626
+    },
+    {
+      "feature_group": "course",
+      "members": "course",
+      "signed_shap": -0.03891102002933621,
+      "absolute_group_shap": 0.03891102002933621
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "members": "tuition_fees_up_to_date",
+      "signed_shap": -0.025084041059017154,
+      "absolute_group_shap": 0.025084041059017154
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "members": "curricular_units_1st_sem_enrolled, curricular_units_1st_sem_evaluations, curricular_units_1st_sem_without_evaluations, first_semester_no_enrollment, first_semester_no_evaluations",
+      "signed_shap": -0.01903274379670617,
+      "absolute_group_shap": 0.01903274379670617
+    },
+    {
+      "feature_group": "unemployment_rate",
+      "members": "unemployment_rate",
+      "signed_shap": -0.009784505460411305,
+      "absolute_group_shap": 0.009784505460411305
+    }
+  ],
+  "baseline_group_contributions_all": [
+    {
+      "feature_group": "first_semester_progress",
+      "members": "curricular_units_1st_sem_approved, curricular_units_1st_sem_grade, first_semester_pass_rate",
+      "signed_shap": -0.3133836907334626,
+      "absolute_group_shap": 0.3133836907334626
+    },
+    {
+      "feature_group": "course",
+      "members": "course",
+      "signed_shap": -0.03891102002933621,
+      "absolute_group_shap": 0.03891102002933621
+    },
+    {
+      "feature_group": "tuition_fees_up_to_date",
+      "members": "tuition_fees_up_to_date",
+      "signed_shap": -0.025084041059017154,
+      "absolute_group_shap": 0.025084041059017154
+    },
+    {
+      "feature_group": "first_semester_participation",
+      "members": "curricular_units_1st_sem_enrolled, curricular_units_1st_sem_evaluations, curricular_units_1st_sem_without_evaluations, first_semester_no_enrollment, first_semester_no_evaluations",
+      "signed_shap": -0.01903274379670617,
+      "absolute_group_shap": 0.01903274379670617
+    },
+    {
+      "feature_group": "unemployment_rate",
+      "members": "unemployment_rate",
+      "signed_shap": -0.009784505460411305,
+      "absolute_group_shap": 0.009784505460411305
+    },
+    {
+      "feature_group": "gender",
+      "members": "gender",
+      "signed_shap": -0.009150680731981973,
+      "absolute_group_shap": 0.009150680731981973
+    },
+    {
+      "feature_group": "debtor",
+      "members": "debtor",
+      "signed_shap": -0.008766520954668532,
+      "absolute_group_shap": 0.008766520954668532
+    },
+    {
+      "feature_group": "gdp",
+      "members": "gdp",
+      "signed_shap": -0.006196988876909018,
+      "absolute_group_shap": 0.006196988876909018
+    },
+    {
+      "feature_group": "displaced",
+      "members": "displaced",
+      "signed_shap": 0.004978022957220685,
+      "absolute_group_shap": 0.004978022957220685
+    },
+    {
+      "feature_group": "previous_qualification_grade",
+      "members": "previous_qualification_grade",
+      "signed_shap": -0.004947969391942023,
+      "absolute_group_shap": 0.004947969391942023
+    },
+    {
+      "feature_group": "application_order",
+      "members": "application_order",
+      "signed_shap": 0.004795769471675142,
+      "absolute_group_shap": 0.004795769471675142
+    },
+    {
+      "feature_group": "curricular_units_1st_sem_credited",
+      "members": "curricular_units_1st_sem_credited",
+      "signed_shap": -0.004779637474566695,
+      "absolute_group_shap": 0.004779637474566695
+    },
+    {
+      "feature_group": "fathers_qualification",
+      "members": "fathers_qualification",
+      "signed_shap": -0.0041206667199730745,
+      "absolute_group_shap": 0.0041206667199730745
+    },
+    {
+      "feature_group": "inflation_rate",
+      "members": "inflation_rate",
+      "signed_shap": -0.003655831031501293,
+      "absolute_group_shap": 0.003655831031501293
+    },
+    {
+      "feature_group": "age_at_enrollment",
+      "members": "age_at_enrollment",
+      "signed_shap": -0.003087776480242628,
+      "absolute_group_shap": 0.003087776480242628
+    },
+    {
+      "feature_group": "mothers_qualification",
+      "members": "mothers_qualification",
+      "signed_shap": 0.0026685896143316817,
+      "absolute_group_shap": 0.0026685896143316817
+    },
+    {
+      "feature_group": "scholarship_holder",
+      "members": "scholarship_holder",
+      "signed_shap": 0.0021675875782966834,
+      "absolute_group_shap": 0.0021675875782966834
+    },
+    {
+      "feature_group": "application_mode",
+      "members": "application_mode",
+      "signed_shap": -0.0021055833436548557,
+      "absolute_group_shap": 0.0021055833436548557
+    },
+    {
+      "feature_group": "fathers_occupation",
+      "members": "fathers_occupation",
+      "signed_shap": 0.001718065198510893,
+      "absolute_group_shap": 0.001718065198510893
+    },
+    {
+      "feature_group": "daytime_evening_attendance",
+      "members": "daytime_evening_attendance",
+      "signed_shap": 0.0016329325363039701,
+      "absolute_group_shap": 0.0016329325363039701
+    },
+    {
+      "feature_group": "mothers_occupation",
+      "members": "mothers_occupation",
+      "signed_shap": -0.001610154099762456,
+      "absolute_group_shap": 0.001610154099762456
+    },
+    {
+      "feature_group": "marital_status",
+      "members": "marital_status",
+      "signed_shap": 0.0008851169049739933,
+      "absolute_group_shap": 0.0008851169049739933
+    },
+    {
+      "feature_group": "previous_qualification",
+      "members": "previous_qualification",
+      "signed_shap": -0.0001778642088174822,
+      "absolute_group_shap": 0.0001778642088174822
+    },
+    {
+      "feature_group": "admission_grade",
+      "members": "admission_grade",
+      "signed_shap": -0.00010468572378158174,
+      "absolute_group_shap": 0.00010468572378158174
+    },
+    {
+      "feature_group": "nacionality",
+      "members": "nacionality",
+      "signed_shap": 0.0,
+      "absolute_group_shap": 0.0
+    },
+    {
+      "feature_group": "educational_special_needs",
+      "members": "educational_special_needs",
+      "signed_shap": 0.0,
+      "absolute_group_shap": 0.0
+    },
+    {
+      "feature_group": "international",
+      "members": "international",
+      "signed_shap": 0.0,
+      "absolute_group_shap": 0.0
+    }
+  ],
+  "curve": [
+    {
+      "source_row_id": 1838,
+      "features_deleted": 0,
+      "ranked_dropout_probability": 0.011225495487451553,
+      "random_dropout_probability_mean": 0.011225495487451553,
+      "random_dropout_probability_sd": 0.0,
+      "ranked_absolute_probability_change": 0.0,
+      "random_absolute_probability_change_mean": 0.0,
+      "random_absolute_probability_change_sd": 0.0
+    },
+    {
+      "source_row_id": 1838,
+      "features_deleted": 1,
+      "ranked_dropout_probability": 0.6167453527450562,
+      "random_dropout_probability_mean": 0.0371863479167223,
+      "random_dropout_probability_sd": 0.09518532022529444,
+      "ranked_absolute_probability_change": 0.6055198572576046,
+      "random_absolute_probability_change_mean": 0.026837397068738937,
+      "random_absolute_probability_change_sd": 0.09494190415101782
+    },
+    {
+      "source_row_id": 1838,
+      "features_deleted": 2,
+      "ranked_dropout_probability": 0.6167453527450562,
+      "random_dropout_probability_mean": 0.05534193700179458,
+      "random_dropout_probability_sd": 0.12437994295981109,
+      "ranked_absolute_probability_change": 0.6055198572576046,
+      "random_absolute_probability_change_mean": 0.045284059029072524,
+      "random_absolute_probability_change_sd": 0.12395960882652783
+    },
+    {
+      "source_row_id": 1838,
+      "features_deleted": 3,
+      "ranked_dropout_probability": 0.6167453527450562,
+      "random_dropout_probability_mean": 0.0774835336767137,
+      "random_dropout_probability_sd": 0.15765180540902,
+      "ranked_absolute_probability_change": 0.6055198572576046,
+      "random_absolute_probability_change_mean": 0.06738733364269138,
+      "random_absolute_probability_change_sd": 0.15717241054950395
+    },
+    {
+      "source_row_id": 1838,
+      "features_deleted": 4,
+      "ranked_dropout_probability": 0.16896860301494598,
+      "random_dropout_probability_mean": 0.09838423080742359,
+      "random_dropout_probability_sd": 0.17314017745323915,
+      "ranked_absolute_probability_change": 0.15774310752749443,
+      "random_absolute_probability_change_mean": 0.08827200010418892,
+      "random_absolute_probability_change_sd": 0.17257525949197397
+    },
+    {
+      "source_row_id": 1838,
+      "features_deleted": 5,
+      "ranked_dropout_probability": 0.20867140591144562,
+      "random_dropout_probability_mean": 0.10986599410884082,
+      "random_dropout_probability_sd": 0.18582998717473026,
+      "ranked_absolute_probability_change": 0.19744591042399406,
+      "random_absolute_probability_change_mean": 0.09974812195636332,
+      "random_absolute_probability_change_sd": 0.18523780463991468
+    }
+  ],
+  "stability": [
+    {
+      "source_row_id": 1838,
+      "variation": "seed",
+      "valid_runs": 10,
+      "top_5_overlap": 0.8311111111111109,
+      "rank_spearman": 0.8405508072174737,
+      "low_stability": false,
+      "status": "ok"
+    },
+    {
+      "source_row_id": 1838,
+      "variation": "background",
+      "valid_runs": 10,
+      "top_5_overlap": 0.6844444444444445,
+      "rank_spearman": 0.713648080314747,
+      "low_stability": true,
+      "status": "ok"
+    },
+    {
+      "source_row_id": 1838,
+      "variation": "perturbation",
+      "valid_runs": 10,
+      "top_5_overlap": 1.0,
+      "rank_spearman": 0.9869624202957535,
+      "low_stability": false,
+      "status": "ok"
+    }
+  ],
+  "top_five_rankings": {
+    "seed": [
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "course",
+        "first_semester_participation",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "course",
+        "gender",
+        "displaced"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "first_semester_participation",
+        "tuition_fees_up_to_date",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "course",
+        "first_semester_participation",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "gender",
+        "first_semester_participation"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "course",
+        "gender"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "course",
+        "first_semester_participation",
+        "gender"
+      ]
+    ],
+    "background": [
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "gender",
+        "displaced",
+        "scholarship_holder"
+      ],
+      [
+        "first_semester_progress",
+        "first_semester_participation",
+        "course",
+        "gender",
+        "tuition_fees_up_to_date"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "gender",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "unemployment_rate",
+        "tuition_fees_up_to_date",
+        "gender",
+        "previous_qualification_grade"
+      ],
+      [
+        "first_semester_progress",
+        "first_semester_participation",
+        "tuition_fees_up_to_date",
+        "gender",
+        "course"
+      ],
+      [
+        "first_semester_progress",
+        "first_semester_participation",
+        "tuition_fees_up_to_date",
+        "gender",
+        "course"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "course",
+        "scholarship_holder",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "tuition_fees_up_to_date",
+        "scholarship_holder",
+        "first_semester_participation",
+        "course"
+      ],
+      [
+        "first_semester_progress",
+        "unemployment_rate",
+        "displaced",
+        "course",
+        "gender"
+      ]
+    ],
+    "perturbation": [
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ],
+      [
+        "first_semester_progress",
+        "course",
+        "tuition_fees_up_to_date",
+        "first_semester_participation",
+        "unemployment_rate"
+      ]
+    ]
+  },
+  "recourse": [
+    {
+      "source_row_id": 1838,
+      "status": "not_flagged",
+      "n_changes": null,
+      "changed_features": null,
+      "dropout_probability": null,
+      "capacity_rank": null,
+      "capacity_boundary": null
+    }
+  ],
+  "perturbations": [
+    {
+      "proposal": 1,
+      "feature": "admission_grade",
+      "original_value": 130.8,
+      "perturbed_value": 130.84464670128096,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011212717741727829,
+      "absolute_probability_change": 1.2777745723724365e-05,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 2,
+      "feature": "previous_qualification_grade",
+      "original_value": 133.0,
+      "perturbed_value": 132.8614205013721,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.012264936231076717,
+      "absolute_probability_change": 0.001039440743625164,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 3,
+      "feature": "curricular_units_1st_sem_grade",
+      "original_value": 13.4275,
+      "perturbed_value": 13.465167777705878,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011106573045253754,
+      "absolute_probability_change": 0.00011892244219779968,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 4,
+      "feature": "admission_grade",
+      "original_value": 130.8,
+      "perturbed_value": 130.93781016791695,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011194692924618721,
+      "absolute_probability_change": 3.0802562832832336e-05,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 5,
+      "feature": "previous_qualification_grade",
+      "original_value": 133.0,
+      "perturbed_value": 132.74002152857275,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011380168609321117,
+      "absolute_probability_change": 0.00015467312186956406,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 6,
+      "feature": "curricular_units_1st_sem_grade",
+      "original_value": 13.4275,
+      "perturbed_value": 13.362139043189305,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.01138744130730629,
+      "absolute_probability_change": 0.00016194581985473633,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 7,
+      "feature": "admission_grade",
+      "original_value": 130.8,
+      "perturbed_value": 130.81873098907502,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.01121978648006916,
+      "absolute_probability_change": 5.709007382392883e-06,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 8,
+      "feature": "previous_qualification_grade",
+      "original_value": 133.0,
+      "perturbed_value": 132.95786018302704,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011176618747413158,
+      "absolute_probability_change": 4.887674003839493e-05,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 9,
+      "feature": "curricular_units_1st_sem_grade",
+      "original_value": 13.4275,
+      "perturbed_value": 13.42665669097523,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011227698996663094,
+      "absolute_probability_change": 2.203509211540222e-06,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    },
+    {
+      "proposal": 10,
+      "feature": "admission_grade",
+      "original_value": 130.8,
+      "perturbed_value": 130.67501325017756,
+      "original_probability": 0.011225495487451553,
+      "perturbed_probability": 0.011275564320385456,
+      "absolute_probability_change": 5.006883293390274e-05,
+      "effective_change": true,
+      "accepted": true,
+      "grade_only_sensitivity_probe": true,
+      "source_row_id": 1838
+    }
+  ],
+  "pairwise_reference_masking": [
+    {
+      "feature_group_a": "first_semester_progress",
+      "feature_group_b": "first_semester_participation",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.6167453527450562,
+      "masked_b_probability": 0.18441109359264374,
+      "masked_both_probability": 0.16896860301494598,
+      "delta_a": 0.6055198572576046,
+      "delta_b": 0.17318559810519218,
+      "delta_joint": 0.15774310752749443,
+      "nonadditive_effect": -0.6209623478353024,
+      "abs_nonadditive_effect": 0.6209623478353024,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "first_semester_progress",
+      "feature_group_b": "unemployment_rate",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.6167453527450562,
+      "masked_b_probability": 0.014060519635677338,
+      "masked_both_probability": 0.6747967600822449,
+      "delta_a": 0.6055198572576046,
+      "delta_b": 0.0028350241482257843,
+      "delta_joint": 0.6635712645947933,
+      "nonadditive_effect": 0.055216383188962936,
+      "abs_nonadditive_effect": 0.055216383188962936,
+      "joint_change_larger_than_each_single": true,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "first_semester_participation",
+      "feature_group_b": "unemployment_rate",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.18441109359264374,
+      "masked_b_probability": 0.014060519635677338,
+      "masked_both_probability": 0.19101224839687347,
+      "delta_a": 0.17318559810519218,
+      "delta_b": 0.0028350241482257843,
+      "delta_joint": 0.17978675290942192,
+      "nonadditive_effect": 0.003766130656003952,
+      "abs_nonadditive_effect": 0.003766130656003952,
+      "joint_change_larger_than_each_single": true,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "course",
+      "feature_group_b": "first_semester_participation",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.011225495487451553,
+      "masked_b_probability": 0.18441109359264374,
+      "masked_both_probability": 0.18441109359264374,
+      "delta_a": 0.0,
+      "delta_b": 0.17318559810519218,
+      "delta_joint": 0.17318559810519218,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "course",
+      "feature_group_b": "tuition_fees_up_to_date",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.011225495487451553,
+      "masked_b_probability": 0.011225495487451553,
+      "masked_both_probability": 0.011225495487451553,
+      "delta_a": 0.0,
+      "delta_b": 0.0,
+      "delta_joint": 0.0,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "course",
+      "feature_group_b": "unemployment_rate",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.011225495487451553,
+      "masked_b_probability": 0.014060519635677338,
+      "masked_both_probability": 0.014060519635677338,
+      "delta_a": 0.0,
+      "delta_b": 0.0028350241482257843,
+      "delta_joint": 0.0028350241482257843,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "first_semester_progress",
+      "feature_group_b": "course",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.6167453527450562,
+      "masked_b_probability": 0.011225495487451553,
+      "masked_both_probability": 0.6167453527450562,
+      "delta_a": 0.6055198572576046,
+      "delta_b": 0.0,
+      "delta_joint": 0.6055198572576046,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "first_semester_progress",
+      "feature_group_b": "tuition_fees_up_to_date",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.6167453527450562,
+      "masked_b_probability": 0.011225495487451553,
+      "masked_both_probability": 0.6167453527450562,
+      "delta_a": 0.6055198572576046,
+      "delta_b": 0.0,
+      "delta_joint": 0.6055198572576046,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "tuition_fees_up_to_date",
+      "feature_group_b": "first_semester_participation",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.011225495487451553,
+      "masked_b_probability": 0.18441109359264374,
+      "masked_both_probability": 0.18441109359264374,
+      "delta_a": 0.0,
+      "delta_b": 0.17318559810519218,
+      "delta_joint": 0.17318559810519218,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    },
+    {
+      "feature_group_a": "tuition_fees_up_to_date",
+      "feature_group_b": "unemployment_rate",
+      "original_probability": 0.011225495487451553,
+      "masked_a_probability": 0.011225495487451553,
+      "masked_b_probability": 0.014060519635677338,
+      "masked_both_probability": 0.014060519635677338,
+      "delta_a": 0.0,
+      "delta_b": 0.0028350241482257843,
+      "delta_joint": 0.0028350241482257843,
+      "nonadditive_effect": 0.0,
+      "abs_nonadditive_effect": 0.0,
+      "joint_change_larger_than_each_single": false,
+      "interpretation_scope": "model reference-masking response only"
+    }
+  ],
+  "surrogate_comparison": {
+    "top_five_groups": [
+      "first_semester_progress",
+      "course",
+      "tuition_fees_up_to_date",
+      "first_semester_participation",
+      "unemployment_rate"
+    ],
+    "masking_pattern_count": 32,
+    "train_pattern_count": 24,
+    "holdout_pattern_count": 8,
+    "summary": [
+      {
+        "variant": "OLS+main",
+        "method": "OLS",
+        "include_pair_terms": false,
+        "alpha": null,
+        "inner_cv_mae": null,
+        "holdout_mae": 0.20596834591422045,
+        "holdout_rmse": 0.21095103231366058,
+        "holdout_r2": -0.12847227080592383,
+        "nonzero_terms": 5,
+        "total_terms": 5,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      },
+      {
+        "variant": "Ridge+main",
+        "method": "Ridge",
+        "include_pair_terms": false,
+        "alpha": 10.0,
+        "inner_cv_mae": 0.19080584858957905,
+        "holdout_mae": 0.1792339287037269,
+        "holdout_rmse": 0.1904588590268713,
+        "holdout_r2": 0.08012262226554123,
+        "nonzero_terms": 5,
+        "total_terms": 5,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      },
+      {
+        "variant": "Lasso+main",
+        "method": "Lasso",
+        "include_pair_terms": false,
+        "alpha": 0.01,
+        "inner_cv_mae": 0.1879529828306132,
+        "holdout_mae": 0.1998234441926886,
+        "holdout_rmse": 0.20575437042018288,
+        "holdout_r2": -0.07355851163211335,
+        "nonzero_terms": 4,
+        "total_terms": 5,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      },
+      {
+        "variant": "OLS+pairs",
+        "method": "OLS",
+        "include_pair_terms": true,
+        "alpha": null,
+        "inner_cv_mae": null,
+        "holdout_mae": 0.005086389072239211,
+        "holdout_rmse": 0.005804854686255698,
+        "holdout_r2": 0.9991455035026735,
+        "nonzero_terms": 15,
+        "total_terms": 15,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      },
+      {
+        "variant": "Ridge+pairs",
+        "method": "Ridge",
+        "include_pair_terms": true,
+        "alpha": 0.0001,
+        "inner_cv_mae": 0.10703326075698065,
+        "holdout_mae": 0.005087819916365054,
+        "holdout_rmse": 0.005807564020442092,
+        "holdout_r2": 0.9991447056681121,
+        "nonzero_terms": 15,
+        "total_terms": 15,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      },
+      {
+        "variant": "Lasso+pairs",
+        "method": "Lasso",
+        "include_pair_terms": true,
+        "alpha": 1e-06,
+        "inner_cv_mae": 0.07995475872094267,
+        "holdout_mae": 0.0050813477047824546,
+        "holdout_rmse": 0.005794236558066454,
+        "holdout_r2": 0.9991486267006232,
+        "nonzero_terms": 15,
+        "total_terms": 15,
+        "fraction_outside_probability_range": 0.0,
+        "design_note": "train=24; holdout=8 higher-order masking patterns; predictions not clipped"
+      }
+    ],
+    "holdout_predictions": [
+      {
+        "variant": "OLS+main",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.028759061050682155,
+        "absolute_error": 0.16225318734619132
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.06702330292461461,
+        "absolute_error": 0.12398894547225886
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.4592183235115544,
+        "absolute_error": 0.2505469176001088
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.39504737535600215,
+        "absolute_error": 0.22607877234105617
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.4333116172299346,
+        "absolute_error": 0.2643430142149886
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.43825685715504104,
+        "absolute_error": 0.22958545124359542
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.44782319690331507,
+        "absolute_error": 0.16892215584174108
+      },
+      {
+        "variant": "OLS+main",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.4527684368284215,
+        "absolute_error": 0.22202832325382338
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.0962183279155503,
+        "absolute_error": 0.09479392048132318
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.11609859381294604,
+        "absolute_error": 0.07491365458392743
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.4021937141268769,
+        "absolute_error": 0.19352230821543126
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.348974473996296,
+        "absolute_error": 0.18000587098135
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.3688547398936918,
+        "absolute_error": 0.1998861368787458
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.3780724381909746,
+        "absolute_error": 0.16940103227952896
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.38048795416025477,
+        "absolute_error": 0.23625739858480138
+      },
+      {
+        "variant": "Ridge+main",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.3897056524575376,
+        "absolute_error": 0.2850911076247073
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.043493560054440994,
+        "absolute_error": 0.14751868834243248
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.08103908137110408,
+        "absolute_error": 0.1099731670257694
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.4395005057156216,
+        "absolute_error": 0.23082909980417599
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.39681640469695156,
+        "absolute_error": 0.22784780168200558
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.4343619260136147,
+        "absolute_error": 0.2653933229986687
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.4343619260136147,
+        "absolute_error": 0.22569052010216906
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.45010357962050673,
+        "absolute_error": 0.16664177312454942
+      },
+      {
+        "variant": "Lasso+main",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.45010357962050673,
+        "absolute_error": 0.22469318046173814
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.18482012256979968,
+        "absolute_error": 0.006192125827073791
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.18924306958913817,
+        "absolute_error": 0.0017691788077353054
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.21795959465205628,
+        "absolute_error": 0.009288188740610659
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.16277647718787247,
+        "absolute_error": 0.0061921258270735136
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.167199424207211,
+        "absolute_error": 0.0017691788077349724
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.21751729995012287,
+        "absolute_error": 0.008845894038677249
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.6198414156585932,
+        "absolute_error": 0.0030960629135370343
+      },
+      {
+        "variant": "OLS+pairs",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.6712584024667737,
+        "absolute_error": 0.003538357615471166
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.1848153459744551,
+        "absolute_error": 0.006196902422418382
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.18924239782538751,
+        "absolute_error": 0.0017698505714859591
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.2179628673094221,
+        "absolute_error": 0.009291461397976486
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.1627760409218059,
+        "absolute_error": 0.0061925620931400915
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.16720309948199508,
+        "absolute_error": 0.0017655035329509072
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.2175255968240079,
+        "absolute_error": 0.008854190912562288
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.619834075333662,
+        "absolute_error": 0.003088722588605819
+      },
+      {
+        "variant": "Ridge+pairs",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.6712533942704644,
+        "absolute_error": 0.0035433658117804967
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 7,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.18482822634023,
+        "absolute_error": 0.006184022056643479
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 11,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.19101224839687347,
+        "surrogate_probability": 0.18922967323806747,
+        "absolute_error": 0.0017825751588060046
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 19,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.21793571891375785,
+        "absolute_error": 0.00926431300231223
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 22,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.16278476225565966,
+        "absolute_error": 0.006183840759286324
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 26,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.16896860301494598,
+        "surrogate_probability": 0.1671859230638748,
+        "absolute_error": 0.0017826799510711755
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 27,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.20867140591144562,
+        "surrogate_probability": 0.21749412468680263,
+        "absolute_error": 0.008822718775357008
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 28,
+        "n_masked_groups": 3,
+        "tabicl_probability": 0.6167453527450562,
+        "surrogate_probability": 0.6198400116623343,
+        "absolute_error": 0.0030946589172781147
+      },
+      {
+        "variant": "Lasso+pairs",
+        "pattern_index": 29,
+        "n_masked_groups": 4,
+        "tabicl_probability": 0.6747967600822449,
+        "surrogate_probability": 0.6712607870647396,
+        "absolute_error": 0.0035359730175053006
+      }
+    ],
+    "comparability_note": "Surrogates fit TabICL responses to masking interventions only. Good fidelity does not prove genuine/cause/actionability or global explanation quality."
+  },
+  "pair_top3_overlap_under_accepted_perturbations": 1.0,
+  "pair_stability_repeats": [
+    {
+      "feature_perturbed": "admission_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6208940930664539
+    },
+    {
+      "feature_perturbed": "previous_qualification_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6360184112563729
+    },
+    {
+      "feature_perturbed": "curricular_units_1st_sem_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.621104933321476
+    },
+    {
+      "feature_perturbed": "admission_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6206959318369627
+    },
+    {
+      "feature_perturbed": "previous_qualification_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6568421991541982
+    },
+    {
+      "feature_perturbed": "curricular_units_1st_sem_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6180495731532574
+    },
+    {
+      "feature_perturbed": "admission_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6209365706890821
+    },
+    {
+      "feature_perturbed": "previous_qualification_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6248404057696462
+    },
+    {
+      "feature_perturbed": "curricular_units_1st_sem_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6209427844733
+    },
+    {
+      "feature_perturbed": "admission_grade",
+      "top_pair": "first_semester_participation + first_semester_progress",
+      "max_pairwise_nonadditivity": 0.6210725111886859
+    }
+  ],
+  "recourse_scenarios": [
+    {
+      "status": "not_flagged",
+      "changed_features": "",
+      "n_changes": 0,
+      "original_probability": 0.011225522495806217,
+      "scenario_probability": 0.011225522495806217,
+      "delta_probability": 0.0,
+      "flagged_after": false,
+      "capacity_rank_after": null,
+      "scenario_kind": "not_applicable"
+    }
+  ],
+  "individual_combined_improvement_scenarios": [
+    {
+      "scenario": "Original profile",
+      "category": "observed profile",
+      "original_probability": 0.011225522495806217,
+      "scenario_probability": 0.011225522495806217,
+      "change_probability_points": 0.0,
+      "flagged_before": 0,
+      "flagged_after": 0,
+      "cohort_rank_after": 506,
+      "original_grade": 13.4275,
+      "new_grade": 13.4275,
+      "original_approved_units": 8,
+      "new_approved_units": 8,
+      "original_tuition_paid": 1,
+      "new_tuition_paid": 1,
+      "original_debtor": 0,
+      "new_debtor": 0,
+      "interpretation": "model input sensitivity, not measured real-world intervention efficacy"
+    },
+    {
+      "scenario": "Grade +3/20 (historical input what-if)",
+      "category": "retrospective grade/credit sensitivity",
+      "original_probability": 0.011225522495806217,
+      "scenario_probability": 0.014434495940804482,
+      "change_probability_points": 0.32089734449982643,
+      "flagged_before": 0,
+      "flagged_after": 0,
+      "cohort_rank_after": 496,
+      "original_grade": 13.4275,
+      "new_grade": 16.427500000000002,
+      "original_approved_units": 8,
+      "new_approved_units": 8,
+      "original_tuition_paid": 1,
+      "new_tuition_paid": 1,
+      "original_debtor": 0,
+      "new_debtor": 0,
+      "interpretation": "model input sensitivity, not measured real-world intervention efficacy"
+    },
+    {
+      "scenario": "Grade +3 AND approved units +2",
+      "category": "retrospective grade/credit sensitivity",
+      "original_probability": 0.011225522495806217,
+      "scenario_probability": 0.014434495940804482,
+      "change_probability_points": 0.32089734449982643,
+      "flagged_before": 0,
+      "flagged_after": 0,
+      "cohort_rank_after": 496,
+      "original_grade": 13.4275,
+      "new_grade": 16.427500000000002,
+      "original_approved_units": 8,
+      "new_approved_units": 8,
+      "original_tuition_paid": 1,
+      "new_tuition_paid": 1,
+      "original_debtor": 0,
+      "new_debtor": 0,
+      "interpretation": "model input sensitivity, not measured real-world intervention efficacy"
+    },
+    {
+      "scenario": "Academic measures + both finance statuses",
+      "category": "retrospective grade/credit sensitivity",
+      "original_probability": 0.011225522495806217,
+      "scenario_probability": 0.014434495940804482,
+      "change_probability_points": 0.32089734449982643,
+      "flagged_before": 0,
+      "flagged_after": 0,
+      "cohort_rank_after": 496,
+      "original_grade": 13.4275,
+      "new_grade": 16.427500000000002,
+      "original_approved_units": 8,
+      "new_approved_units": 8,
+      "original_tuition_paid": 1,
+      "new_tuition_paid": 1,
+      "original_debtor": 0,
+      "new_debtor": 0,
+      "interpretation": "model input sensitivity, not measured real-world intervention efficacy"
+    }
+  ],
+  "support_topics_for_human_review": [
+    "Human adviser reviews context and asks the student about needs; no automated intervention inferred"
+  ],
+  "perturbation_columns_audited": [
+    "admission_grade",
+    "previous_qualification_grade",
+    "curricular_units_1st_sem_grade"
+  ]
+}
